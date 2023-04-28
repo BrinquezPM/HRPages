@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Applicants from "./routes/Applicants";
 import Users from "./routes/Users";
+import Login from "./routes/Login.js";
 
 import Navbar from "./components/Navbar";
 import "./App.css";
@@ -37,7 +38,10 @@ const router = createBrowserRouter([
         path: "Users",
         element: <Users />,
       },
-
+      {
+        path: "/login",
+        element: <Login />,
+      },
     ],
   },
 ]);
