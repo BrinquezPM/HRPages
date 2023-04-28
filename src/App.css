@@ -149,3 +149,17 @@ span {
 .ReactTable .rt-th {
   border: 0px solid #ccc;
 }
+
+/* Login page styles */
+
+.btn-inline-form {
+  background-color: transparent;
+  box-shadow: none;
+  border-color: transparent;
+  color: #000;
+  border-width: 1px 1px 1px 0px; /* top right bottom left */
+  border-style: solid;
+  border-color: #ccc;
+}
+
+/* Login page styles end */
