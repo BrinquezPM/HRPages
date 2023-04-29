@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Row, Stack } from 'react-bootstrap';
+import { Button, Stack } from 'react-bootstrap';
 import "../App.css";
 import MailIcon from '../Images/mailLogo.svg';
 import EditIcon from '../Images/pencil-outline.svg';
@@ -7,6 +7,7 @@ import DeactivateIcon from '../Images/trash-can-outline.svg';
 import UsernameIcon from '../Images/account-outline.svg';
 import ContactIcon from '../Images/phone-outline.svg';
 import SampleProfile from '../Images/profile-pic-sample.svg';
+import DeactivateModal from '../components/DeactivateModal';
 
 function Profile() {
 
@@ -15,6 +16,14 @@ function Profile() {
     // function handleClick() {
     //     setCurrProfile(false);
     // }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleDeactivate = () => {
+        //Deactivate execute here
+
+        setIsModalOpen(false);
+    }
     
     return(
         <div style={{marginLeft: 270}} className='App container'>
@@ -29,9 +38,17 @@ function Profile() {
                         <Button variant='success'>
                             <img src={EditIcon} alt='Edit Profile' /> Edit Profile
                         </Button> {'\t'}
-                        <Button variant='danger'>
+                        <Button variant='danger' onClick={() => setIsModalOpen(true)}>
                             <img src={DeactivateIcon} alt='Deactivate' /> Deactivate
                         </Button>
+                        <DeactivateModal
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            onConfirm={handleDeactivate}
+                            title="Deactivate Account"
+                            message="Are you sure you want to deactivate your account?"
+                            btnTxt="Deactivate"
+                        />
                     </div>
                 </Stack>
             </Stack>

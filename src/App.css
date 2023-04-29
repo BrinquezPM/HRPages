@@ -163,3 +163,15 @@ span {
 }
 
 /* Login page styles end */
+
+/* Deactivate Modal styles */
+
+.centered-modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Deactivate Modal end */
