@@ -12,6 +12,8 @@ import Applicants from "./routes/Applicants";
 import Users from "./routes/Users";
 import Login from "./routes/Login.js";
 
+import Profile from "./routes/Profile";
+
 import Navbar from "./components/Navbar";
 import "./App.css";
 
@@ -41,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

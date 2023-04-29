@@ -54,13 +54,15 @@ const handleShow = () => setShow(true);
             </li>
             <br></br>
             <li className="navbar-button" style={{listStyleType: "none"}}>
-              <button className="admin-button" style={{width: 200 , height: 60, border: 0}} >
-                <img src={ProfileSample} alt="Admin" style={{display: "flex"}}  />
-                <div className="admin-info">
-                  <span className="admin-name" >John Doe</span>
-                  <span className="admin-title">Admin</span>
-                </div>
-              </button>
+              <Link to='/profile'>
+                <button className="admin-button" style={{width: 200 , height: 60, border: 0}}>
+                  <img src={ProfileSample} alt="Admin" style={{display: "flex"}}  />
+                  <div className="admin-info">
+                    <span className="admin-name" >John Doe</span>
+                    <span className="admin-title">Admin</span>
+                  </div>
+                </button>
+              </Link>
             </li>
            
             <br></br>
