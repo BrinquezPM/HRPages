@@ -1,0 +1,17 @@
+.carousel-dark .carousel-indicators [data-bs-target] {
+  background-color: #065fd4;
+}
+
+.slider-container {
+  background-color: #f5f6fa;
+  border-radius: 20px;
+  height: 45.75rem;
+  margin: 50px 0 50px 38px;
+  width: 33.75rem;
+}
+
+.slider-illustration {
+  display: block;
+  height: 17.1875rem;
+  width: 17.1875rem;
+}

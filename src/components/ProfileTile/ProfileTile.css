@@ -1,0 +1,50 @@
+.profile-tile {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  border-radius: 5px;
+  height: 3.4375rem;
+  width: 14.0625rem;
+  text-align: left;
+  padding: 0px 10px;
+  margin-bottom: 25px;
+}
+
+.profile-tile:hover {
+  border: 1px solid #ffe8d9;
+  background-color: #ffe8d9;
+}
+
+.profile-tile-normal {
+  border: 1px solid #f4f4f4;
+  background-color: #f4f4f4;
+}
+
+.profile-tile-red {
+  border: 1px solid #ffe8d9;
+  background-color: #ffe8d9;
+}
+
+.profile-tile img {
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-right: 10px;
+}
+
+.profile-tile-txts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#profile-tile-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+#profile-tile-role {
+  font-size: 0.6875rem;
+  font-weight: 300;
+  margin: 0;
+}

@@ -1,0 +1,21 @@
+#logout-btn {
+  border: none;
+  height: 1.875rem;
+  background-color: white;
+}
+
+#logout-img {
+  width: 1.875rem;
+}
+
+.top-bar {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-top: 48px;
+  height: 2.1875rem;
+  width: 100%;
+  padding-right: 50px;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}

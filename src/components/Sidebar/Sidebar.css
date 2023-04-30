@@ -1,0 +1,23 @@
+.sidebar {
+  display: flex;
+  padding: 0 30px;
+}
+
+#sidebar-img {
+  width: 10.3125rem;
+  margin-bottom: 25px;
+}
+
+.sidebar-general {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.vertical-bar {
+  border: 1px solid #dddddd;
+  height: 100vh;
+}
+
+.sidebar-content {
+  margin: 30px 30px 0 0;
+}

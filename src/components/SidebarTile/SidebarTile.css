@@ -1,0 +1,36 @@
+.sidebar-tile {
+  align-items: center;
+  display: flex;
+  border-radius: 5px;
+  height: 2.8125rem;
+  width: 14.0625rem;
+  margin-bottom: 25px;
+}
+
+.sidebar-tile img {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin: 10px 15px 11px 10px;
+}
+
+.sidebar-tile span {
+  color: #5b5b5b;
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.sidebar-red {
+  border: 1px solid #ffe8d9;
+  background-color: #ffe8d9;
+}
+
+.sidebar-tile:hover {
+  border: 1px solid #ffe8d9;
+  background-color: #ffe8d9;
+}
+
+.sidebar-normal {
+  border: 1px solid white;
+  background-color: white;
+}

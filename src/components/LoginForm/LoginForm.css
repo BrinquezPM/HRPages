@@ -1,0 +1,17 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  height: 45.75rem;
+  width: 33.75rem;
+}
+
+.login-form h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+#login-logo {
+  margin: 109px 0 30px;
+  width: 12.5rem;
+}

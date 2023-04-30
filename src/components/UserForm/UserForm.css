@@ -1,0 +1,11 @@
+.user-form h1 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#user-btn {
+  border: 1px solid #4e9e32;
+  background-color: #4e9e32;
+  width: 9.375rem;
+}
