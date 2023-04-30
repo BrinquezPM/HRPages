@@ -1,6 +1,7 @@
 import "./ApplicantDetails.css";
 import Chip from "../Chip/Chip";
 import FilledButton from "../FilledButton/FilledButton";
+import StatusRow from "../StatusRow/StatusRow";
 
 const ApplicantDetails = (props) => {
   return (
@@ -35,6 +36,32 @@ const ApplicantDetails = (props) => {
         </div>
       </div>
       <h4>Software Developer Application Status</h4>
+      <StatusRow statusName="Pre-Screening" statusNumber="1" />
+      <StatusRow
+        id="circular-number-disabled"
+        statusName="HR Interview"
+        statusNumber="2"
+      />
+      <StatusRow
+        id="circular-number-disabled"
+        statusName="Technical Interview"
+        statusNumber="3"
+      />
+      <StatusRow
+        id="circular-number-disabled"
+        statusName="Final Interview"
+        statusNumber="4"
+      />
+      <StatusRow
+        id="circular-number-disabled"
+        statusName="Job Offer"
+        statusNumber="5"
+      />
+      <StatusRow
+        id="circular-number-disabled"
+        statusName="Accepted Job Offer"
+        statusNumber="6"
+      />
     </div>
   );
 };

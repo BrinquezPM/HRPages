@@ -2,7 +2,10 @@ import "./FilledButton.css";
 
 const FilledButton = (props) => {
   return (
-    <div className="filled-button-container">
+    <div
+      style={{ visibility: props.btnDisplay }}
+      className="filled-button-container"
+    >
       <button
         style={{
           backgroundColor: props.backgroundColor,

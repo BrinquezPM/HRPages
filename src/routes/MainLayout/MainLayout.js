@@ -10,8 +10,8 @@ const MainLayout = () => {
       <Sidebar />
       <div className="main-content">
         <TopBar />
-        {/* <UserForm formFunction="Edit" /> */}
-        <ApplicantDetails />
+        <UserForm formFunction="Edit" />
+        {/* <ApplicantDetails /> */}
       </div>
     </div>
   );
