@@ -5,14 +5,17 @@ import { useState } from "react";
 
 const Sidebar = (props) => {
   const [isApplicantsActive, setIsApplicantsActive] = useState(false);
-  const [isUsersActive, setIsUserssActive] = useState(false);
+  const [isUsersActive, setIsUsersActive] = useState(false);
+
 
   function activateApplicants() {
     setIsApplicantsActive(true);
+    setIsUsersActive(false);
   }
 
   function activateUsers() {
-    setIsApplicantsActive(true);
+    setIsApplicantsActive(false);
+    setIsUsersActive(true);
   }
 
   return (
@@ -29,11 +32,17 @@ const Sidebar = (props) => {
           id="/applicants"
           txt="Applicants"
           img="./images/main-layout/applicants-icon.png"
+          path='/applicants'
+          isActive={isApplicantsActive}
+          onActivate={activateApplicants}
         />
         <SidebarTile
           id="/users"
           txt="Users"
           img="./images/main-layout/users-icon.png"
+          path='/users'
+          isActive={isUsersActive}
+          onActivate={activateUsers}
         />
       </div>
       <div className="vertical-bar"></div>

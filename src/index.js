@@ -18,8 +18,8 @@ import "./App.css";
 
 const AppLayout = () => (
   <>
-    <Navbar />
-    <Outlet />
+    <MainLayout />
+    <Outlet/>
   </>
 );
 
