@@ -184,7 +184,7 @@ const handleShow = () => setShow(true);
   return (
 
     <Styles>
-      <div style={{marginLeft: 200}}>
+      <div style={{marginLeft: 250, marginTop: -650}}>
         <h2 style={{marginLeft: 70}}>Applicants</h2>
       <Table
         columns={columns}

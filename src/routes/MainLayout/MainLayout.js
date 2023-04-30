@@ -11,7 +11,7 @@ const MainLayout = () => {
       <div className="main-content">
         <TopBar />
         {/* <UserForm formFunction="Edit" /> */}
-        <ApplicantDetails />
+        {/* <ApplicantDetails /> */}
       </div>
     </div>
   );

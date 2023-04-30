@@ -143,11 +143,11 @@ function Users() {
   return (
 
     <Styles>
-      <div style={{marginLeft: 200, display: "flex", alignItems: "center"}}>
+      <div style={{marginLeft: 238, display: "flex", alignItems: "center", marginTop: -650}}>
         <h2 style={{marginLeft: 70}}>Users</h2>
-        <button className="Add-User-btn" style={{}}> <AiIcons.AiOutlinePlus size={30} /> </button>
+        <button className="Add-User-btn" style={{ marginLeft: "80.5%"}}> <AiIcons.AiOutlinePlus size={30} /> </button>
         </div>
-        <div style={{marginLeft: 200}}>
+        <div style={{marginLeft: 250}}>
       <Table
         columns={columns}
         data={data}
