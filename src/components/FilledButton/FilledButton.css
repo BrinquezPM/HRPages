@@ -9,3 +9,9 @@
   margin-top: 0.9375rem;
   width: 21.875rem;
 }
+
+#filled-button-img {
+  display: none;
+  margin-right: 5px;
+  width: 0.9375rem;
+}

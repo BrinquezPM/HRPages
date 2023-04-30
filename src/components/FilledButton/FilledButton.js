@@ -3,11 +3,26 @@ import "./FilledButton.css";
 const FilledButton = (props) => {
   return (
     <div className="filled-button-container">
-      <button id={props.id} type={props.type} className="filled-button">
+      <button
+        style={{
+          backgroundColor: props.backgroundColor,
+          borderColor: props.backgroundColor,
+        }}
+        onClick={props.onCLick}
+        id={props.id}
+        type={props.type}
+        className="filled-button"
+      >
+        <img
+          id="filled-button-img"
+          style={{ display: props.displayBtnImg }}
+          src={props.btnImgPath}
+          alt=""
+        />
         {props.btnTxt}
       </button>
       <div
-        style={{ visibility: props.errorVisibility }}
+        style={{ display: props.display, visibility: props.errorVisibility }}
         className="row-container error-prompt"
       >
         <img src="./images/login-page/error-icon.png" alt="error-icon" />

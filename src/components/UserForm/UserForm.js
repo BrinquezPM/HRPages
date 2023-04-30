@@ -3,6 +3,7 @@ import InputField from "../InputField/InputField";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
+import FileField from "../FileField/FileField";
 
 const UserForm = (props) => {
   const formik = useFormik({
@@ -67,7 +68,7 @@ const UserForm = (props) => {
 
   return (
     <div className="user-form">
-      <h1>Create User</h1>
+      <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
           <InputField
@@ -146,7 +147,7 @@ const UserForm = (props) => {
             field="Contact Number"
             prefixIcon="./images/main-layout/phone.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="0912 345 6789"
+            placeholder="09123456789"
             value={formik.values.contactNumber}
             onChange={formik.handleChange}
             name="contactNumber"
@@ -159,6 +160,7 @@ const UserForm = (props) => {
             suffixFunction={eraseContactNumber}
             errorMessage={formik.errors.contactNumber}
           />
+          {/* <FileField field="Profile Picture" /> */}
         </div>
         <div className="row-container">
           <InputField
@@ -194,7 +196,7 @@ const UserForm = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
-        <FilledButton type="submit" id="user-btn" btnTxt="Create" />
+        <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
       </form>
     </div>
   );
