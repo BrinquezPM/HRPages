@@ -4,8 +4,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
+import { useLocation } from "react-router";
 
 const UserForm = (props) => {
+  let {state} = useLocation();
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -68,7 +70,8 @@ const UserForm = (props) => {
 
   return (
     <div className="user-form">
-      <h1>{props.formFunction} User</h1>
+      {/* <h1>{props.formFunction} User</h1> */}
+      <h1>{state.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
           <InputField
@@ -196,7 +199,8 @@ const UserForm = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
-        <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
+        {/* <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} /> */}
+        <FilledButton type="submit" id="user-btn" btnTxt={state.formFunction} />
       </form>
     </div>
   );

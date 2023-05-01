@@ -35,6 +35,8 @@ const ProfilePage = (props) => {
               btnTxt="Edit Profile"
               id="profile-edit-btn"
               display="none"
+              path="/user"
+              pathFormFunction="Edit"
             />
             <FilledButton
               onClick={toggleDeactivateModal}

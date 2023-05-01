@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./FilledButton.css";
 
 const FilledButton = (props) => {
@@ -6,24 +7,27 @@ const FilledButton = (props) => {
       style={{ visibility: props.btnDisplay }}
       className="filled-button-container"
     >
-      <button
-        style={{
-          backgroundColor: props.backgroundColor,
-          borderColor: props.backgroundColor,
-        }}
-        onClick={props.onClick}
-        id={props.id}
-        type={props.type}
-        className="filled-button"
-      >
-        <img
-          id="filled-button-img"
-          style={{ display: props.displayBtnImg }}
-          src={props.btnImgPath}
-          alt=""
-        />
-        {props.btnTxt}
-      </button>
+      <Link to={props.path} state={{formFunction: props.pathFormFunction}}>
+        <button
+          style={{
+            backgroundColor: props.backgroundColor,
+            borderColor: props.backgroundColor,
+          }}
+          onClick={props.onClick}
+          id={props.id}
+          type={props.type}
+          className="filled-button"
+        >
+          <img
+            id="filled-button-img"
+            style={{ display: props.displayBtnImg }}
+            src={props.btnImgPath}
+            alt=""
+          />
+          {props.btnTxt}
+        </button>
+      </Link>
+      
       <div
         style={{ display: props.display, visibility: props.errorVisibility }}
         className="row-container error-prompt"

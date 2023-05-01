@@ -1,6 +1,6 @@
 import "./TopBar.css";
 import SearchBar from "../SearchBar/SearchBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 
 const TopBar = (props) => {
@@ -8,9 +8,26 @@ const TopBar = (props) => {
   const toggleLogoutModal = () => {
     setIsLogoutModalActive(!isLogoutModalActive);
   };
+  const [isProfileActive,setIsProfileActive] = useState(false);
+  useEffect(() => {
+    // Function to update the state based on the current pathname
+    function updateIsProfileActive(){
+      setIsProfileActive(window.location.pathname === "/profile");
+    }
+    // Event listener to the window to listen for changes to the pathname
+    window.addEventListener("popstate", updateIsProfileActive);
+    // Calling the update function once to set the initial state based on the current pathname
+    updateIsProfileActive();
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("popstate", updateIsProfileActive);
+    };
+  }, []);
   return (
     <div className="top-bar">
-      <SearchBar searchVisibility="visible" />
+      <SearchBar 
+        searchVisibility={`${isProfileActive ? "hidden" : "visible"}`}
+      />
       <button onClick={toggleLogoutModal} id="logout-btn">
         <img
           id="logout-img"
