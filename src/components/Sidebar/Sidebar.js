@@ -4,18 +4,32 @@ import SidebarTile from "../SidebarTile/SidebarTile";
 import { useState } from "react";
 
 const Sidebar = (props) => {
-  const [isApplicantsActive, setIsApplicantsActive] = useState(false);
-  const [isUsersActive, setIsUsersActive] = useState(false);
+  const [isApplicantsActive, setIsApplicantsActive] = useState(
+    window.location.pathname === "/applicants" ? true : false
+  );
+  const [isUsersActive, setIsUsersActive] = useState(
+    window.location.pathname === "/users" ? true : false
+  );
+  const [isProfileActive, setIsProfileActive] = useState(
+    window.location.pathname === "/profile" ? true : false
+  );
 
+  function activateProfile() {
+    setIsProfileActive(true);
+    setIsApplicantsActive(false);
+    setIsUsersActive(false);
+  }
 
   function activateApplicants() {
     setIsApplicantsActive(true);
     setIsUsersActive(false);
+    setIsProfileActive(false);
   }
 
   function activateUsers() {
     setIsApplicantsActive(false);
     setIsUsersActive(true);
+    setIsProfileActive(false);
   }
 
   return (
@@ -26,13 +40,17 @@ const Sidebar = (props) => {
           src="./images/login-page/alliance-logo.png"
           alt="alliance-logo"
         />
-        <ProfileTile />
+        <ProfileTile
+          path="/profile"
+          isActive={isProfileActive}
+          onActivate={activateProfile}
+        />
         <p className="sidebar-general">General</p>
         <SidebarTile
           id="/applicants"
           txt="Applicants"
           img="./images/main-layout/applicants-icon.png"
-          path='/applicants'
+          path="/applicants"
           isActive={isApplicantsActive}
           onActivate={activateApplicants}
         />
@@ -40,7 +58,7 @@ const Sidebar = (props) => {
           id="/users"
           txt="Users"
           img="./images/main-layout/users-icon.png"
-          path='/users'
+          path="/users"
           isActive={isUsersActive}
           onActivate={activateUsers}
         />

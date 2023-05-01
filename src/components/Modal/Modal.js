@@ -9,18 +9,14 @@ const Modal = (props) => {
         <button id="modal-close" onClick={props.onClick}>
           <img src="./images/login-page/close.png" alt="close-icon" />
         </button>
-        <img
-          id="modal-icon"
-          src="./images/main-layout/sign-out.png"
-          alt="icon"
-        />
-        <h3>Sign Out</h3>
-        <p>Are you sure you want to sign out?</p>
+        <img id="modal-icon" src={props.icon} alt="icon" />
+        <h3>{props.title}</h3>
+        <p>{props.description}</p>
         <FilledButton
           backgroundColor={props.backgroundColor}
           display="none"
           id="modal-btn"
-          btnTxt="Sign Out"
+          btnTxt={props.btnTxt}
         />
       </div>
     </div>

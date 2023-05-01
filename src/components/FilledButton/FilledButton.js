@@ -11,7 +11,7 @@ const FilledButton = (props) => {
           backgroundColor: props.backgroundColor,
           borderColor: props.backgroundColor,
         }}
-        onClick={props.onCLick}
+        onClick={props.onClick}
         id={props.id}
         type={props.type}
         className="filled-button"

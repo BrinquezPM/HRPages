@@ -8,6 +8,9 @@
   height: 2.1875rem;
   margin-top: 0.9375rem;
   width: 21.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #filled-button-img {

@@ -1,0 +1,23 @@
+.information-row img {
+  width: 1.5625rem;
+  height: 1.5625rem;
+  margin-right: 10px;
+}
+
+.information-row h6 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.information-row p {
+  font-size: 0.875rem;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+h1 + .row-container {
+  margin-bottom: 30px;
+}

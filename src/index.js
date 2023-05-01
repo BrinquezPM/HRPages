@@ -12,6 +12,7 @@ import Applicants from "./routes/Applicants";
 import Users from "./routes/Users";
 import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
+import ProfilePage from "./routes/ProfilePage/ProfilePage";
 
 import Navbar from "./components/Navbar";
 import "./App.css";
@@ -19,7 +20,7 @@ import "./App.css";
 const AppLayout = () => (
   <>
     <MainLayout />
-    <Outlet/>
+    <Outlet />
   </>
 );
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "Users",
         element: <Users />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },

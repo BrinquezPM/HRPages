@@ -8,6 +8,7 @@
   height: 45.75rem;
   text-align: center;
   width: 33.75rem;
+  position: relative;
 }
 
 .login-carousel button {
@@ -27,10 +28,21 @@
 
 .login-carousel p {
   font-size: 1.75rem;
-  margin-bottom: 120px;
+  /* margin-bottom: 120px; */
   width: 24.125rem;
 }
 
 .slides-container {
   display: flex;
+}
+
+.sliders-container {
+  position: absolute;
+  bottom: 50px;
+}
+
+#active-slider {
+  border-radius: 5px;
+  width: 1.25rem;
+  background-color: #065fd4;
 }

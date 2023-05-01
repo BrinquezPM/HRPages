@@ -6,7 +6,6 @@ import Modal from "../Modal/Modal";
 const TopBar = (props) => {
   const [isLogoutModalActive, setIsLogoutModalActive] = useState(false);
   const toggleLogoutModal = () => {
-    console.log(isLogoutModalActive);
     setIsLogoutModalActive(!isLogoutModalActive);
   };
   return (
@@ -20,7 +19,14 @@ const TopBar = (props) => {
         />
       </button>
       {isLogoutModalActive && (
-        <Modal onClick={toggleLogoutModal} backgroundColor="#4E9E32" />
+        <Modal
+          onClick={toggleLogoutModal}
+          backgroundColor="#4E9E32"
+          title="Sign Out"
+          description="Are you sure you want to sign out?"
+          btnTxt="Sign Out"
+          icon="./images/main-layout/sign-out.png"
+        />
       )}
     </div>
   );

@@ -16,7 +16,7 @@ const ApplicantDetails = (props) => {
         <div className="applicant-information">
           <div className="row-container">
             <h3>James Reid</h3>
-            <Chip />
+            <Chip chipTxt="Pre-screened" />
           </div>
           <div className="row-container">
             <img
