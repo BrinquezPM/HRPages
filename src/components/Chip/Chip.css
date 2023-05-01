@@ -4,13 +4,11 @@
   display: flex;
   width: 5rem;
   height: 1.25rem;
-  border: 1px solid #065fd4;
   border-radius: 5px;
   background-color: white;
 }
 
 .chip span {
-  color: #065fd4;
   margin: 0;
   font-size: 0.5625rem;
   font-weight: 500;

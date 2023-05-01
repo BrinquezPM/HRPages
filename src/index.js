@@ -13,7 +13,7 @@ import Users from "./routes/Users";
 import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
-
+import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import Navbar from "./components/Navbar";
 import "./App.css";
 
@@ -44,6 +44,10 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <ProfilePage />,
       },
+      {
+        path:"/applicantDetails",
+        element: <ApplicantDetails />,
+      }
     ],
   },
   { element: <LoginPage />, path: "/login" },

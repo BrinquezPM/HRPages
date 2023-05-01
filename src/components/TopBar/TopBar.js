@@ -1,16 +1,33 @@
+
 import "./TopBar.css";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
+import { useLocation } from "react-router-dom";
 
 const TopBar = (props) => {
   const [isLogoutModalActive, setIsLogoutModalActive] = useState(false);
   const toggleLogoutModal = () => {
     setIsLogoutModalActive(!isLogoutModalActive);
   };
+
+  const location = useLocation();
+
+  let searchVisibility = false;
+  switch (location.pathname) {
+    case "/":
+    case "/applicants":
+    case "/users":
+      searchVisibility = "visible";
+      break;
+    default:
+      searchVisibility = "hidden";
+
+  }
+
   return (
     <div className="top-bar">
-      <SearchBar searchVisibility="visible" />
+       <SearchBar searchVisibility={searchVisibility} />
       <button onClick={toggleLogoutModal} id="logout-btn">
         <img
           id="logout-img"
