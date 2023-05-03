@@ -3,15 +3,17 @@ import FilledButton from "../../components/FilledButton/FilledButton";
 import InformationRow from "../../components/InformationRow/InformationRow";
 import Modal from "../../components/Modal/Modal";
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const toggleDeactivateModal = () => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };
+  let {state} = useLocation();
   return (
     <div className="profile-page">
-      <h1>Profile</h1>
+      <h1>{state.title}</h1>
       <div className="row-container">
         <img
           id="user-pp"
@@ -29,15 +31,16 @@ const ProfilePage = (props) => {
             <p id="applicant-email">gabutan.meljefferson@gmail.com</p>
           </div>
           <div className="row-container">
-            <FilledButton
-              btnImgPath="./images/main-layout/edit-icon.png"
-              displayBtnImg="inline"
-              btnTxt="Edit Profile"
-              id="profile-edit-btn"
-              display="none"
-              path="/user"
-              pathFormFunction="Edit"
-            />
+            <Link to="/user" state={{formFunction: "Edit"}}>
+              <FilledButton
+                btnImgPath="./images/main-layout/edit-icon.png"
+                displayBtnImg="inline"
+                btnTxt="Edit Profile"
+                id="profile-edit-btn"
+                display="none"
+                pathFormFunction="Edit"
+              />
+            </Link>
             <FilledButton
               onClick={toggleDeactivateModal}
               btnImgPath="./images/main-layout/trash-icon.png"

@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
-import { useLocation } from "react-router";
+import { redirect, useLocation } from "react-router-dom";
 
 const UserForm = (props) => {
   let {state} = useLocation();
@@ -42,6 +42,10 @@ const UserForm = (props) => {
         .min(8, "Oops! Password must be at least 8 characters long.")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
+
+    onSubmit: (values) => {
+      return redirect("/profile");
+    },
   });
 
   function handleInputVisibility(touched, hasErrorMessage) {
