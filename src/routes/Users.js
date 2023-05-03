@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React, { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
-import styled from 'styled-components'
+import styled from "styled-components";
 import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
-import bin3 from '../Images/bin3.png';
+import bin3 from "../Images/bin3.png";
+import axios from "axios";
 
-
-function Table({
-  columns,
-  data,
-}) {
+function Table({ columns, data }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,25 +25,24 @@ function Table({
     },
     useSortBy,
     usePagination
-  )
+  );
 
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
+                  {column.render("Header")}
 
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
                   </span>
                 </th>
               ))}
@@ -54,43 +50,37 @@ function Table({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map(
-            (rows, i) => {
-              prepareRow(rows);
-              return (
-                <tr {...rows.getRowProps()}>
-                  {rows.cells.map(cell => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
-                  })}
-                </tr>
-              )}
-          )}
+          {rows.map((rows, i) => {
+            prepareRow(rows);
+            return (
+              <tr {...rows.getRowProps()}>
+                {rows.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
-      
- 
     </>
-  )
+  );
 }
 
 function Users() {
-
   const Styles = styled.div`
-  padding: 1rem;
+    padding: 1rem;
 
-  .pagination {
-    padding: 0.5rem;
-  }
-`
+    .pagination {
+      padding: 0.5rem;
+    }
+  `;
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
 
   const data = [
     {
@@ -111,72 +101,105 @@ function Users() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Name", accessor: "name", 
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: "Email Address", accessor: "EmailAddress",
+        Header: "Email Address",
+        accessor: "EmailAddress",
       },
       {
-        Header: "Username", accessor: "username",
+        Header: "Username",
+        accessor: "username",
       },
       {
-        Header: "Contact Number", accessor: "ContactNumber",
+        Header: "Contact Number",
+        accessor: "ContactNumber",
       },
       {
-        Header: "Actions", accessor: "actions",
+        Header: "Actions",
+        accessor: "actions",
         Cell: (row) => (
           <div>
-            <span style={{ cursor: "pointer" }}><AiIcons.AiOutlineSearch size={30} /></span>
-            <span style={{ cursor: "pointer", marginLeft: "50px"  }}  onClick={handleShow}>
-              
-              <BsIcons.BsTrashFill size={25}/>
-              </span>
+            <span style={{ cursor: "pointer" }}>
+              <AiIcons.AiOutlineSearch size={30} />
+            </span>
+            <span
+              style={{ cursor: "pointer", marginLeft: "50px" }}
+              onClick={handleShow}
+            >
+              <BsIcons.BsTrashFill size={25} />
+            </span>
           </div>
         ),
-      },  
+      },
     ],
     []
   );
-    
-   
+  const [info, setInfo] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(`http://localhost:55731/api/UserAPI/list?PageSize=5`)
+        .then((response) => {
+          setInfo(response.data);
+          console.log(response.data);
+          console.log(info);
+        })
+        .catch(function (error) {});
+    };
+    fetchData();
+  }, []);
 
   return (
-
     <Styles>
-      <div style={{marginLeft: 238, display: "flex", alignItems: "center", marginTop: -650}}>
-        <h2 style={{marginLeft: 70}}>Users</h2>
-        <button className="Add-User-btn" style={{ marginLeft: "80.5%"}}> <AiIcons.AiOutlinePlus size={30} /> </button>
-        </div>
-        <div style={{marginLeft: 250}}>
-      <Table
-        columns={columns}
-        data={data}
-     
-      />
+      <div
+        style={{
+          marginLeft: 238,
+          display: "flex",
+          alignItems: "center",
+          marginTop: -650,
+        }}
+      >
+        <h2 style={{ marginLeft: 70 }}>Users</h2>
+        <button className="Add-User-btn" style={{ marginLeft: "80.5%" }}>
+          {" "}
+          <AiIcons.AiOutlinePlus size={30} />{" "}
+        </button>
+      </div>
+      <div style={{ marginLeft: 250 }}>
+        {/*info?.data?.map((infor) => ({infor.firstname}))*/}
+        <Table columns={columns} data={data} />
       </div>
       <div>
-      <Modal show={show} onHide={handleClose} >
-        <Modal.Header closeButton style={{border: "none"}}>
-        </Modal.Header>
-        <Modal.Body>
-        <div className="text-center">
-          <img src={bin3} alt="bin3" style={{alignContent: "center"}}></img>
-          <h2>Remove User</h2>
-          <span>Are you sure you want to remove the user?</span>
-          </div>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
+          <Modal.Body>
+            <div className="text-center">
+              <img
+                src={bin3}
+                alt="bin3"
+                style={{ alignContent: "center" }}
+              ></img>
+              <h2>Remove User</h2>
+              <span>Are you sure you want to remove the user?</span>
+            </div>
           </Modal.Body>
-        <Modal.Footer style={{display: "flex", justifyContent: "center", border: "none"}}>
-          <Button variant="danger" onClick={handleClose}>
-            Remove
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Modal.Footer
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              border: "none",
+            }}
+          >
+            <Button variant="danger" onClick={handleClose}>
+              Remove
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </Styles>
+  );
+}
 
-  
-  )
-  }
-
-  
 export default Users;

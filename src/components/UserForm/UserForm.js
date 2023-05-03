@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
+import axios from "axios";
 
 const UserForm = (props) => {
   const formik = useFormik({
@@ -15,6 +16,33 @@ const UserForm = (props) => {
       contactNumber: "",
       password: "",
       confirmPassword: "",
+    },
+
+    onSubmit: async (values) => {
+      console.log(values);
+      const formData = new FormData();
+
+      try {
+        const applicantData = {};
+        const postRequest = await axios
+          .post("http://localhost:55731/api/UserAPI/register", {
+            user_firstName: formik.values.firstName,
+            user_lastName: formik.values.lastName,
+            user_email: formik.values.emailAddress,
+            user_phoneNumber: formik.values.contactNumber,
+            user_username: formik.values.username,
+            user_password: formik.values.password,
+            confirm_pass: formik.values.confirmPassword,
+            user_role: "Testrole",
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(postRequest.data);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+      //navigate("/confirmation", { state: { firstName: values.firstName } });
     },
 
     validationSchema: Yup.object({
