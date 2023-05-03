@@ -16,7 +16,7 @@ const Modal = (props) => {
         <h3>{props.title}</h3>
         <p>{props.description}</p>
         <div style={{ display: fieldDisplay }}>
-          <input type="text" placeholder={props.fieldTxt} id="modal-field" />
+          <input type="text" placeholder={props.fieldTxt} id="modal-field" className="my-input"/>
         </div>
         <FilledButton
           backgroundColor={props.backgroundColor}

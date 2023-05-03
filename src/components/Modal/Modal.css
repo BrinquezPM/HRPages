@@ -90,7 +90,7 @@ body.active-modal {
   border-radius: 5px;
 }
 
-input[type="text"]::placeholder {
+.my-input::placeholder {
   font-size: 16px;
   color: #A9A9A9;
   position: absolute;
@@ -98,7 +98,7 @@ input[type="text"]::placeholder {
   left: 10px;
 }
 
-input[type="text"] {
+.my-input{
   padding: 10px;
   box-sizing: border-box;
   border: 1px solid;
