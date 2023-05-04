@@ -1,8 +1,7 @@
-import React, { useState }from "react";
+import React, { useState, useEffect }from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
 import styled from 'styled-components'
-import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -10,7 +9,7 @@ import bin3 from '../Images/bin3.png';
 import Chip from "../components/Chip/Chip";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
-
+import axios from "axios";
 
 function Table({
   columns,
@@ -93,76 +92,51 @@ function Table({
                 </tr>
               )}
           )}
-
+          
           <tr>
+            <td colSpan={headerGroups[0].headers.length}></td>
+          </tr>
+
+          <tr  >
             {loading ? (
-              // Use our custom loading state to show a loading indicator
-              <td colSpan="4">Loading...</td>
+              <td colSpan="1">Loading...</td>
             ) : (
-              <td colSpan="4">
+              <td colSpan="1" >
                 Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
                 results
               </td>
             )}
-            <td>
-          <div className="pagination">
-        <button onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
-        <button onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</button>{" "}
-        <button onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 3}</button>
+          <td></td>
+          <td></td>
+      
+            <td colSpan="2">
+          <div className="paginations">
+        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17}}>
+          prev
+        </button>
+        <button style={{width:25, height: 25}} onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</button>{" "}
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 3}</button>
         {" ... "}
-        <button onClick={() => gotoPage(pageOptions.length)}>
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageOptions.length)}>
           {pageOptions.length}
+        </button>{""}{" "}{" "}{" "}
+        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17}}>
+          next
         </button>{" "}
-        <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Go to page:{" "}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: "100px" }}
-          />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
       </div>  
 
             </td>
           </tr>
           
         </tbody>
-        <tfoot>
-         
-        </tfoot>
       </table>
-            {/* 
-        Pagination can be built however you'd like. 
-        This is just a very basic UI implementation:
-      */}
-     
     </>
   )
 }
 
 function Applicants() {
+  const [info, setInfo] = useState([]);
 
   const Styles = styled.div`
   padding: 1rem;
@@ -170,7 +144,28 @@ function Applicants() {
   .pagination {
     padding: 0.5rem;
   }
+  
 `
+  const chipStyle = {
+    Chip: {
+      width: "3rem",
+      height: "1.25rem",
+      borderRadius: "100px !important" ,
+      backgroundColor: "black !important",
+    },
+  }
+
+useEffect(() => {
+  const fetchData = async () => {
+    axios
+      .get("http://localhost:55731/api/ApplicantAPI/getApplicant?id=6")
+      .then((response) => {
+        setInfo(response.data);
+        console.log(response.data);
+      });
+  };
+  fetchData();
+}, []);
 
 
 const [show, setShow] = useState(false);
@@ -182,13 +177,14 @@ const handleShow = () => setShow(true);
       name: "John Doe",
       dateSubmitted: "2022-04-22",
       position: "Developer",
-      status: <Chip statusId={1} style={{ backgroundColor: "green" }} />,
+      status: <Chip statusId={2}  style={chipStyle.chip}   />,
+      
     },
     {
       name: "Jane Smith",
       dateSubmitted: "2022-04-20",
       position: "Designer",
-      status: <Chip statusId={2} />,
+      status: <Chip statusId={2} style={chipStyle.chip}   />,
     },
     // Add more data here
   ];
@@ -263,8 +259,8 @@ const handleShow = () => setShow(true);
   return (
 
     <Styles>
-      <div style={{marginLeft: 250, marginTop: -500}}>
-        <h2 style={{marginLeft: 70}}>Applicants</h2>
+      <div style={{marginLeft: '20%'  , marginTop: -500}}>
+        <h2 style={{marginLeft: '5%'}}>Applicants</h2>
       <Table
         columns={columns}
         data={data}

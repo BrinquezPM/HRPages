@@ -8,6 +8,8 @@ import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
 import bin3 from "../Images/bin3.png";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import magnify from "../Images/magnify-expand.png";
 
 function Table({ columns, data }) {
   const {
@@ -121,9 +123,14 @@ function Users() {
         accessor: "actions",
         Cell: (row) => (
           <div>
+            <Link to="/userformdetails">
             <span style={{ cursor: "pointer" }}>
-              <AiIcons.AiOutlineSearch size={30} />
+            <img id="appliDeatils-btn" 
+                  src={magnify}
+                  alt="magnify">
+                </img>
             </span>
+            </Link>
             <span
               style={{ cursor: "pointer", marginLeft: "50px" }}
               onClick={handleShow}
@@ -157,15 +164,16 @@ function Users() {
         style={{
           marginLeft: 238,
           display: "flex",
-          alignItems: "center",
-          marginTop: -650,
+          marginTop: -500,
         }}
       >
-        <h2 style={{ marginLeft: 70 }}>Users</h2>
-        <button className="Add-User-btn" style={{ marginLeft: "80.5%" }}>
+        <h2 style={{ marginLeft: '6%'}}>Users</h2>
+        <Link to="/userformcreate" style={{ marginLeft: '76%'}}>
+        <button className="Add-User-btn" >
           {" "}
           <AiIcons.AiOutlinePlus size={30} />{" "}
         </button>
+        </Link>
       </div>
       <div style={{ marginLeft: 250 }}>
         {/*info?.data?.map((infor) => ({infor.firstname}))*/}

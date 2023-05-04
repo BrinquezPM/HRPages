@@ -15,6 +15,7 @@ import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
 import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import Navbar from "./components/Navbar";
+import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
 
 const AppLayout = () => (
@@ -47,7 +48,15 @@ const router = createBrowserRouter([
       {
         path:"/applicantDetails",
         element: <ApplicantDetails />,
-      }
+      },
+      {
+        path:"/userformcreate",
+        element: <UserForm formFunction="Create" />,
+      },
+      {
+        path:"/userformdetails",
+        element: <UserForm formFunction="Edit" />,
+      },
     ],
   },
   { element: <LoginPage />, path: "/login" },

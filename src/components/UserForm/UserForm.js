@@ -95,7 +95,7 @@ const UserForm = (props) => {
   }
 
   return (
-    <div className="user-form">
+    <div className="user-form" style={{marginLeft: 300, marginTop: -480}}>
       <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
