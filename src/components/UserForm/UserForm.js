@@ -10,13 +10,13 @@ const UserForm = (props) => {
   let {state} = useLocation();
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      emailAddress: "",
-      contactNumber: "",
-      password: "",
-      confirmPassword: "",
+      firstName: state.user.user_firstName,
+      lastName: state.user.user_lastName,
+      username: state.user.user_username,
+      emailAddress: state.user.user_email,
+      contactNumber: state.user.user_phoneNumber,
+      password: state.user.user_password,
+      confirmPassword: state.user.confirm_pass,
     },
 
     validationSchema: Yup.object({
@@ -74,7 +74,6 @@ const UserForm = (props) => {
 
   return (
     <div className="user-form">
-      {/* <h1>{props.formFunction} User</h1> */}
       <h1>{state.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
@@ -203,7 +202,6 @@ const UserForm = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
-        {/* <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} /> */}
         <FilledButton type="submit" id="user-btn" btnTxt={state.formFunction} />
       </form>
     </div>
