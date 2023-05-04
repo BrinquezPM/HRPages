@@ -11,12 +11,35 @@ const ProfilePage = (props) => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };
 
+  async function deactivateUser() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/UserAPI/softdelete", {
+          user_id: user.user_id,
+          user_firstName: user.user_firstName,
+          user_lastName: user.user_lastName,
+          user_email: user.user_email,
+          user_phoneNumber: user.user_phoneNumber,
+          user_username: user.user_username,
+          user_password: user.user_password,
+          confirm_pass: user.user_password,
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    setIsDeactivateModalActive(!isDeactivateModalActive);
+  }
+
   const [user, setUser] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       axios
         .get(
-          "http://localhost:55731/api/UserAPI/getUser?id=0ffab3f7-fb85-4806-a0fa-ee9d419de037"
+          "http://localhost:55731/api/UserAPI/getUser?id=365d339f-1484-4d07-a668-f451ab39da77"
         )
         .then((response) => {
           setUser(response.data);
@@ -69,6 +92,7 @@ const ProfilePage = (props) => {
       {isDeactivateModalActive && (
         <Modal
           onClick={toggleDeactivateModal}
+          onClose={deactivateUser}
           title="Remove User"
           description="Are you sure you want to remove the user(s)?"
           btnTxt="Remove"
