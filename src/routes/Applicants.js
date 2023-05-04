@@ -111,7 +111,7 @@ function Table({
       
             <td colSpan="2">
           <div className="paginations">
-        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17}}>
+        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17, border: "none"}}>
           prev
         </button>
         <button style={{width:25, height: 25}} onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
@@ -121,7 +121,7 @@ function Table({
         <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageOptions.length)}>
           {pageOptions.length}
         </button>{""}{" "}{" "}{" "}
-        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17}}>
+        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17, border: "none"}}>
           next
         </button>{" "}
       </div>  

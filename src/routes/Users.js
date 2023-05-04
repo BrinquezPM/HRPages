@@ -11,40 +11,67 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
 
-function Table({ columns, data }) {
+function Table({
+  columns,
+  data,
+  fetchData,
+  loading,
+  pageCount: controlledPageCount
+}) {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
-
-    state: { pageIndex, pageSize },
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    // Get the state from the instance
+    state: { pageIndex, pageSize }    
   } = useTable(
     {
       columns,
       data,
+      initialState: { pageIndex: 0 }, // Pass our hoisted table state
+      manualPagination: true, // Tell the usePagination
+      // hook that we'll handle our own data fetching
+      // This means we'll also have to provide our own
+      // pageCount.
+      pageCount: controlledPageCount
     },
+   
     useSortBy,
     usePagination
-  );
+  )
+
+   // Listen for changes in pagination and use the state to fetch our new data
+   React.useEffect(() => {
+    fetchData({ pageIndex, pageSize });
+  }, [fetchData, pageIndex, pageSize]);
 
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup) => (
+          {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
+              {headerGroup.headers.map(column => (
 
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+ 
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
                   </span>
                 </th>
               ))}
@@ -52,22 +79,60 @@ function Table({ columns, data }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((rows, i) => {
-            prepareRow(rows);
-            return (
-              <tr {...rows.getRowProps()}>
-                {rows.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {page.map(
+            (rows, i) => {
+              prepareRow(rows);
+              return (
+                <tr {...rows.getRowProps()}>
+                  {rows.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )}
+          )}
+          
+          <tr>
+            <td colSpan={headerGroups[0].headers.length}></td>
+          </tr>
+
+          <tr  >
+            {loading ? (
+              <td colSpan="1">Loading...</td>
+            ) : (
+              <td colSpan="1" >
+                Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                results
+              </td>
+            )}
+          <td></td>
+          <td></td>
+      
+            <td colSpan="2">
+          <div className="paginations">
+        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17, border: "none"}}>
+          prev
+        </button>
+        <button style={{width:25, height: 25}} onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</button>{" "}
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 3}</button>
+        {" ... "}
+        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageOptions.length)}>
+          {pageOptions.length}
+        </button>{""}{" "}{" "}{" "}
+        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17, border: "none"}}>
+          next
+        </button>{" "}
+      </div>  
+
+            </td>
+          </tr>
+          
         </tbody>
       </table>
     </>
-  );
+  )
 }
 
 function Users() {
@@ -158,6 +223,39 @@ function Users() {
     fetchData();
   }, []);
 
+  const [ setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [pageCount, setPageCount] = React.useState(0);
+  const fetchIdRef = React.useRef(0);
+
+  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
+    // This will get called when the table needs new data
+    // You could fetch your data from literally anywhere,
+    // even a server. But for this example, we'll just fake it.
+
+    // Give this fetch an ID
+    const fetchId = ++fetchIdRef.current;
+
+    // Set the loading state
+    setLoading(true);
+
+    // We'll even set a delay to simulate a server here
+    setTimeout(() => {
+      // Only update the data if this is the latest fetch
+      if (fetchId === fetchIdRef.current) {
+        const startRow = pageSize * pageIndex;
+        const endRow = startRow + pageSize;
+        setData(data.slice(startRow, endRow));
+
+        // Your server could send back total page count.
+        // For now we'll just fake it, too
+        setPageCount(Math.ceil(data.length / pageSize));
+
+        setLoading(false);
+      }
+    }, 1000);
+  }, []);
+   
   return (
     <Styles>
       <div
@@ -177,7 +275,13 @@ function Users() {
       </div>
       <div style={{ marginLeft: 250 }}>
         {/*info?.data?.map((infor) => ({infor.firstname}))*/}
-        <Table columns={columns} data={data} />
+        <Table 
+        columns={columns}
+        data={data}
+        fetchData={fetchData}
+        loading={loading}
+        pageCount={pageCount}
+        />
       </div>
       <div>
         <Modal show={show} onHide={handleClose}>
