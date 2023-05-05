@@ -10,7 +10,6 @@ const ApplicantDetails = (props) => {
   const [modalNotesOpen, setModalNotesOpen] = useState(false);
   const [info, setInfo] = useState([]);
 
-  
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -85,35 +84,35 @@ const ApplicantDetails = (props) => {
         </div>
       </div>
       <h4>{info.apl_position} Application Status</h4>
-      <StatusRow 
-        statusName="Pre-Screened" 
-        statusNumber="1" 
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
-        />
+      <StatusRow
+        statusName="Pre-Screened"
+        statusNumber="1"
+        id={info.apl_status !== 1 ? "circular-number-disabled" : undefined}
+      />
       <StatusRow
         statusName="HR Interview"
         statusNumber="2"
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
+        id={info.apl_status !== 2 ? "circular-number-disabled" : undefined}
       />
       <StatusRow
         statusName="Technical Interview"
         statusNumber="3"
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
+        id={info.apl_status !== 3 ? "circular-number-disabled" : undefined}
       />
       <StatusRow
         statusName="Final Interview"
         statusNumber="4"
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
+        id={info.apl_status !== 4 ? "circular-number-disabled" : undefined}
       />
       <StatusRow
         statusName="Job Offer"
         statusNumber="5"
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
+        id={info.apl_status !== 5 ? "circular-number-disabled" : undefined}
       />
       <StatusRow
         statusName="Accepted Job Offer"
         statusNumber="6"
-        id={info.apl_status !== "1" ? "circular-number-disabled" : undefined}
+        id={info.apl_status !== 6 ? "circular-number-disabled" : undefined}
       />
     </div>
   );
