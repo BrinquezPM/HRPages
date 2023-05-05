@@ -7,7 +7,7 @@ const FilledButton = (props) => {
       style={{ visibility: props.btnDisplay }}
       className="filled-button-container"
     >
-      <Link to={props.path}>
+      {/* //<Link to={props.path}> */}
       <button
         style={{
           backgroundColor: props.backgroundColor,
@@ -26,7 +26,7 @@ const FilledButton = (props) => {
         />
         {props.btnTxt}
       </button>
-      </Link>
+      {/* </Link> */}
       <div
         style={{ display: props.display, visibility: props.errorVisibility }}
         className="row-container error-prompt"
