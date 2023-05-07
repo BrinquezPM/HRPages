@@ -4,6 +4,7 @@ import InformationRow from "../../components/InformationRow/InformationRow";
 import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
@@ -35,18 +36,21 @@ const ProfilePage = (props) => {
   }
 
   const [user, setUser] = useState([]);
+  const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
+  //activeUser.replace(/['"]+/g, "");
+
   useEffect(() => {
+    console.log(activeUser);
     const fetchData = async () => {
       axios
-        .get(
-          "http://localhost:55731/api/UserAPI/getUser?id=0ffab3f7-fb85-4806-a0fa-ee9d419de037"
-        )
+        .get(`http://localhost:55731/api/UserAPI/getUser?id=${activeUser}`)
         .then((response) => {
           setUser(response.data);
           console.log(response.data);
         });
     };
     fetchData();
+    //console.log(activeUser);
   }, []);
 
   return (
