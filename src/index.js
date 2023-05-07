@@ -45,7 +45,7 @@ const router = createBrowserRouter([
           </RequireAuth>,
       },
       {
-        path: "Users",
+        path: "/Users",
         element: 
           <RequireAuth loginPath="/login">
             <Users />
