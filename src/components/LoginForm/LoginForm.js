@@ -26,7 +26,7 @@ const LoginForm = (props) => {
               token: response.data.access_token,
               expiresIn: response.data.expires_in,
               tokenType: "Bearer",
-              authState: formik.values.username,
+              authState: {user: formik.values.username},
             });
             navigate("/applicants");
           }
