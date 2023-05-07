@@ -11,19 +11,25 @@ const LoginForm = (props) => {
 
   const onSubmit = async (values) => {
     console.log("Values: ", values);
-    try{
-      const response = await axios
-        .post("", values); // url/route server needed
+    try {
+      const fetchData = await axios
+        .post("http://localhost:55731/api/token", {
+          username: formik.values.username,
+          password: formik.values.password,
+        })
+        .then((response) => {
+          console.log(response.status);
+        }); // url/route server needed
       signIn({
-        token: response.data.token,
-        expiresIn: 3600,
+        token: fetchData.access_token,
+        expiresIn: 86400,
         tokenType: "Bearer",
-        authState: {username: values.username},
+        authState: { username: formik.values.username },
       });
     } catch (err) {
       console.log("Error: ", err);
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
