@@ -5,6 +5,7 @@ import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
@@ -77,6 +78,7 @@ const ProfilePage = (props) => {
             <p id="applicant-email">{user.user_email}</p>
           </div>
           <div className="row-container">
+            <Link to="/userformdetails">
             <FilledButton
               btnImgPath="./images/main-layout/edit-icon.png"
               displayBtnImg="inline"
@@ -84,6 +86,7 @@ const ProfilePage = (props) => {
               id="profile-edit-btn"
               display="none"
             />
+            </Link>
             <FilledButton
               onClick={toggleDeactivateModal}
               btnImgPath="./images/main-layout/trash-icon.png"

@@ -241,7 +241,9 @@ const UserEdit = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
+        <Link to="/Users">
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
+        </Link>
       </form>
     </div>
   );

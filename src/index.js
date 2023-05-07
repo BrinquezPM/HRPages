@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         path: "/",
         element:
           <RequireAuth loginPath="/login">
-            <Applicants />
+            <LoginPage />
           </RequireAuth>,
       },
       {

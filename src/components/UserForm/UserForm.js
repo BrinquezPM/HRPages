@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const UserForm = (props) => {
   const formik = useFormik({
@@ -224,7 +225,9 @@ const UserForm = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
+        <Link to="/Users">
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
+        </Link>
       </form>
     </div>
   );
