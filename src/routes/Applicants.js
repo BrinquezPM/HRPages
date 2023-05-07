@@ -6,10 +6,12 @@ import * as BsIcons from "react-icons/bs";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import bin3 from '../Images/bin3.png';
-import Chip from "../components/Chip/Chip";
+import Chip2 from "../components/Chip/Chip2";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 
 function Table({
   columns,
@@ -146,14 +148,7 @@ function Applicants() {
   }
   
 `
-  const chipStyle = {
-    Chip: {
-      width: "3rem",
-      height: "1.25rem",
-      borderRadius: "100px !important" ,
-      backgroundColor: "black !important",
-    },
-  }
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -177,17 +172,24 @@ const handleShow = () => setShow(true);
       name: "John Doe",
       dateSubmitted: "2022-04-22",
       position: "Developer",
-      status: <Chip statusId={2}  style={chipStyle.chip}   />,
+      status: <Chip2 statusId={2}/>,
       
     },
     {
       name: "Jane Smith",
       dateSubmitted: "2022-04-20",
       position: "Designer",
-      status: <Chip statusId={2} style={chipStyle.chip}   />,
+      status: <Chip2 statusId={2}/>,
     },
     // Add more data here
   ];
+
+  // let data = info.map((applicant) => ({
+  //   name: `${applicant.apl_lastName}, ${applicant.apl_firstName}`,
+  //   dateSubmitted: applicant.apl_createdDate,
+  //   position: applicant.apl_position,
+  //   status: <Chip2 statusId={applicant.apl_status}/>,
+  // }));
 
   const columns = React.useMemo(
     () => [
