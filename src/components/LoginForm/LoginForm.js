@@ -5,10 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useSignIn } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = (props) => {
   const signIn = useSignIn();
-
+  const navigate = useNavigate();
   const onSubmit = async (values) => {
     console.log("Values: ", values);
     try {
@@ -19,7 +20,10 @@ const LoginForm = (props) => {
         })
         .then((response) => {
           console.log(response.status);
-        }); // url/route server needed
+          if (response.status === 200) {
+            navigate("/applicants");
+          }
+        });
       signIn({
         token: fetchData.access_token,
         expiresIn: 86400,
