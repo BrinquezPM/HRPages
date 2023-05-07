@@ -36,7 +36,9 @@ const ProfilePage = (props) => {
   }
 
   const [user, setUser] = useState([]);
-  const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
+  const auth = useAuthUser();
+  const activeUser = auth().user;
+  // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
   //activeUser.replace(/['"]+/g, "");
 
   useEffect(() => {

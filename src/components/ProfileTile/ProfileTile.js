@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAuthUser } from "react-auth-kit";
 
 const ProfileTile = (props) => {
   const [tileClass, setTileClass] = useState("profile-tile-normal");
@@ -12,7 +13,9 @@ const ProfileTile = (props) => {
   }
 
   const [user, setUser] = useState([]);
-  const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
+  // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
+  const auth = useAuthUser();
+  const activeUser = auth().user;
 
   useEffect(() => {
     console.log(activeUser);
