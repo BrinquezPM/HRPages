@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
+import { useAuthUser } from "react-auth-kit";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
@@ -78,7 +79,13 @@ const ProfilePage = (props) => {
             <p id="applicant-email">{user.user_email}</p>
           </div>
           <div className="row-container">
-            <Link to="/userformdetails">
+          <Link 
+              to="/userformdetails" 
+              state={{
+                formFunction: "Edit",
+                user: user
+              }}
+            >
             <FilledButton
               btnImgPath="./images/main-layout/edit-icon.png"
               displayBtnImg="inline"
