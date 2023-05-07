@@ -13,23 +13,24 @@ const LoginForm = (props) => {
   const onSubmit = async (values) => {
     console.log("Values: ", values);
     try {
-      const fetchData = await axios
+      const response = await axios
         .post("http://localhost:55731/api/token", {
           username: formik.values.username,
           password: formik.values.password,
         })
         .then((response) => {
           console.log(response.status);
+          console.log(response.data);
           if (response.status === 200) {
+            signIn({
+              token: response.data.access_token,
+              expiresIn: response.data.expires_in,
+              tokenType: "Bearer",
+              authState: { username: formik.values.username },
+            });
             navigate("/applicants");
           }
         });
-      signIn({
-        token: fetchData.access_token,
-        expiresIn: 86400,
-        tokenType: "Bearer",
-        authState: { username: formik.values.username },
-      });
     } catch (err) {
       console.log("Error: ", err);
     }
