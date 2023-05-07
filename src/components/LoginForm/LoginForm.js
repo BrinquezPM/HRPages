@@ -3,8 +3,28 @@ import InputField from "../InputField/InputField";
 import FilledButton from "../FilledButton/FilledButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { useSignIn } from "react-auth-kit";
 
 const LoginForm = (props) => {
+  const signIn = useSignIn();
+
+  const onSubmit = async (values) => {
+    console.log("Values: ", values);
+    try{
+      const response = await axios
+        .post("", values); // url/route server needed
+      signIn({
+        token: response.data.token,
+        expiresIn: 3600,
+        tokenType: "Bearer",
+        authState: {username: values.username},
+      });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -18,9 +38,10 @@ const LoginForm = (props) => {
       password: Yup.string().required("Oops! You missed this one."),
     }),
 
-    onSubmit: async (values) => {
-      console.log(formik.values);
-    },
+    // onSubmit: async (values) => {
+    //   console.log(formik.values);
+    // },
+    onSubmit,
   });
 
   function handleInputVisibility(touched, hasErrorMessage) {

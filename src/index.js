@@ -17,6 +17,7 @@ import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import Navbar from "./components/Navbar";
 import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
+import { AuthProvider, RequireAuth } from "react-auth-kit";
 
 const AppLayout = () => (
   <>
@@ -31,19 +32,31 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Applicants />,
+        element:
+          <RequireAuth loginPath="/login">
+            <Applicants />
+          </RequireAuth>,
       },
       {
         path: "/applicants",
-        element: <Applicants />,
+        element: 
+          <RequireAuth loginPath="/login">
+            <Applicants />
+          </RequireAuth>,
       },
       {
         path: "Users",
-        element: <Users />,
+        element: 
+          <RequireAuth loginPath="/login">
+            <Users />
+          </RequireAuth>,
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: 
+          <RequireAuth loginPath="login">
+            <ProfilePage />
+          </RequireAuth>,
       },
       {
         path:"/applicantDetails",
@@ -60,9 +73,21 @@ const router = createBrowserRouter([
     ],
   },
   { element: <LoginPage />, path: "/login" },
-  { element: <MainLayout />, path: "/main" },
+  { element: 
+    <RequireAuth loginPath="/login">
+      <MainLayout />
+    </RequireAuth>, 
+    path: "/main" 
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <AuthProvider
+    authType={"cookie"}
+    authName={"_auth"}
+    cookieDomain={window.location.hostname}
+    cookieSecure={false}
+  >
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
