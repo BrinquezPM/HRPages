@@ -58,7 +58,7 @@ const ProfilePage = (props) => {
   }, []);
 
   return (
-    <div className="profile-page">
+    <div className="profile-page" style={{marginLeft: 315, marginTop: -480}}>
       <h1>Profile</h1>
       <div className="row-container">
         <img
