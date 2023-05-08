@@ -22,6 +22,12 @@ const ApplicantDetails = (props) => {
     fetchData();
   }, []);
 
+  const date = new Date(info.apl_createdDate).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   async function updateStatus() {
     try {
       const postRequest = await axios
@@ -46,6 +52,26 @@ const ApplicantDetails = (props) => {
     setModalNotesOpen(!modalNotesOpen);
   }
 
+  // function downloadCV() {
+  //   window.location.href = info.apl_documentCV;
+  // }
+
+  const handleDownloadPDF = async () => {
+    try {
+      const response = await fetch(info.apl_documentCV, { method: "GET" });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "file.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div
       className="applicant-details"
@@ -55,7 +81,7 @@ const ApplicantDetails = (props) => {
       <div className="row-container">
         <img
           id="applicant-pp"
-          src="./images/main-layout/james-reid.png"
+          src={info.apl_documentPhoto}
           alt="profile-picture"
         />
         <div className="applicant-information">
@@ -72,7 +98,7 @@ const ApplicantDetails = (props) => {
               alt="email-icon"
             />
             <p id="applicant-email">
-              {info.apl_email} | {info.apl_createdDate}
+              {info.apl_email} | {date}
             </p>
           </div>
           <div style={{ display: "flex" }}>
@@ -83,6 +109,7 @@ const ApplicantDetails = (props) => {
               id="applicant-details-download-btn"
               display="none"
               path=""
+              onClick={handleDownloadPDF}
             />
             <FilledButton
               btnImgPath="./images/main-layout/note-text-outline.png"

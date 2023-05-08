@@ -1,24 +1,23 @@
-import React, { useState, useEffect }from "react";
+import React, { useState, useEffect } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
-import styled from 'styled-components'
+import styled from "styled-components";
 import * as BsIcons from "react-icons/bs";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import bin3 from '../Images/bin3.png';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import bin3 from "../Images/bin3.png";
 import Chip2 from "../components/Chip/Chip2";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-
 function Table({
   columns,
   data,
   fetchData,
   loading,
-  pageCount: controlledPageCount
+  pageCount: controlledPageCount,
 }) {
   const {
     getTableProps,
@@ -35,7 +34,7 @@ function Table({
     previousPage,
     setPageSize,
     // Get the state from the instance
-    state: { pageIndex, pageSize }    
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -45,15 +44,15 @@ function Table({
       // hook that we'll handle our own data fetching
       // This means we'll also have to provide our own
       // pageCount.
-      pageCount: controlledPageCount
+      pageCount: controlledPageCount,
     },
-   
+
     useSortBy,
     usePagination
-  )
+  );
 
-   // Listen for changes in pagination and use the state to fetch our new data
-   React.useEffect(() => {
+  // Listen for changes in pagination and use the state to fetch our new data
+  React.useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
 
@@ -61,19 +60,18 @@ function Table({
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
- 
+                  {column.render("Header")}
+
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
                   </span>
                 </th>
               ))}
@@ -81,150 +79,219 @@ function Table({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map(
-            (rows, i) => {
-              prepareRow(rows);
-              return (
-                <tr {...rows.getRowProps()}>
-                  {rows.cells.map(cell => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
-                  })}
-                </tr>
-              )}
-          )}
-          
+          {page.map((rows, i) => {
+            prepareRow(rows);
+            return (
+              <tr {...rows.getRowProps()}>
+                {rows.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+
           <tr>
             <td colSpan={headerGroups[0].headers.length}></td>
           </tr>
 
-          <tr  >
+          <tr>
             {loading ? (
               <td colSpan="1">Loading...</td>
             ) : (
-              <td colSpan="1" >
+              <td colSpan="1">
                 Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
                 results
               </td>
             )}
-          <td></td>
-          <td></td>
-      
-            <td colSpan="2">
-          <div className="paginations">
-        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17, border: "none"}}>
-          prev
-        </button>
-        <button style={{width:25, height: 25}} onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</button>{" "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 3}</button>
-        {" ... "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageOptions.length)}>
-          {pageOptions.length}
-        </button>{""}{" "}{" "}{" "}
-        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17, border: "none"}}>
-          next
-        </button>{" "}
-      </div>  
+            <td></td>
+            <td></td>
 
+            <td colSpan="2">
+              <div className="paginations">
+                <button
+                  onClick={() => gotoPage(pageIndex + 1)}
+                  style={{
+                    width: 74,
+                    height: 25,
+                    borderRadius: 5,
+                    backgroundColor: "#4E9E32",
+                    color: "white",
+                    marginRight: 17,
+                    border: "none",
+                  }}
+                >
+                  prev
+                </button>
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex)}
+                >
+                  {pageIndex + 1}
+                </button>{" "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex + 1)}
+                >
+                  {pageIndex + 2}
+                </button>{" "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex + 2)}
+                >
+                  {pageIndex + 3}
+                </button>
+                {" ... "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageOptions.length)}
+                >
+                  {pageOptions.length}
+                </button>
+                {""}{" "}
+                <button
+                  onClick={() => gotoPage(pageIndex + 1)}
+                  style={{
+                    width: 74,
+                    height: 25,
+                    borderRadius: 5,
+                    backgroundColor: "#4E9E32",
+                    color: "white",
+                    marginLeft: 17,
+                    border: "none",
+                  }}
+                >
+                  next
+                </button>{" "}
+              </div>
             </td>
           </tr>
-          
         </tbody>
       </table>
     </>
-  )
+  );
 }
 
 function Applicants() {
   const [info, setInfo] = useState([]);
 
   const Styles = styled.div`
-  padding: 1rem;
+    padding: 1rem;
 
-  .pagination {
-    padding: 0.5rem;
+    .pagination {
+      padding: 0.5rem;
+    }
+  `;
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      await axios
+        .get("http://localhost:55731/api/ApplicantAPI/list?PageSize=5")
+        .then((response) => {
+          setInfo(response.data);
+          console.log(response.data);
+        });
+    };
+    fetchUsers();
+    console.log(info);
+  }, []);
+
+  async function deactivateUser() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/UserAPI/softdelete", {
+          user_id: info.user_id,
+          user_firstName: info.user_firstName,
+          user_lastName: info.user_lastName,
+          user_email: info.user_email,
+          user_phoneNumber: info.user_phoneNumber,
+          user_username: info.user_username,
+          user_password: info.user_password,
+          confirm_pass: info.user_password,
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    //setIsDeactivateModalActive(!isDeactivateModalActive);
   }
-  
-`
 
+  const [show, setShow] = useState(false);
 
-useEffect(() => {
-  const fetchData = async () => {
-    axios
-      .get("http://localhost:55731/api/ApplicantAPI/getApplicant?id=6")
-      .then((response) => {
-        setInfo(response.data);
-        console.log(response.data);
-      });
-  };
-  fetchData();
-}, []);
-
-
-const [show, setShow] = useState(false);
-
-const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const data = [
     {
       name: "John Doe",
       dateSubmitted: "2022-04-22",
       position: "Developer",
-      status: <Chip2 statusId={2}/>,
-      
+      status: <Chip2 statusId={2} />,
     },
     {
       name: "Jane Smith",
       dateSubmitted: "2022-04-20",
       position: "Designer",
-      status: <Chip2 statusId={2}/>,
+      status: <Chip2 statusId={2} />,
     },
     // Add more data here
   ];
 
-  // let data = info.map((applicant) => ({
-  //   name: `${applicant.apl_lastName}, ${applicant.apl_firstName}`,
-  //   dateSubmitted: applicant.apl_createdDate,
-  //   position: applicant.apl_position,
-  //   status: <Chip2 statusId={applicant.apl_status}/>,
+  // let data = info?.data?.map((applicant) => ({
+  //   name: `${applicant.name}`,
+  //   dateSubmitted: new Date(applicant.createdDate).toLocaleDateString("en-US", {
+  //     month: "long",
+  //     day: "numeric",
+  //     year: "numeric",
+  //   }),
+  //   position: `${applicant.position.name}`,
+  //   status: <Chip2 statusId={applicant.status} />,
   // }));
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "Name", accessor: "name", 
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: "Date Submitted", accessor: "dateSubmitted",
+        Header: "Date Submitted",
+        accessor: "dateSubmitted",
       },
       {
-        Header: "Position", accessor: "position",
+        Header: "Position",
+        accessor: "position",
       },
       {
-        Header: "Status", accessor: "status",
+        Header: "Status",
+        accessor: "status",
       },
       {
-        Header: "Actions", accessor: "actions",
+        Header: "Actions",
+        accessor: "actions",
         Cell: (row) => (
           <div>
             <span style={{ cursor: "pointer" }}>
               <Link to="/applicantDetails">
-                <img id="appliDeatils-btn" 
-                  src={magnify}
-                  alt="magnify">
-                </img>
+                <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
               </Link>
             </span>
-            <span style={{ cursor: "pointer", marginLeft: "35px"  }}  onClick={handleShow}><BsIcons.BsTrashFill size={25}/></span>
+            <span
+              style={{ cursor: "pointer", marginLeft: "35px" }}
+              onClick={handleShow}
+            >
+              <BsIcons.BsTrashFill size={25} />
+            </span>
           </div>
         ),
-      },  
+      },
     ],
     []
   );
-  const [ setData] = React.useState([]);
+  const [setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
@@ -256,45 +323,49 @@ const handleShow = () => setShow(true);
       }
     }, 1000);
   }, []);
-   
 
   return (
-
     <Styles>
-      <div style={{marginLeft: '20%'  , marginTop: -500}}>
-        <h2 style={{marginLeft: '5%'}}>Applicants</h2>
-      <Table
-        columns={columns}
-        data={data}
-        fetchData={fetchData}
-        loading={loading}
-        pageCount={pageCount}
-      />
+      <div style={{ marginLeft: "20%", marginTop: -500 }}>
+        <h2 style={{ marginLeft: "5%" }}>Applicants</h2>
+        <Table
+          columns={columns}
+          data={data}
+          fetchData={fetchData}
+          loading={loading}
+          pageCount={pageCount}
+        />
       </div>
 
       <div>
-      <Modal show={show} onHide={handleClose} >
-        <Modal.Header closeButton style={{border: "none"}}>
-        </Modal.Header>
-        <Modal.Body>
-        <div className="text-center">
-          <img src={bin3} alt="bin3" style={{alignContent: "center"}}></img>
-          <h2>Remove User</h2>
-          <span>Are you sure you want to remove the user?</span>
-          </div>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
+          <Modal.Body>
+            <div className="text-center">
+              <img
+                src={bin3}
+                alt="bin3"
+                style={{ alignContent: "center" }}
+              ></img>
+              <h2>Remove User</h2>
+              <span>Are you sure you want to remove the user?</span>
+            </div>
           </Modal.Body>
-        <Modal.Footer style={{display: "flex", justifyContent: "center", border: "none"}}>
-          <Button variant="danger" onClick={handleClose}>
-            Remove
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <Modal.Footer
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              border: "none",
+            }}
+          >
+            <Button variant="danger" onClick={handleClose}>
+              Remove
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </Styles>
-  )
+  );
+}
 
-
-  }
-
-  
 export default Applicants;
