@@ -16,7 +16,7 @@ function Table({
   data,
   fetchData,
   loading,
-  pageCount: controlledPageCount
+  pageCount: controlledPageCount,
 }) {
   const {
     getTableProps,
@@ -33,7 +33,7 @@ function Table({
     previousPage,
     setPageSize,
     // Get the state from the instance
-    state: { pageIndex, pageSize }    
+    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
@@ -43,15 +43,15 @@ function Table({
       // hook that we'll handle our own data fetching
       // This means we'll also have to provide our own
       // pageCount.
-      pageCount: controlledPageCount
+      pageCount: controlledPageCount,
     },
-   
+
     useSortBy,
     usePagination
-  )
+  );
 
-   // Listen for changes in pagination and use the state to fetch our new data
-   React.useEffect(() => {
+  // Listen for changes in pagination and use the state to fetch our new data
+  React.useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
 
@@ -59,19 +59,18 @@ function Table({
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
- 
+                  {column.render("Header")}
+
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
                   </span>
                 </th>
               ))}
@@ -79,60 +78,98 @@ function Table({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map(
-            (rows, i) => {
-              prepareRow(rows);
-              return (
-                <tr {...rows.getRowProps()}>
-                  {rows.cells.map(cell => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
-                  })}
-                </tr>
-              )}
-          )}
-          
+          {page.map((rows, i) => {
+            prepareRow(rows);
+            return (
+              <tr {...rows.getRowProps()}>
+                {rows.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+
           <tr>
             <td colSpan={headerGroups[0].headers.length}></td>
           </tr>
 
-          <tr  >
+          <tr>
             {loading ? (
               <td colSpan="1">Loading...</td>
             ) : (
-              <td colSpan="1" >
+              <td colSpan="1">
                 Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
                 results
               </td>
             )}
-          <td></td>
-          <td></td>
-      
-            <td colSpan="2">
-          <div className="paginations">
-        <button onClick={() => gotoPage(pageIndex + 1)} style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginRight: 17, border: "none"}}>
-          prev
-        </button>
-        <button style={{width:25, height: 25}} onClick={() => gotoPage(pageIndex)}>{pageIndex + 1}</button>{" "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</button>{" "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 3}</button>
-        {" ... "}
-        <button style={{width:25, height: 25}}  onClick={() => gotoPage(pageOptions.length)}>
-          {pageOptions.length}
-        </button>{""}{" "}{" "}{" "}
-        <button onClick={() => gotoPage(pageIndex + 1)}  style={{width:74, height: 25, borderRadius: 5, backgroundColor: "#4E9E32", color: "white", marginLeft: 17, border: "none"}}>
-          next
-        </button>{" "}
-      </div>  
+            <td></td>
+            <td></td>
 
+            <td colSpan="2">
+              <div className="paginations">
+                <button
+                  onClick={() => gotoPage(pageIndex + 1)}
+                  style={{
+                    width: 74,
+                    height: 25,
+                    borderRadius: 5,
+                    backgroundColor: "#4E9E32",
+                    color: "white",
+                    marginRight: 17,
+                    border: "none",
+                  }}
+                >
+                  prev
+                </button>
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex)}
+                >
+                  {pageIndex + 1}
+                </button>{" "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex + 1)}
+                >
+                  {pageIndex + 2}
+                </button>{" "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageIndex + 2)}
+                >
+                  {pageIndex + 3}
+                </button>
+                {" ... "}
+                <button
+                  style={{ width: 25, height: 25 }}
+                  onClick={() => gotoPage(pageOptions.length)}
+                >
+                  {pageOptions.length}
+                </button>
+                {""}{" "}
+                <button
+                  onClick={() => gotoPage(pageIndex + 1)}
+                  style={{
+                    width: 74,
+                    height: 25,
+                    borderRadius: 5,
+                    backgroundColor: "#4E9E32",
+                    color: "white",
+                    marginLeft: 17,
+                    border: "none",
+                  }}
+                >
+                  next
+                </button>{" "}
+              </div>
             </td>
           </tr>
-          
         </tbody>
       </table>
     </>
-  )
+  );
 }
 
 function Users() {
@@ -144,26 +181,52 @@ function Users() {
     }
   `;
 
+  const [info, setInfo] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=5`)
+        .then((response) => {
+          setInfo(response.data);
+          setIsLoading(false);
+          console.log(response.data);
+        })
+        .catch(function (error) {});
+    };
+    fetchData();
+  }, []);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const data = [
-    {
-      name: "John Doe",
-      EmailAddress: "JohnDoe@gmail.com",
-      username: "JohnDoe",
-      ContactNumber: "(+63)9532123456",
-    },
-    {
-      name: "Jane Smith",
-      EmailAddress: "JaneSmith@gmail.com",
-      username: "JaneSmith",
-      ContactNumber: "(+63)9532123456",
-    },
-    // Add more data here
-  ];
+  // const data = [
+  //   {
+  //     name: "John Doe",
+  //     EmailAddress: "JohnDoe@gmail.com",
+  //     username: "JohnDoe",
+  //     ContactNumber: "(+63)9532123456",
+  //   },
+  //   {
+  //     name: "Jane Smith",
+  //     EmailAddress: "JaneSmith@gmail.com",
+  //     username: "JaneSmith",
+  //     ContactNumber: "(+63)9532123456",
+  //   },
+  //   // Add more data here
+  // ];
+
+  let data =
+    info.data === undefined
+      ? ""
+      : info?.data?.map((user) => ({
+          name: `${user.firstname}`,
+          EmailAddress: user.email,
+          username: `${user.username}`,
+          ContactNumber: user.phone,
+        }));
 
   const columns = React.useMemo(
     () => [
@@ -189,12 +252,9 @@ function Users() {
         Cell: (row) => (
           <div>
             <Link to="/userformdetails">
-            <span style={{ cursor: "pointer" }}>
-            <img id="appliDeatils-btn" 
-                  src={magnify}
-                  alt="magnify">
-                </img>
-            </span>
+              <span style={{ cursor: "pointer" }}>
+                <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
+              </span>
             </Link>
             <span
               style={{ cursor: "pointer", marginLeft: "50px" }}
@@ -208,22 +268,8 @@ function Users() {
     ],
     []
   );
-  const [info, setInfo] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      axios
-        .get(`http://localhost:55731/api/UserAPI/list?PageSize=5`)
-        .then((response) => {
-          setInfo(response.data);
-          console.log(response.data);
-          console.log(info);
-        })
-        .catch(function (error) {});
-    };
-    fetchData();
-  }, []);
 
-  const [ setData] = React.useState([]);
+  const [setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
@@ -255,8 +301,10 @@ function Users() {
       }
     }, 1000);
   }, []);
-   
-  return (
+
+  return isLoading ? (
+    <p> Loading </p>
+  ) : (
     <Styles>
       <div
         style={{
@@ -265,22 +313,22 @@ function Users() {
           marginTop: -500,
         }}
       >
-        <h2 style={{ marginLeft: '6%'}}>Users</h2>
-        <Link to="/userformcreate" style={{ marginLeft: '76%'}}>
-        <button className="Add-User-btn" >
-          {" "}
-          <AiIcons.AiOutlinePlus size={30} />{" "}
-        </button>
+        <h2 style={{ marginLeft: "6%" }}>Users</h2>
+        <Link to="/userformcreate" style={{ marginLeft: "76%" }}>
+          <button className="Add-User-btn">
+            {" "}
+            <AiIcons.AiOutlinePlus size={30} />{" "}
+          </button>
         </Link>
       </div>
       <div style={{ marginLeft: 250 }}>
         {/*info?.data?.map((infor) => ({infor.firstname}))*/}
-        <Table 
-        columns={columns}
-        data={data}
-        fetchData={fetchData}
-        loading={loading}
-        pageCount={pageCount}
+        <Table
+          columns={columns}
+          data={data}
+          fetchData={fetchData}
+          loading={loading}
+          pageCount={pageCount}
         />
       </div>
       <div>

@@ -175,7 +175,7 @@ function Table({
 
 function Applicants() {
   const [info, setInfo] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const Styles = styled.div`
     padding: 1rem;
 
@@ -187,14 +187,14 @@ function Applicants() {
   useEffect(() => {
     const fetchUsers = async () => {
       await axios
-        .get("http://localhost:55731/api/ApplicantAPI/list?PageSize=5")
+        .get("http://localhost:55731/api/ApplicantAPI/list?Page=0&PageSize=5")
         .then((response) => {
           setInfo(response.data);
+          setIsLoading(false);
           console.log(response.data);
         });
     };
     fetchUsers();
-    console.log(info);
   }, []);
 
   async function deactivateUser() {
@@ -224,32 +224,38 @@ function Applicants() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const data = [
-    {
-      name: "John Doe",
-      dateSubmitted: "2022-04-22",
-      position: "Developer",
-      status: <Chip2 statusId={2} />,
-    },
-    {
-      name: "Jane Smith",
-      dateSubmitted: "2022-04-20",
-      position: "Designer",
-      status: <Chip2 statusId={2} />,
-    },
-    // Add more data here
-  ];
+  // const data = [
+  //   {
+  //     name: "John Doe",
+  //     dateSubmitted: "2022-04-22",
+  //     position: "Developer",
+  //     status: <Chip2 statusId={2} />,
+  //   },
+  //   {
+  //     name: "Jane Smith",
+  //     dateSubmitted: "2022-04-20",
+  //     position: "Designer",
+  //     status: <Chip2 statusId={2} />,
+  //   },
+  //   // Add more data here
+  // ];
 
-  // let data = info?.data?.map((applicant) => ({
-  //   name: `${applicant.name}`,
-  //   dateSubmitted: new Date(applicant.createdDate).toLocaleDateString("en-US", {
-  //     month: "long",
-  //     day: "numeric",
-  //     year: "numeric",
-  //   }),
-  //   position: `${applicant.position.name}`,
-  //   status: <Chip2 statusId={applicant.status} />,
-  // }));
+  let data =
+    info.data === undefined
+      ? ""
+      : info?.data?.map((applicant) => ({
+          name: `${applicant.name}`,
+          dateSubmitted: new Date(applicant.createdDate).toLocaleDateString(
+            "en-US",
+            {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }
+          ),
+          position: `${applicant.position.name}`,
+          status: <Chip2 statusId={applicant.status} />,
+        }));
 
   const columns = React.useMemo(
     () => [
@@ -324,7 +330,9 @@ function Applicants() {
     }, 1000);
   }, []);
 
-  return (
+  return isLoading ? (
+    <p>Loading</p>
+  ) : (
     <Styles>
       <div style={{ marginLeft: "20%", marginTop: -500 }}>
         <h2 style={{ marginLeft: "5%" }}>Applicants</h2>
