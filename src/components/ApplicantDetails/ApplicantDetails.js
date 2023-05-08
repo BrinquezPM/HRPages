@@ -22,6 +22,30 @@ const ApplicantDetails = (props) => {
     fetchData();
   }, []);
 
+  async function updateStatus() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/ApplicantAPI/edit", {
+          apl_id: info.apl_id,
+          apl_firstName: info.apl_firstName,
+          apl_lastName: info.apl_lastName,
+          apl_email: info.apl_email,
+          apl_documentCV: info.apl_documentCV,
+          apl_documentPhoto: info.apl_documentPhoto,
+          apl_position: info.apl_position,
+          apl_status: info.apl_status + 1,
+          apl_statusNote: info.apl_statusNote,
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    setModalNotesOpen(!modalNotesOpen);
+  }
+
   return (
     <div
       className="applicant-details"
@@ -76,8 +100,9 @@ const ApplicantDetails = (props) => {
                 field="visible"
                 fieldTxt="Add notes"
                 backgroundColor="#28A745"
-                btnTxt="Close"
+                btnTxt="Update"
                 onClick={() => setModalNotesOpen(false)}
+                onClose={updateStatus}
               />
             )}
           </div>
