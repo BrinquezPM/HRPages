@@ -10,7 +10,7 @@ import Chip2 from "../components/Chip/Chip2";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Table({
   columns,
@@ -174,6 +174,7 @@ function Table({
 }
 
 function Applicants() {
+  const [rowId, setRowId] = useState(null);
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const Styles = styled.div`
@@ -197,11 +198,12 @@ function Applicants() {
     fetchUsers();
   }, []);
 
+
   async function deleteApplicant() {
     try {
       const postRequest = await axios
         .delete("http://localhost:55731/api/ApplicantAPI/delete", {
-          apl_id: info.id,
+          apl_id: rowId,
         })
         .catch((error) => {
           console.log(error);
@@ -216,27 +218,16 @@ function Applicants() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  // const data = [
-  //   {
-  //     name: "John Doe",
-  //     dateSubmitted: "2022-04-22",
-  //     position: "Developer",
-  //     status: <Chip2 statusId={2} />,
-  //   },
-  //   {
-  //     name: "Jane Smith",
-  //     dateSubmitted: "2022-04-20",
-  //     position: "Designer",
-  //     status: <Chip2 statusId={2} />,
-  //   },
-  //   // Add more data here
-  // ];
-
+  const handleShow = (id) => {
+    setShow(true);
+    setRowId(id);
+  };
+  const navigate = useNavigate();
   let data =
     info.data === undefined
       ? ""
       : info?.data?.map((applicant) => ({
+          id:applicant.id,
           name: `${applicant.name}`,
           dateSubmitted: new Date(applicant.createdDate).toLocaleDateString(
             "en-US",
@@ -273,14 +264,18 @@ function Applicants() {
         accessor: "actions",
         Cell: (row) => (
           <div>
-            <span style={{ cursor: "pointer" }}>
-              <Link to="/applicantDetails">
-                <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
-              </Link>
-            </span>
+            <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              const rowId= row.row.id;
+              navigate(`/applicantDetails/${rowId}`);
+            }}
+          >
+            <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
+          </span>
             <span
               style={{ cursor: "pointer", marginLeft: "35px" }}
-              onClick={handleShow}
+              onClick={() => handleShow(row.row.id)}
             >
               <BsIcons.BsTrashFill size={25} />
             </span>
@@ -359,7 +354,7 @@ function Applicants() {
               border: "none",
             }}
           >
-            <Button variant="danger" /*onClick={deleteApplicant}*/>
+            <Button variant="danger" onClick={deleteApplicant(rowId)}>
               Remove
             </Button>
           </Modal.Footer>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import LoginSlider from "../components/LoginSlider/LoginSlider";
 import { Form, InputGroup, Button, Container, Row, Col } from "react-bootstrap";
 import "./Login.css";
-import AllianceLogo from "../Images/Alliance Logo.svg";
+import AllianceLogo from "/Images/Alliance Logo.svg";
 
 export default class Login extends Component {
   state = {

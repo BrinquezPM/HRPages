@@ -1,6 +1,6 @@
 import "./Chip.css";
 
-const Chip = (props) => {
+const Chip2 = (props) => {
   let borderColor, textColor, chipTxt;
   switch (props.statusId) {
     case 1:
@@ -53,4 +53,4 @@ const Chip = (props) => {
   );
 };
 
-export default Chip;
+export default Chip2;

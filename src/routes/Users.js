@@ -8,7 +8,7 @@ import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
 import bin3 from "../Images/bin3.png";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
 
 function Table({
@@ -189,7 +189,7 @@ function Users() {
         .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=5`)
         .then((response) => {
           setInfo(response.data);
-          setIsLoading(false);
+          setIsLoading(true);
           console.log(response.data);
         });
     };
@@ -223,23 +223,7 @@ function Users() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  // const data = [
-  //   {
-  //     name: "John Doe",
-  //     EmailAddress: "JohnDoe@gmail.com",
-  //     username: "JohnDoe",
-  //     ContactNumber: "(+63)9532123456",
-  //   },
-  //   {
-  //     name: "Jane Smith",
-  //     EmailAddress: "JaneSmith@gmail.com",
-  //     username: "JaneSmith",
-  //     ContactNumber: "(+63)9532123456",
-  //   },
-  //   // Add more data here
-  // ];
-
+  const navigate = useNavigate();
   let data =
     info.data === undefined
       ? ""
@@ -248,6 +232,7 @@ function Users() {
           EmailAddress: user.email,
           username: `${user.username}`,
           ContactNumber: user.phone,
+          id: user.id, 
         }));
 
   const columns = React.useMemo(
@@ -273,11 +258,15 @@ function Users() {
         accessor: "actions",
         Cell: (row) => (
           <div>
-            <Link to="/userformdetails">
-              <span style={{ cursor: "pointer" }}>
-                <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
-              </span>
-            </Link>
+        <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              const decodedId = row.row.id;
+              navigate(`/profile2/${decodedId}`);
+            }}
+          >
+            <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
+          </span>
             <span
               style={{ cursor: "pointer", marginLeft: "50px" }}
               onClick={handleShow}

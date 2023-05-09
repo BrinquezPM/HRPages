@@ -17,8 +17,10 @@
   border: none;
   outline: none;
   font-size: 0.75rem;
+
 }
 
 .search-bar-container input::placeholder {
   font-size: 0.75rem;
+  margin-top: -1000%;
 }

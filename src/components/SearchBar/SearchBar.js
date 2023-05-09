@@ -10,6 +10,7 @@ const SearchBar = (props) => {
           src="./images/main-layout/search-icon.png"
           alt="prefix-icon"
         />
+        <div style={{marginTop: "-11%", marginLeft: "12%"}}>
         <input
           type="text"
           placeholder="e.g. John Doe"
@@ -18,6 +19,7 @@ const SearchBar = (props) => {
           name="search"
           onBlur={props.onBlur}
         />
+        </div>
       </div>
     </div>
   );

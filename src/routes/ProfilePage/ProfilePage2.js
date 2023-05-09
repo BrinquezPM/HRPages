@@ -5,10 +5,10 @@ import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthUser } from "react-auth-kit";
 
-const ProfilePage = (props) => {
+const ProfilePage2 = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const toggleDeactivateModal = () => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
@@ -54,14 +54,16 @@ const ProfilePage = (props) => {
         });
     };
     fetchData();
+    //console.log(activeUser);
   }, []);
+
   return (
-    <div className="profile-page">
-      {/* <h1>{state.title}</h1> */}
+    <div className="profile-page" style={{marginLeft: 315, marginTop: -480}}>
+      <h1>Profile</h1>
       <div className="row-container">
         <img
           id="user-pp"
-          src="./images/main-layout/james-reid.png"
+          src="/images/main-layout/james-reid.png"
           alt="profile-picture"
         />
         <div className="user-information">
@@ -71,31 +73,30 @@ const ProfilePage = (props) => {
           <div className="row-container">
             <img
               id="user-email-img"
-              src="./images/main-layout/email-icon.png"
+              src="/images/main-layout/email-icon.png"
               alt="email-icon"
             />
             <p id="applicant-email">{user.user_email}</p>
           </div>
           <div className="row-container">
-            <Link
-              to="/userformdetails"
+          <Link 
+              to="/userformdetails" 
               state={{
                 formFunction: "Edit",
-                user: user,
+                user: user
               }}
             >
-              <FilledButton
-                btnImgPath="./images/main-layout/edit-icon.png"
-                displayBtnImg="inline"
-                btnTxt="Edit Profile"
-                id="profile-edit-btn"
-                display="none"
-                pathFormFunction="Edit"
-              />
+            <FilledButton
+              btnImgPath="/images/main-layout/edit-icon.png"
+              displayBtnImg="inline"
+              btnTxt="Edit Profile"
+              id="profile-edit-btn"
+              display="none"
+            />
             </Link>
             <FilledButton
               onClick={toggleDeactivateModal}
-              btnImgPath="./images/main-layout/trash-icon.png"
+              btnImgPath="/images/main-layout/trash-icon.png"
               displayBtnImg="inline"
               btnTxt="Deactivate"
               id="profile-deactivate-btn"
@@ -111,16 +112,16 @@ const ProfilePage = (props) => {
           title="Remove User"
           description="Are you sure you want to remove the user(s)?"
           btnTxt="Remove"
-          icon="./images/main-layout/trash-illustration.png"
+          icon="/images/main-layout/trash-illustration.png"
         />
       )}
       <InformationRow
-        icon="./images/main-layout/users-icon.png"
+        icon="/images/main-layout/users-icon.png"
         field="Username"
         value={user.user_username}
       />
       <InformationRow
-        icon="./images/main-layout/phone.png"
+        icon="/images/main-layout/phone.png"
         field="Contact Number"
         value={user.user_phoneNumber}
       />
@@ -128,4 +129,4 @@ const ProfilePage = (props) => {
   );
 };
 
-export default ProfilePage;
+export default ProfilePage2;

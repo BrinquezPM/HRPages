@@ -13,10 +13,9 @@ import Users from "./routes/Users";
 import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
+import ProfilePage2 from "./routes/ProfilePage/ProfilePage2";
 import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
-import UserForm from "./components/UserForm/UserForm";
-
-import Navbar from "./components/Navbar";
+import UserEdit from "./components/UserForm/UserEdit";
 import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
@@ -29,17 +28,10 @@ const AppLayout = () => (
 );
 
 const router = createBrowserRouter([
+  { element: <LoginPage />, path: "/login" },
   {
     element: <AppLayout />,
     children: [
-      {
-        path: "/",
-        element: (
-          <RequireAuth loginPath="/login">
-            <LoginPage />
-          </RequireAuth>
-        ),
-      },
       {
         path: "/applicants",
         element: (
@@ -65,7 +57,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/applicantDetails",
+        path: "/applicantDetails/:userId",
         element: <ApplicantDetails />,
       },
       {
@@ -73,13 +65,17 @@ const router = createBrowserRouter([
         element: <UserForm formFunction="Create" />,
       },
       {
-        path: "/userformdetails",
-        element: <UserForm formFunction="Edit" />,
+        path: "/userformdetails/:userId",
+        element: <UserEdit formFunction="Edit" />,
       },
       {
         path: "/user-form",
         element: <UserForm />,
       },
+      {
+        path: "/profile2/:userId",
+        element: <ProfilePage2 />,
+      }
     ],
   },
   { element: <LoginPage />, path: "/login" },

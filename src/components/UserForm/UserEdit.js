@@ -6,6 +6,7 @@ import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const UserEdit = (props) => {
   const [user, setUser] = useState([]);
