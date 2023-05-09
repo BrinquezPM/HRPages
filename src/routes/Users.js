@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import * as AiIcons from "react-icons/ai";
 import * as BsIcons from "react-icons/bs";
 import bin3 from '../Images/bin3.png';
+import { Link } from "react-router-dom";
 
 
 function Table({
@@ -126,7 +127,13 @@ function Users() {
         Header: "Actions", accessor: "actions",
         Cell: (row) => (
           <div>
-            <span style={{ cursor: "pointer" }}><AiIcons.AiOutlineSearch size={30} /></span>
+            <Link to="/profile" state={{title: "User Profile"}}>
+            <span 
+              style={{ cursor: "pointer" }}
+            >
+              <AiIcons.AiOutlineSearch size={30} />
+            </span>
+            </Link>
             <span style={{ cursor: "pointer", marginLeft: "50px"  }}  onClick={handleShow}>
               
               <BsIcons.BsTrashFill size={25}/>

@@ -9,7 +9,7 @@ const ProfileTile = (props) => {
     props.onActivate();
   }
   return (
-    <Link to={props.path}>
+    <Link to={props.path} state={{title: "Profile"}}>
       <button
         onClick={toggleTile}
         className={`profile-tile ${

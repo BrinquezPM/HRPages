@@ -13,6 +13,7 @@ import Users from "./routes/Users";
 import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
+import UserForm from "./components/UserForm/UserForm";
 
 import Navbar from "./components/Navbar";
 import "./App.css";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         path: "/profile",
         element: <ProfilePage />,
       },
+      {
+        path: "/user-form",
+        element: <UserForm />,
+      }
     ],
   },
   { element: <LoginPage />, path: "/login" },
