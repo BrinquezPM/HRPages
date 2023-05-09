@@ -3,8 +3,39 @@ import InputField from "../InputField/InputField";
 import FilledButton from "../FilledButton/FilledButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { useSignIn } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = (props) => {
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+  const onSubmit = async (values) => {
+    console.log("Values: ", values);
+    try {
+      const response = await axios
+        .post("http://localhost:55731/api/token", {
+          username: formik.values.username,
+          password: formik.values.password,
+        })
+        .then((response) => {
+          console.log(response.status);
+          console.log(response.data);
+          if (response.status === 200) {
+            signIn({
+              token: response.data.access_token,
+              expiresIn: response.data.expires_in,
+              tokenType: "Bearer",
+              authState: {user: formik.values.username},
+            });
+            navigate("/applicants");
+          }
+        });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -18,9 +49,10 @@ const LoginForm = (props) => {
       password: Yup.string().required("Oops! You missed this one."),
     }),
 
-    onSubmit: async (values) => {
-      console.log(formik.values);
-    },
+    // onSubmit: async (values) => {
+    //   console.log(formik.values);
+    // },
+    onSubmit,
   });
 
   function handleInputVisibility(touched, hasErrorMessage) {

@@ -3,22 +3,51 @@ import FilledButton from "../../components/FilledButton/FilledButton";
 import InformationRow from "../../components/InformationRow/InformationRow";
 import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { Link, useLocation } from "react-router-dom";
+import { useAuthUser } from "react-auth-kit";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const toggleDeactivateModal = () => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };
-  let {state} = useLocation();
+
+  async function deactivateUser() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/UserAPI/softdelete", {
+          user_id: user.user_id,
+          user_firstName: user.user_firstName,
+          user_lastName: user.user_lastName,
+          user_email: user.user_email,
+          user_phoneNumber: user.user_phoneNumber,
+          user_username: user.user_username,
+          user_password: user.user_password,
+          confirm_pass: user.user_password,
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    setIsDeactivateModalActive(!isDeactivateModalActive);
+  }
+
   const [user, setUser] = useState([]);
+  const auth = useAuthUser();
+  const activeUser = auth().user;
+  // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
+  //activeUser.replace(/['"]+/g, "");
+
   useEffect(() => {
+    console.log(activeUser);
     const fetchData = async () => {
       axios
-        .get(
-          "http://localhost:55731/api/UserAPI/getUser?id=0ffab3f7-fb85-4806-a0fa-ee9d419de037"
-        )
+        .get(`http://localhost:55731/api/UserAPI/getUser?id=${activeUser}`)
         .then((response) => {
           setUser(response.data);
           console.log(response.data);
@@ -36,21 +65,23 @@ const ProfilePage = (props) => {
           alt="profile-picture"
         />
         <div className="user-information">
-          <h3>Mel Jefferson Gabutan</h3>
+          <h3>
+            {user.user_firstName} {user.user_lastName}
+          </h3>
           <div className="row-container">
             <img
               id="user-email-img"
               src="./images/main-layout/email-icon.png"
               alt="email-icon"
             />
-            <p id="applicant-email">gabutan.meljefferson@gmail.com</p>
+            <p id="applicant-email">{user.user_email}</p>
           </div>
           <div className="row-container">
-            <Link 
-              to="/user" 
+            <Link
+              to="/userformdetails"
               state={{
                 formFunction: "Edit",
-                user: user
+                user: user,
               }}
             >
               <FilledButton
@@ -76,6 +107,7 @@ const ProfilePage = (props) => {
       {isDeactivateModalActive && (
         <Modal
           onClick={toggleDeactivateModal}
+          onClose={deactivateUser}
           title="Remove User"
           description="Are you sure you want to remove the user(s)?"
           btnTxt="Remove"
@@ -85,12 +117,12 @@ const ProfilePage = (props) => {
       <InformationRow
         icon="./images/main-layout/users-icon.png"
         field="Username"
-        value="MelGabutan"
+        value={user.user_username}
       />
       <InformationRow
         icon="./images/main-layout/phone.png"
         field="Contact Number"
-        value="(+63) 927 038 9123"
+        value={user.user_phoneNumber}
       />
     </div>
   );

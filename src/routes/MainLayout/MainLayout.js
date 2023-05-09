@@ -11,7 +11,7 @@ const MainLayout = () => {
       <Sidebar />
       <div className="main-content">
         <TopBar />
-        {/* <UserForm formFunction="Create" /> */}
+        {/* {<UserForm formFunction="Create" />} */}
         {/* <ApplicantDetails /> */}
         {/* <ProfilePage /> */}
       </div>

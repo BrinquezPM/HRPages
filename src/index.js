@@ -13,10 +13,13 @@ import Users from "./routes/Users";
 import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
+import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import UserForm from "./components/UserForm/UserForm";
 
 import Navbar from "./components/Navbar";
+import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
+import { AuthProvider, RequireAuth } from "react-auth-kit";
 
 const AppLayout = () => (
   <>
@@ -31,30 +34,72 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Applicants />,
+        element: (
+          <RequireAuth loginPath="/login">
+            <LoginPage />
+          </RequireAuth>
+        ),
       },
       {
         path: "/applicants",
-        element: <Applicants />,
+        element: (
+          <RequireAuth loginPath="/login">
+            <Applicants />
+          </RequireAuth>
+        ),
       },
       {
-        path: "Users",
-        element: <Users />,
+        path: "/Users",
+        element: (
+          <RequireAuth loginPath="/login">
+            <Users />
+          </RequireAuth>
+        ),
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: (
+          <RequireAuth loginPath="login">
+            <ProfilePage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "/applicantDetails",
+        element: <ApplicantDetails />,
+      },
+      {
+        path: "/userformcreate",
+        element: <UserForm formFunction="Create" />,
+      },
+      {
+        path: "/userformdetails",
+        element: <UserForm formFunction="Edit" />,
       },
       {
         path: "/user-form",
         element: <UserForm />,
-      }
+      },
     ],
   },
   { element: <LoginPage />, path: "/login" },
-  { element: <MainLayout />, path: "/main" },
+  {
+    element: (
+      <RequireAuth loginPath="/login">
+        <MainLayout />
+      </RequireAuth>
+    ),
+    path: "/main",
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <AuthProvider
+    authType={"cookie"}
+    authName={"_auth"}
+    cookieDomain={window.location.hostname}
+    cookieSecure={false}
+  >
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
