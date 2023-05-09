@@ -191,11 +191,33 @@ function Users() {
           setInfo(response.data);
           setIsLoading(false);
           console.log(response.data);
-        })
-        .catch(function (error) {});
+        });
     };
     fetchData();
   }, []);
+
+  async function deactivateUser() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/UserAPI/softdelete", {
+          user_id: info.id,
+          user_firstName: info.firstname,
+          user_lastName: info.lastname,
+          user_email: info.email,
+          user_phoneNumber: info.phoneNumber,
+          user_username: info.username,
+          user_password: info.password,
+          confirm_pass: info.upassword,
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    handleClose();
+  }
 
   const [show, setShow] = useState(false);
 
@@ -222,7 +244,7 @@ function Users() {
     info.data === undefined
       ? ""
       : info?.data?.map((user) => ({
-          name: `${user.firstname}`,
+          name: `${user.firstname} ${" "} ${user.lastname}`,
           EmailAddress: user.email,
           username: `${user.username}`,
           ContactNumber: user.phone,
@@ -352,7 +374,7 @@ function Users() {
               border: "none",
             }}
           >
-            <Button variant="danger" onClick={handleClose}>
+            <Button variant="danger" /*onClick={deactivateUser}*/>
               Remove
             </Button>
           </Modal.Footer>

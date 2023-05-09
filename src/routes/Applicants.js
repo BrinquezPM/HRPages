@@ -197,18 +197,11 @@ function Applicants() {
     fetchUsers();
   }, []);
 
-  async function deactivateUser() {
+  async function deleteApplicant() {
     try {
       const postRequest = await axios
-        .put("http://localhost:55731/api/UserAPI/softdelete", {
-          user_id: info.user_id,
-          user_firstName: info.user_firstName,
-          user_lastName: info.user_lastName,
-          user_email: info.user_email,
-          user_phoneNumber: info.user_phoneNumber,
-          user_username: info.user_username,
-          user_password: info.user_password,
-          confirm_pass: info.user_password,
+        .delete("http://localhost:55731/api/ApplicantAPI/delete", {
+          apl_id: info.id,
         })
         .catch((error) => {
           console.log(error);
@@ -366,7 +359,7 @@ function Applicants() {
               border: "none",
             }}
           >
-            <Button variant="danger" onClick={handleClose}>
+            <Button variant="danger" /*onClick={deleteApplicant}*/>
               Remove
             </Button>
           </Modal.Footer>
