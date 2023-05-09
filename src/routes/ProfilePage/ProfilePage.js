@@ -14,29 +14,6 @@ const ProfilePage = (props) => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };
 
-  async function deactivateUser() {
-    try {
-      const postRequest = await axios
-        .put("http://localhost:55731/api/UserAPI/softdelete", {
-          user_id: user.user_id,
-          user_firstName: user.user_firstName,
-          user_lastName: user.user_lastName,
-          user_email: user.user_email,
-          user_phoneNumber: user.user_phoneNumber,
-          user_username: user.user_username,
-          user_password: user.user_password,
-          confirm_pass: user.user_password,
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(postRequest.data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-    setIsDeactivateModalActive(!isDeactivateModalActive);
-  }
-
   const [user, setUser] = useState([]);
   const auth = useAuthUser();
   const activeUser = auth().user;
@@ -55,9 +32,34 @@ const ProfilePage = (props) => {
     };
     fetchData();
   }, []);
+
+  async function deactivateUser() {
+    try {
+      const postRequest = await axios
+        .put("http://localhost:55731/api/UserAPI/softdelete", {
+          user_id: user.user_id,
+          user_firstName: user.user_firstName,
+          user_lastName: user.user_lastName,
+          user_email: user.user_email,
+          user_phoneNumber: user.user_phoneNumber,
+          user_username: user.user_username,
+          user_password: user.user_password,
+          confirm_pass: user.user_password,
+          user_isActive: true,
+        })
+        .catch((error) => {
+          console.log(error);
+          //console.log(postRequest.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    setIsDeactivateModalActive(!isDeactivateModalActive);
+  }
+
   return (
     <div className="profile-page">
-      <h1>{state.title}</h1>
+      <h1>Profile</h1>
       <div className="row-container">
         <img
           id="user-pp"
@@ -108,9 +110,9 @@ const ProfilePage = (props) => {
         <Modal
           onClick={toggleDeactivateModal}
           onClose={deactivateUser}
-          title="Remove User"
-          description="Are you sure you want to remove the user(s)?"
-          btnTxt="Remove"
+          title="Deactivate User"
+          description="Are you sure you want to deactivate?"
+          btnTxt="Deactivate"
           icon="./images/main-layout/trash-illustration.png"
         />
       )}

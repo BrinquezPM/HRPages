@@ -15,11 +15,9 @@ import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
 import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import UserForm from "./components/UserForm/UserForm";
-
-import Navbar from "./components/Navbar";
-import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
+import UserEdit from "./components/UserForm/UserEdit";
 
 const AppLayout = () => (
   <>
@@ -74,7 +72,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/userformdetails",
-        element: <UserForm formFunction="Edit" />,
+        element: <UserEdit formFunction="Edit" />,
       },
       {
         path: "/user-form",

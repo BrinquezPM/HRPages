@@ -6,15 +6,16 @@ import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useAuthUser } from "react-auth-kit";
 
 const UserEdit = (props) => {
   const [user, setUser] = useState([]);
+  const auth = useAuthUser();
+  const activeUser = auth().user;
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(
-          "http://localhost:55731/api/UserAPI/getUser?id=51d8acea-951a-45fc-b82a-f48933e80d81"
-        )
+        .get(`http://localhost:55731/api/UserAPI/getUser?id=${activeUser}`)
         .then((response) => {
           setUser(response.data);
           console.log(response.data);
@@ -35,6 +36,7 @@ const UserEdit = (props) => {
       confirmPassword: user.user_password,
     },
     enableReinitialize: true,
+
     onSubmit: async (values) => {
       console.log(values);
       const formData = new FormData();
@@ -50,7 +52,9 @@ const UserEdit = (props) => {
             user_phoneNumber: formik.values.contactNumber,
             user_username: formik.values.username,
             user_password: formik.values.password,
-            confirm_pass: formik.values.confirmPassword,
+            confirm_pass: formik.values.password,
+            user_isActive: true,
+            user_role: "Testrole",
           })
           .catch((error) => {
             console.log(error);
@@ -229,7 +233,7 @@ const UserEdit = (props) => {
             type="password"
             prefixIcon="./images/login-page/lock.png"
             suffixIcon="./images/login-page/eye-off.png"
-            value={formik.values.confirmPassword}
+            value={formik.values.password}
             onChange={formik.handleChange}
             name="confirmPassword"
             onBlur={formik.handleBlur}
@@ -241,9 +245,9 @@ const UserEdit = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
-        <Link to="/Users">
+        {/* <Link to="/Users"> */}
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
-        </Link>
+        {/* </Link> */}
       </form>
     </div>
   );
