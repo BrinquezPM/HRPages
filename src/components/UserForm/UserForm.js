@@ -6,17 +6,19 @@ import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { redirect, useLocation } from "react-router-dom";
 
 const UserForm = (props) => {
+  let { state } = useLocation();
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      emailAddress: "",
-      contactNumber: "",
-      password: "",
-      confirmPassword: "",
+      firstName: state.user.user_firstName,
+      lastName: state.user.user_lastName,
+      username: state.user.user_username,
+      emailAddress: state.user.user_email,
+      contactNumber: state.user.user_phoneNumber,
+      password: state.user.user_password,
+      confirmPassword: state.user.confirm_pass,
     },
 
     onSubmit: async (values) => {
@@ -69,6 +71,10 @@ const UserForm = (props) => {
         .min(8, "Oops! Password must be at least 8 characters long.")
         .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
+
+    onSubmit: (values) => {
+      return redirect("/profile");
+    },
   });
 
   function handleInputVisibility(touched, hasErrorMessage) {
@@ -96,7 +102,7 @@ const UserForm = (props) => {
   }
 
   return (
-    <div className="user-form" style={{marginLeft: 300, marginTop: -480}}>
+    <div className="user-form" style={{ marginLeft: 300, marginTop: -480 }}>
       <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
@@ -226,7 +232,11 @@ const UserForm = (props) => {
           />
         </div>
         <Link to="/Users">
-        <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
+          <FilledButton
+            type="submit"
+            id="user-btn"
+            btnTxt={props.formFunction}
+          />
         </Link>
       </form>
     </div>

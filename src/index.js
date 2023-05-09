@@ -14,6 +14,8 @@ import LoginPage from "./routes/LoginPage/LoginPage";
 import MainLayout from "./routes/MainLayout/MainLayout";
 import ProfilePage from "./routes/ProfilePage/ProfilePage";
 import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
+import UserForm from "./components/UserForm/UserForm";
+
 import Navbar from "./components/Navbar";
 import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
@@ -32,52 +34,62 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:
+        element: (
           <RequireAuth loginPath="/login">
             <LoginPage />
-          </RequireAuth>,
+          </RequireAuth>
+        ),
       },
       {
         path: "/applicants",
-        element: 
+        element: (
           <RequireAuth loginPath="/login">
             <Applicants />
-          </RequireAuth>,
+          </RequireAuth>
+        ),
       },
       {
         path: "/Users",
-        element: 
+        element: (
           <RequireAuth loginPath="/login">
             <Users />
-          </RequireAuth>,
+          </RequireAuth>
+        ),
       },
       {
         path: "/profile",
-        element: 
+        element: (
           <RequireAuth loginPath="login">
             <ProfilePage />
-          </RequireAuth>,
+          </RequireAuth>
+        ),
       },
       {
-        path:"/applicantDetails",
+        path: "/applicantDetails",
         element: <ApplicantDetails />,
       },
       {
-        path:"/userformcreate",
+        path: "/userformcreate",
         element: <UserForm formFunction="Create" />,
       },
       {
-        path:"/userformdetails",
+        path: "/userformdetails",
         element: <UserForm formFunction="Edit" />,
+      },
+      {
+        path: "/user-form",
+        element: <UserForm />,
       },
     ],
   },
   { element: <LoginPage />, path: "/login" },
-  { element: 
-    <RequireAuth loginPath="/login">
-      <MainLayout />
-    </RequireAuth>, 
-    path: "/main" 
+  {
+    element: (
+      <RequireAuth loginPath="/login">
+        <MainLayout />
+      </RequireAuth>
+    ),
+    path: "/main",
   },
 ]);
 

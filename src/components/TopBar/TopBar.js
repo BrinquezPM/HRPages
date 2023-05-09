@@ -1,4 +1,3 @@
-
 import "./TopBar.css";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState } from "react";
@@ -23,20 +22,19 @@ const TopBar = (props) => {
       break;
     default:
       searchVisibility = "hidden";
-
   }
 
   const signOut = useSignOut();
   const navigate = useNavigate();
-  
+
   const logout = () => {
     signOut();
     navigate("/login");
-  }
+  };
 
   return (
     <div className="top-bar">
-       <SearchBar searchVisibility={searchVisibility} />
+      <SearchBar searchVisibility={searchVisibility} />
       <button onClick={toggleLogoutModal} id="logout-btn">
         <img
           id="logout-img"
