@@ -217,7 +217,7 @@ function Users() {
   useEffect(() => {
     const fetchData = async () => {
       axios
-        .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=5`)
+        .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=10`)
         .then((response) => {
           setInfo(response.data);
           setIsLoading(false);

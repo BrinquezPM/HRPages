@@ -4,8 +4,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserForm = (props) => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -35,14 +40,21 @@ const UserForm = (props) => {
             user_isActive: true,
             user_role: "Testrole",
           })
+          .then((response) => {
+            if (response.status === 200) navigate("/users");
+          })
           .catch((error) => {
-            console.log(error);
-            console.log(postRequest.data);
+            toast.error("Username is already taken", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            console.log(
+              error.response.data.ModelStateErrors.Errors[0].ErrorMessage
+            );
+            //console.log(postRequest.data);
           });
       } catch (error) {
         console.log(error);
       }
-      //navigate("/confirmation", { state: { firstName: values.firstName } });
     },
 
     validationSchema: Yup.object({
@@ -61,7 +73,11 @@ const UserForm = (props) => {
         .min(11, "Contact Number must exactly be 11 digits."),
       password: Yup.string()
         .required("Oops! You missed this one.")
-        .min(8, "Oops! Password must be at least 8 characters long.")
+        .min(6, "Oops! Password must be at least 6 characters long.")
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+          "Missing an uppercase, lowercase, number, or symbol"
+        )
         .oneOf([Yup.ref("confirmPassword"), null], "Passwords must match"),
       confirmPassword: Yup.string()
         .required("Oops! You missed this one.")
@@ -96,6 +112,7 @@ const UserForm = (props) => {
 
   return (
     <div className="user-form">
+      <ToastContainer />
       <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
