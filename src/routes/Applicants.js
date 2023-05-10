@@ -2,16 +2,41 @@ import React, { useState, useEffect } from "react";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
 import styled from "styled-components";
-import * as BsIcons from "react-icons/bs";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import bin3 from "../Images/bin3.png";
+import Modal from "../components/Modal/Modal";
 import Chip2 from "../components/Chip/Chip2";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
+import bin from "../Images/trash-icon.png";
+import trashIllustration from "../Images/trash-illustration.png";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router";
 
+const TableStyles = styled.div`
+  table {
+    border-radius: 5px !important;
+    border: 1px solid #d9d9d9;
+    width: 100%;
+  }
+
+  td {
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: 3.125rem;
+    border: 0;
+  }
+
+  th {
+    font-size: 0.9375rem;
+    height: 3.125rem;
+    border: 0;
+    font-weight: 600;
+  }
+
+  tfoot {
+    border-top: 1px solid #d9d9d9;
+    width: 100%;
+  }
+`;
 function Table({
   columns,
   data,
@@ -58,126 +83,136 @@ function Table({
 
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
+      <TableStyles>
+        <table id="applicant-table" {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render("Header")}
 
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((rows, i) => {
-            prepareRow(rows);
-            return (
-              <tr {...rows.getRowProps()}>
-                {rows.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((rows, i) => {
+              prepareRow(rows);
+              return (
+                <tr {...rows.getRowProps()}>
+                  {rows.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
 
-          <tr>
-            <td colSpan={headerGroups[0].headers.length}></td>
-          </tr>
+            {/* <tr>
+              <td colSpan={headerGroups[0].headers.length}></td>
+            </tr> */}
+          </tbody>
+          <tfoot>
+            <tr>
+              {loading ? (
+                <td colSpan="1"></td>
+              ) : (
+                <td colSpan="1">
+                  Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                  results
+                </td>
+              )}
+              <td></td>
+              <td></td>
 
-          <tr>
-            {loading ? (
-              <td colSpan="1">Loading...</td>
-            ) : (
-              <td colSpan="1">
-                Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
-                results
+              <td colSpan="2">
+                <div className="paginations">
+                  <button
+                    onClick={() => gotoPage(pageIndex + 1)}
+                    style={{
+                      width: 74,
+                      height: 25,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginRight: 17,
+                      border: "none",
+                    }}
+                  >
+                    prev
+                  </button>
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex)}
+                  >
+                    {pageIndex + 1}
+                  </button>{" "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex + 1)}
+                  >
+                    {pageIndex + 2}
+                  </button>{" "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex + 2)}
+                  >
+                    {pageIndex + 3}
+                  </button>
+                  {" ... "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageOptions.length)}
+                  >
+                    {pageOptions.length}
+                  </button>
+                  {""}{" "}
+                  <button
+                    onClick={() => gotoPage(pageIndex + 1)}
+                    style={{
+                      width: 74,
+                      height: 25,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginLeft: 17,
+                      border: "none",
+                    }}
+                  >
+                    next
+                  </button>{" "}
+                </div>
               </td>
-            )}
-            <td></td>
-            <td></td>
-
-            <td colSpan="2">
-              <div className="paginations">
-                <button
-                  onClick={() => gotoPage(pageIndex + 1)}
-                  style={{
-                    width: 74,
-                    height: 25,
-                    borderRadius: 5,
-                    backgroundColor: "#4E9E32",
-                    color: "white",
-                    marginRight: 17,
-                    border: "none",
-                  }}
-                >
-                  prev
-                </button>
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex)}
-                >
-                  {pageIndex + 1}
-                </button>{" "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex + 1)}
-                >
-                  {pageIndex + 2}
-                </button>{" "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex + 2)}
-                >
-                  {pageIndex + 3}
-                </button>
-                {" ... "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageOptions.length)}
-                >
-                  {pageOptions.length}
-                </button>
-                {""}{" "}
-                <button
-                  onClick={() => gotoPage(pageIndex + 1)}
-                  style={{
-                    width: 74,
-                    height: 25,
-                    borderRadius: 5,
-                    backgroundColor: "#4E9E32",
-                    color: "white",
-                    marginLeft: 17,
-                    border: "none",
-                  }}
-                >
-                  next
-                </button>{" "}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+          </tfoot>
+        </table>
+      </TableStyles>
     </>
   );
 }
 
 function Applicants() {
+  const location = useLocation();
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [applicantIdBeingDeleted, setApplicantIdBeingDeleted] = useState();
+  const toggleDeleteModal = (applicantId) => {
+    setIsDeleteModalActive(!isDeleteModalActive);
+    setApplicantIdBeingDeleted(applicantId);
+  };
   const Styles = styled.div`
-    padding: 1rem;
+    // padding: 1rem;
 
     .pagination {
       padding: 0.5rem;
@@ -200,9 +235,9 @@ function Applicants() {
   async function deleteApplicant() {
     try {
       const postRequest = await axios
-        .delete("http://localhost:55731/api/ApplicantAPI/delete", {
-          apl_id: info.id,
-        })
+        .delete(
+          `http://localhost:55731/api/ApplicantAPI/delete?id=${applicantIdBeingDeleted}`
+        )
         .catch((error) => {
           console.log(error);
           console.log(postRequest.data);
@@ -210,28 +245,14 @@ function Applicants() {
     } catch (error) {
       console.log(error);
     }
-    //setIsDeactivateModalActive(!isDeactivateModalActive);
+    setIsDeleteModalActive(false);
+    location.reload();
   }
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // const data = [
-  //   {
-  //     name: "John Doe",
-  //     dateSubmitted: "2022-04-22",
-  //     position: "Developer",
-  //     status: <Chip2 statusId={2} />,
-  //   },
-  //   {
-  //     name: "Jane Smith",
-  //     dateSubmitted: "2022-04-20",
-  //     position: "Designer",
-  //     status: <Chip2 statusId={2} />,
-  //   },
-  //   // Add more data here
-  // ];
 
   let data =
     info.data === undefined
@@ -248,6 +269,7 @@ function Applicants() {
           ),
           position: `${applicant.position.name}`,
           status: <Chip2 statusId={applicant.status} />,
+          applicantid: applicant.id,
         }));
 
   const columns = React.useMemo(
@@ -274,21 +296,21 @@ function Applicants() {
         Cell: (row) => (
           <div>
             <span style={{ cursor: "pointer" }}>
-              <Link to="/applicantDetails">
+              <Link to={`/applicantDetails/${data[row.row.id].applicantid}`}>
                 <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
               </Link>
             </span>
             <span
               style={{ cursor: "pointer", marginLeft: "35px" }}
-              onClick={handleShow}
+              onClick={() => toggleDeleteModal(data[row.row.id].applicantid)}
             >
-              <BsIcons.BsTrashFill size={25} />
+              <img src={bin} style={{ width: "1.5rem" }} />
             </span>
           </div>
         ),
       },
     ],
-    []
+    [data]
   );
   const [setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -327,8 +349,8 @@ function Applicants() {
     <p>Loading</p>
   ) : (
     <Styles>
-      <div style={{ marginLeft: "20%", marginTop: -500 }}>
-        <h2 style={{ marginLeft: "5%" }}>Applicants</h2>
+      <div id="applicants-container">
+        <h2 style={{ marginBottom: "20px" }}>Applicants</h2>
         <Table
           columns={columns}
           data={data}
@@ -337,34 +359,16 @@ function Applicants() {
           pageCount={pageCount}
         />
       </div>
-
-      <div>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
-          <Modal.Body>
-            <div className="text-center">
-              <img
-                src={bin3}
-                alt="bin3"
-                style={{ alignContent: "center" }}
-              ></img>
-              <h2>Remove User</h2>
-              <span>Are you sure you want to remove the user?</span>
-            </div>
-          </Modal.Body>
-          <Modal.Footer
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              border: "none",
-            }}
-          >
-            <Button variant="danger" /*onClick={deleteApplicant}*/>
-              Remove
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      {isDeleteModalActive && (
+        <Modal
+          onClick={toggleDeleteModal}
+          onClose={deleteApplicant}
+          title="Remove Applicant"
+          icon={trashIllustration}
+          btnTxt="Remove"
+          description="Are you sure you want to remove the applicant?"
+        />
+      )}
     </Styles>
   );
 }

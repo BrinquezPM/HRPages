@@ -1,5 +1,4 @@
 import "./SearchBar.css";
-import InputField from "../InputField/InputField";
 
 const SearchBar = (props) => {
   return (

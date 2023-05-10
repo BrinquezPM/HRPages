@@ -4,12 +4,40 @@ import Modal from "react-bootstrap/Modal";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
 import styled from "styled-components";
-import * as AiIcons from "react-icons/ai";
-import * as BsIcons from "react-icons/bs";
-import bin3 from "../Images/bin3.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import magnify from "../Images/magnify-expand.png";
+import bin from "../Images/trash-icon.png";
+import addIcon from "../Images/add-icon.png";
+import trashIllustration from "../Images/trash-illustration.png";
+
+const TableStyles = styled.div`
+  table {
+    border-radius: 5px !important;
+    border: 1px solid #d9d9d9;
+    width: 100%;
+  }
+
+  td {
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: 3.125rem;
+    border: 0;
+    // display: flex;
+  }
+
+  th {
+    font-size: 0.9375rem;
+    height: 3.125rem;
+    border: 0;
+    font-weight: 600;
+  }
+
+  tfoot {
+    border-top: 1px solid #d9d9d9;
+    width: 100%;
+  }
+`;
 
 function Table({
   columns,
@@ -57,125 +85,122 @@ function Table({
 
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render("Header")}
+      <TableStyles>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render("Header")}
 
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map((rows, i) => {
-            prepareRow(rows);
-            return (
-              <tr {...rows.getRowProps()}>
-                {rows.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </th>
+                ))}
               </tr>
-            );
-          })}
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((rows, i) => {
+              prepareRow(rows);
+              return (
+                <tr {...rows.getRowProps()}>
+                  {rows.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot>
+            <tr>
+              {loading ? (
+                <td colSpan="1"></td>
+              ) : (
+                <td colSpan="1">
+                  Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                  results
+                </td>
+              )}
+              <td></td>
+              <td></td>
 
-          <tr>
-            <td colSpan={headerGroups[0].headers.length}></td>
-          </tr>
-
-          <tr>
-            {loading ? (
-              <td colSpan="1">Loading...</td>
-            ) : (
-              <td colSpan="1">
-                Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
-                results
+              <td colSpan="2">
+                <div className="paginations">
+                  <button
+                    onClick={() => gotoPage(pageIndex + 1)}
+                    style={{
+                      width: 74,
+                      height: 25,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginRight: 17,
+                      border: "none",
+                    }}
+                  >
+                    prev
+                  </button>
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex)}
+                  >
+                    {pageIndex + 1}
+                  </button>{" "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex + 1)}
+                  >
+                    {pageIndex + 2}
+                  </button>{" "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageIndex + 2)}
+                  >
+                    {pageIndex + 3}
+                  </button>
+                  {" ... "}
+                  <button
+                    style={{ width: 25, height: 25 }}
+                    onClick={() => gotoPage(pageOptions.length)}
+                  >
+                    {pageOptions.length}
+                  </button>
+                  {""}{" "}
+                  <button
+                    onClick={() => gotoPage(pageIndex + 1)}
+                    style={{
+                      width: 74,
+                      height: 25,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginLeft: 17,
+                      border: "none",
+                    }}
+                  >
+                    next
+                  </button>{" "}
+                </div>
               </td>
-            )}
-            <td></td>
-            <td></td>
-
-            <td colSpan="2">
-              <div className="paginations">
-                <button
-                  onClick={() => gotoPage(pageIndex + 1)}
-                  style={{
-                    width: 74,
-                    height: 25,
-                    borderRadius: 5,
-                    backgroundColor: "#4E9E32",
-                    color: "white",
-                    marginRight: 17,
-                    border: "none",
-                  }}
-                >
-                  prev
-                </button>
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex)}
-                >
-                  {pageIndex + 1}
-                </button>{" "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex + 1)}
-                >
-                  {pageIndex + 2}
-                </button>{" "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageIndex + 2)}
-                >
-                  {pageIndex + 3}
-                </button>
-                {" ... "}
-                <button
-                  style={{ width: 25, height: 25 }}
-                  onClick={() => gotoPage(pageOptions.length)}
-                >
-                  {pageOptions.length}
-                </button>
-                {""}{" "}
-                <button
-                  onClick={() => gotoPage(pageIndex + 1)}
-                  style={{
-                    width: 74,
-                    height: 25,
-                    borderRadius: 5,
-                    backgroundColor: "#4E9E32",
-                    color: "white",
-                    marginLeft: 17,
-                    border: "none",
-                  }}
-                >
-                  next
-                </button>{" "}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+          </tfoot>
+        </table>
+      </TableStyles>
     </>
   );
 }
 
 function Users() {
   const Styles = styled.div`
-    padding: 1rem;
-
     .pagination {
       padding: 0.5rem;
     }
@@ -183,6 +208,12 @@ function Users() {
 
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
+  const [usernameBeingDeleted, setUsernameBeingDeleted] = useState();
+  const toggleDeleteModal = (username) => {
+    setIsDeleteModalActive(!isDeleteModalActive);
+    setUsernameBeingDeleted(username);
+  };
   useEffect(() => {
     const fetchData = async () => {
       axios
@@ -224,22 +255,6 @@ function Users() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const data = [
-  //   {
-  //     name: "John Doe",
-  //     EmailAddress: "JohnDoe@gmail.com",
-  //     username: "JohnDoe",
-  //     ContactNumber: "(+63)9532123456",
-  //   },
-  //   {
-  //     name: "Jane Smith",
-  //     EmailAddress: "JaneSmith@gmail.com",
-  //     username: "JaneSmith",
-  //     ContactNumber: "(+63)9532123456",
-  //   },
-  //   // Add more data here
-  // ];
-
   let data =
     info.data === undefined
       ? ""
@@ -273,7 +288,7 @@ function Users() {
         accessor: "actions",
         Cell: (row) => (
           <div>
-            <Link to="/userformdetails">
+            <Link to={`/user-profile/${data[row.row.id].username}`}>
               <span style={{ cursor: "pointer" }}>
                 <img id="appliDeatils-btn" src={magnify} alt="magnify"></img>
               </span>
@@ -282,13 +297,13 @@ function Users() {
               style={{ cursor: "pointer", marginLeft: "50px" }}
               onClick={handleShow}
             >
-              <BsIcons.BsTrashFill size={25} />
+              <img src={bin} style={{ width: "1.5rem" }} />
             </span>
           </div>
         ),
       },
     ],
-    []
+    [data]
   );
 
   const [setData] = React.useState([]);
@@ -328,58 +343,38 @@ function Users() {
     <p> Loading </p>
   ) : (
     <Styles>
-      <div
-        style={{
-          marginLeft: 238,
-          display: "flex",
-          marginTop: -500,
-        }}
-      >
-        <h2 style={{ marginLeft: "6%" }}>Users</h2>
-        <Link to="/userformcreate" style={{ marginLeft: "76%" }}>
-          <button className="Add-User-btn">
-            {" "}
-            <AiIcons.AiOutlinePlus size={30} />{" "}
-          </button>
-        </Link>
+      <div id="users-container">
+        <div class="row-container users-header">
+          <h2>Users</h2>
+          <Link to="/userformcreate">
+            <button className="Add-User-btn">
+              {" "}
+              <img src={addIcon} style={{ width: "1.5625rem" }} />
+            </button>
+          </Link>
+        </div>
+
+        <div>
+          <Table
+            columns={columns}
+            data={data}
+            fetchData={fetchData}
+            loading={loading}
+            pageCount={pageCount}
+          />
+        </div>
       </div>
-      <div style={{ marginLeft: 250 }}>
-        {/*info?.data?.map((infor) => ({infor.firstname}))*/}
-        <Table
-          columns={columns}
-          data={data}
-          fetchData={fetchData}
-          loading={loading}
-          pageCount={pageCount}
+
+      {isDeleteModalActive && (
+        <Modal
+          onClick={toggleDeleteModal}
+          onClose={deactivateUser}
+          title="Remove Applicant"
+          icon={trashIllustration}
+          btnTxt="Remove"
+          description="Are you sure you want to remove the applicant?"
         />
-      </div>
-      <div>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton style={{ border: "none" }}></Modal.Header>
-          <Modal.Body>
-            <div className="text-center">
-              <img
-                src={bin3}
-                alt="bin3"
-                style={{ alignContent: "center" }}
-              ></img>
-              <h2>Remove User</h2>
-              <span>Are you sure you want to remove the user?</span>
-            </div>
-          </Modal.Body>
-          <Modal.Footer
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              border: "none",
-            }}
-          >
-            <Button variant="danger" /*onClick={deactivateUser}*/>
-              Remove
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      )}
     </Styles>
   );
 }

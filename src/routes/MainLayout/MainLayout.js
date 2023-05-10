@@ -1,9 +1,7 @@
 import "./MainLayout.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import TopBar from "../../components/TopBar/TopBar";
-import UserForm from "../../components/UserForm/UserForm";
-import ApplicantDetails from "../../components/ApplicantDetails/ApplicantDetails";
-import ProfilePage from "../ProfilePage/ProfilePage";
+import Applicants from "../Applicants";
 
 const MainLayout = () => {
   return (
@@ -11,9 +9,6 @@ const MainLayout = () => {
       <Sidebar />
       <div className="main-content">
         <TopBar />
-        {/* {<UserForm formFunction="Create" />} */}
-        {/* <ApplicantDetails /> */}
-        {/* <ProfilePage /> */}
       </div>
     </div>
   );

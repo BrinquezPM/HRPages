@@ -12,16 +12,12 @@ a {
 
 table {
   table-layout: auto;
-  border: 1px solid black;
+  border: 1px solid #D9D9D9;
   border-collapse: collapse;
   width: 90%;
-  margin: auto;
   text-align: center;
 }
-tbody tr:nth-child(3) {
-  border-top: 1px solid black;
-  height: 5;
-}
+
 
 .pagination button {
   margin-right: 10px;
@@ -55,6 +51,40 @@ th {
 
 .admin-name {
   font-weight: bold;
+}
+
+#applicants-container {
+  position: absolute;
+  top: 145px;
+  left: 315px;
+  width: 75%;
+}
+
+#users-container {
+  position: absolute;
+  top: 145px;
+  left: 315px;
+  width: 75%;
+}
+
+#users-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#applicants-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.Add-User-btn {
+  border: none;
+  background-color: white;
+}
+
+.users-header {
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 

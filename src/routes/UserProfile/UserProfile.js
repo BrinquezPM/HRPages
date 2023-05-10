@@ -1,4 +1,4 @@
-import "./ProfilePage.css";
+import "./UserProfile.css";
 import FilledButton from "../../components/FilledButton/FilledButton";
 import InformationRow from "../../components/InformationRow/InformationRow";
 import Modal from "../../components/Modal/Modal";
@@ -7,8 +7,11 @@ import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthUser } from "react-auth-kit";
 import { useSignOut } from "react-auth-kit";
+import { useParams } from "react-router-dom";
 
-const ProfilePage = (props) => {
+const UserProfile = (props) => {
+  const params = useParams();
+  const userId = params.username;
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const signOut = useSignOut();
   const navigate = useNavigate();
@@ -17,16 +20,11 @@ const ProfilePage = (props) => {
   };
 
   const [user, setUser] = useState([]);
-  const auth = useAuthUser();
-  const activeUser = auth().user;
-  // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
-  //activeUser.replace(/['"]+/g, "");
 
   useEffect(() => {
-    console.log(activeUser);
     const fetchData = async () => {
       axios
-        .get(`http://localhost:55731/api/UserAPI/getUser?id=${activeUser}`)
+        .get(`http://localhost:55731/api/UserAPI/getUser?id=${userId}`)
         .then((response) => {
           setUser(response.data);
           console.log(response.data);
@@ -51,7 +49,6 @@ const ProfilePage = (props) => {
         })
         .catch((error) => {
           console.log(error);
-          //console.log(postRequest.data);
         });
     } catch (error) {
       console.log(error);
@@ -63,11 +60,11 @@ const ProfilePage = (props) => {
 
   return (
     <div className="profile-page">
-      <h1>Profile</h1>
+      <h1>User Profile</h1>
       <div className="row-container">
         <img
           id="user-pp"
-          src="./images/main-layout/james-reid.png"
+          src="../../images/main-layout/james-reid.png"
           alt="profile-picture"
         />
         <div className="user-information">
@@ -77,7 +74,7 @@ const ProfilePage = (props) => {
           <div className="row-container">
             <img
               id="user-email-img"
-              src="./images/main-layout/email-icon.png"
+              src="../../images/main-layout/email-icon.png"
               alt="email-icon"
             />
             <p id="applicant-email">{user.user_email}</p>
@@ -91,7 +88,7 @@ const ProfilePage = (props) => {
               }}
             >
               <FilledButton
-                btnImgPath="./images/main-layout/edit-icon.png"
+                btnImgPath="../../images/main-layout/edit-icon.png"
                 displayBtnImg="inline"
                 btnTxt="Edit Profile"
                 id="profile-edit-btn"
@@ -101,7 +98,7 @@ const ProfilePage = (props) => {
             </Link>
             <FilledButton
               onClick={toggleDeactivateModal}
-              btnImgPath="./images/main-layout/trash-icon.png"
+              btnImgPath="../../images/main-layout/trash-icon.png"
               displayBtnImg="inline"
               btnTxt="Deactivate"
               id="profile-deactivate-btn"
@@ -121,12 +118,12 @@ const ProfilePage = (props) => {
         />
       )}
       <InformationRow
-        icon="./images/main-layout/users-icon.png"
+        icon="../../images/main-layout/users-icon.png"
         field="Username"
         value={user.user_username}
       />
       <InformationRow
-        icon="./images/main-layout/phone.png"
+        icon="../../images/main-layout/phone.png"
         field="Contact Number"
         value={user.user_phoneNumber}
       />
@@ -134,4 +131,4 @@ const ProfilePage = (props) => {
   );
 };
 
-export default ProfilePage;
+export default UserProfile;

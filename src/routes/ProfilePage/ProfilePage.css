@@ -1,6 +1,13 @@
 .profile-page {
-  margin-top: -500px;
-  margin-left: 315px;
+  position: absolute;
+  top: 145px;
+  left: 315px;
+}
+
+.applicant-details {
+  position: absolute;
+  top: 145px;
+  left: 315px;
 }
 
 .profile-page h1 {

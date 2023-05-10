@@ -6,8 +6,10 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const LoginForm = (props) => {
+  const [isCredentialsValid, setIsCredentialsValid] = useState(true);
   const signIn = useSignIn();
   const navigate = useNavigate();
   const onSubmit = async (values) => {
@@ -26,13 +28,14 @@ const LoginForm = (props) => {
               token: response.data.access_token,
               expiresIn: response.data.expires_in,
               tokenType: "Bearer",
-              authState: {user: formik.values.username},
+              authState: { user: formik.values.username },
             });
             navigate("/applicants");
           }
         });
     } catch (err) {
       console.log("Error: ", err);
+      setIsCredentialsValid(false);
     }
   };
 
@@ -108,7 +111,7 @@ const LoginForm = (props) => {
         <FilledButton
           btnTxt="Sign In"
           type="submit"
-          errorVisibility="visible"
+          errorVisibility={isCredentialsValid ? "hidden" : "visible"}
         />
       </form>
     </div>

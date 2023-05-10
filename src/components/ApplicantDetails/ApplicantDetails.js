@@ -5,15 +5,20 @@ import StatusRow from "../StatusRow/StatusRow";
 import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import axios from "axios";
+import { useParams } from "react-router";
 
 const ApplicantDetails = (props) => {
   const [modalNotesOpen, setModalNotesOpen] = useState(false);
   const [info, setInfo] = useState([]);
+  const routeId = useParams();
+  const applicantId = routeId.applicantid;
 
   useEffect(() => {
     const fetchData = async () => {
       axios
-        .get("http://localhost:55731/api/ApplicantAPI/getApplicant?id=6")
+        .get(
+          `http://localhost:55731/api/ApplicantAPI/getApplicant?id=${applicantId}`
+        )
         .then((response) => {
           setInfo(response.data);
           console.log(response.data);
@@ -52,10 +57,6 @@ const ApplicantDetails = (props) => {
     setModalNotesOpen(!modalNotesOpen);
   }
 
-  // function downloadCV() {
-  //   window.location.href = info.apl_documentCV;
-  // }
-
   const handleDownloadPDF = async () => {
     try {
       const response = await fetch(info.apl_documentCV, { method: "GET" });
@@ -72,11 +73,25 @@ const ApplicantDetails = (props) => {
     }
   };
 
+  const mapPositionId = (positionId) => {
+    switch (positionId) {
+      case 1:
+        return "Software Developer";
+      case 2:
+        return "QA Engineer";
+      case 3:
+        return "HR Recruitment Staff";
+      case 4:
+        return "Account Executive";
+      case 5:
+        return "HR Recruitment Specialist";
+      case 6:
+        return "Senior Accountant";
+    }
+  };
+
   return (
-    <div
-      className="applicant-details"
-      style={{ marginBlockStart: -565, marginInlineStart: 315 }}
-    >
+    <div className="applicant-details">
       <h1>Applicant Details</h1>
       <div className="row-container">
         <img
@@ -94,7 +109,7 @@ const ApplicantDetails = (props) => {
           <div className="row-container">
             <img
               id="applicant-email-img"
-              src="./images/main-layout/email-icon.png"
+              src="../../images/main-layout/email-icon.png"
               alt="email-icon"
             />
             <p id="applicant-email">
@@ -103,7 +118,7 @@ const ApplicantDetails = (props) => {
           </div>
           <div style={{ display: "flex" }}>
             <FilledButton
-              btnImgPath="./images/main-layout/download-icon.png"
+              btnImgPath="../../images/main-layout/download-icon.png"
               displayBtnImg="inline"
               btnTxt="Download CV"
               id="applicant-details-download-btn"
@@ -112,9 +127,10 @@ const ApplicantDetails = (props) => {
               onClick={handleDownloadPDF}
             />
             <FilledButton
-              btnImgPath="./images/main-layout/note-text-outline.png"
+              btnImgPath="../../images/main-layout/note-icon.png"
               displayBtnImg="inline"
               btnTxt="Notes"
+              backgroundColor="red"
               id="applicant-details-notes-btn"
               display="none"
               onClick={() => setModalNotesOpen(true)}
@@ -127,15 +143,15 @@ const ApplicantDetails = (props) => {
                 field="visible"
                 fieldTxt="Add notes"
                 backgroundColor="#28A745"
-                btnTxt="Update"
+                btnTxt="Close"
                 onClick={() => setModalNotesOpen(false)}
-                onClose={updateStatus}
+                onClose={() => setModalNotesOpen(false)}
               />
             )}
           </div>
         </div>
       </div>
-      <h4>{info.apl_position} Application Status</h4>
+      <h4>{mapPositionId(info.apl_position)} Application Status</h4>
       <StatusRow
         statusName="Pre-Screened"
         statusNumber="1"

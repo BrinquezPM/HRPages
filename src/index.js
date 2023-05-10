@@ -18,6 +18,7 @@ import UserForm from "./components/UserForm/UserForm";
 import "./App.css";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 import UserEdit from "./components/UserForm/UserEdit";
+import UserProfile from "./routes/UserProfile/UserProfile";
 
 const AppLayout = () => (
   <>
@@ -30,14 +31,6 @@ const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      {
-        path: "/",
-        element: (
-          <RequireAuth loginPath="/login">
-            <LoginPage />
-          </RequireAuth>
-        ),
-      },
       {
         path: "/applicants",
         element: (
@@ -63,7 +56,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/applicantDetails",
+        path: "/applicantDetails/:applicantid",
         element: <ApplicantDetails />,
       },
       {
@@ -78,9 +71,13 @@ const router = createBrowserRouter([
         path: "/user-form",
         element: <UserForm />,
       },
+      {
+        path: "/user-profile/:username",
+        element: <UserProfile />,
+      },
     ],
   },
-  { element: <LoginPage />, path: "/login" },
+  { element: <LoginPage />, path: "/" },
   {
     element: (
       <RequireAuth loginPath="/login">

@@ -3,15 +3,9 @@ import InputField from "../InputField/InputField";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
-import FileField from "../FileField/FileField";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { redirect, useLocation } from "react-router-dom";
-import { useState } from "react";
 
 const UserForm = (props) => {
-  //let { state } = useLocation();
-  //const [user, setUser] = useState([]);
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -101,7 +95,7 @@ const UserForm = (props) => {
   }
 
   return (
-    <div className="user-form" style={{ marginLeft: 300, marginTop: -480 }}>
+    <div className="user-form">
       <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">

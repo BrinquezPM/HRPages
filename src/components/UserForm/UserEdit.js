@@ -32,8 +32,8 @@ const UserEdit = (props) => {
       username: user.user_username,
       emailAddress: user.user_email,
       contactNumber: user.user_phoneNumber,
-      password: user.user_password,
-      confirmPassword: user.user_password,
+      password: "",
+      confirmPassword: "",
     },
     enableReinitialize: true,
 

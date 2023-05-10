@@ -25,14 +25,15 @@ const StatusRow = (props) => {
 
           {modalUpdateOpen && (
             <Modal
-              iconDisplay = "none"
+              iconDisplay="none"
               title="Update Status"
-              field = "visible"
-              fieldTxt = "Add notes"
+              field="visible"
+              fieldTxt="Add notes"
               backgroundColor="#28A745"
-              btnTxt="Close"
+              btnTxt="Update"
+              onClick={() => setModalUpdateOpen(false)}
               onClose={() => setModalUpdateOpen(false)}
-           />
+            />
           )}
         </div>
       </div>

@@ -29,7 +29,7 @@ const TopBar = (props) => {
 
   const logout = () => {
     signOut();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
