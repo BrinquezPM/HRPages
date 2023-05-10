@@ -16,6 +16,7 @@ import ProfilePage from "./routes/ProfilePage/ProfilePage";
 import ApplicantDetails from "./components/ApplicantDetails/ApplicantDetails";
 import Navbar from "./components/Navbar";
 import UserForm from "./components/UserForm/UserForm";
+import RefreshToken from "./components/RefreshToken";
 import "./App.css";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 
@@ -87,6 +88,7 @@ createRoot(document.getElementById("root")).render(
     authName={"_auth"}
     cookieDomain={window.location.hostname}
     cookieSecure={false}
+    refresh={RefreshToken}
   >
     <RouterProvider router={router} />
   </AuthProvider>

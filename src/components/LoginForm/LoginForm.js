@@ -27,6 +27,8 @@ const LoginForm = (props) => {
               expiresIn: response.data.expires_in,
               tokenType: "Bearer",
               authState: { username: formik.values.username },
+              refreshToken: response.refresh_token,
+              refreshTokenExpireIn: 60 //insert refresh token expiration
             });
             navigate("/applicants");
           }
