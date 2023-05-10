@@ -246,7 +246,7 @@ function Applicants() {
       console.log(error);
     }
     setIsDeleteModalActive(false);
-    location.reload();
+    window.location.reload(); 
   }
 
   const [show, setShow] = useState(false);

@@ -78,10 +78,10 @@ function Table({
     usePagination
   );
 
-  // Listen for changes in pagination and use the state to fetch our new data
+
   React.useEffect(() => {
-    fetchData({ pageIndex, pageSize });
-  }, [fetchData, pageIndex, pageSize]);
+    fetchData();
+  }, [fetchData, pageSize]);
 
   return (
     <>
@@ -214,14 +214,20 @@ function Users() {
     setIsDeleteModalActive(!isDeleteModalActive);
     setUsernameBeingDeleted(username);
   };
+  const [pageSize, setPageSize] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
+      const apiUrl = `http://localhost:55731/api/ApplicantAPI/list`;
+      console.log(apiUrl);
       axios
-        .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=5`)
+        .get(apiUrl)
         .then((response) => {
           setInfo(response.data);
-          setIsLoading(false);
+          setIsLoading(true);
           console.log(response.data);
+          console.log(response.data.pagination.pages);
+          setPageSize(response.data.pagination.pages);
         });
     };
     fetchData();
@@ -248,6 +254,7 @@ function Users() {
       console.log(error);
     }
     handleClose();
+    window.location.reload(); 
   }
 
   const [show, setShow] = useState(false);
@@ -312,29 +319,20 @@ function Users() {
   const fetchIdRef = React.useRef(0);
 
   const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
-    // This will get called when the table needs new data
-    // You could fetch your data from literally anywhere,
-    // even a server. But for this example, we'll just fake it.
 
-    // Give this fetch an ID
     const fetchId = ++fetchIdRef.current;
 
-    // Set the loading state
     setLoading(true);
 
-    // We'll even set a delay to simulate a server here
     setTimeout(() => {
-      // Only update the data if this is the latest fetch
       if (fetchId === fetchIdRef.current) {
         const startRow = pageSize * pageIndex;
         const endRow = startRow + pageSize;
-        setData(data.slice(startRow, endRow));
+        // setData(data.slice(startRow, endRow));
 
-        // Your server could send back total page count.
-        // For now we'll just fake it, too
         setPageCount(Math.ceil(data.length / pageSize));
 
-        setLoading(false);
+        setLoading(true);
       }
     }, 1000);
   }, []);
