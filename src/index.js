@@ -19,6 +19,7 @@ import "./App.css";
 import { AuthProvider, RequireAuth } from "react-auth-kit";
 import UserEdit from "./components/UserForm/UserEdit";
 import UserProfile from "./routes/UserProfile/UserProfile";
+import OtherUserEdit from "./components/UserForm/OtherUserEdit";
 
 const AppLayout = () => (
   <>
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "/userformdetails",
         element: <UserEdit formFunction="Edit" />,
+      },
+      {
+        path: "/otheruserformdetails",
+        element: <OtherUserEdit formFunction="Edit" />,
       },
       {
         path: "/user-form",

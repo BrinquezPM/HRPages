@@ -98,6 +98,7 @@ const ApplicantDetails = (props) => {
           id="applicant-pp"
           src={info.apl_documentPhoto}
           alt="profile-picture"
+          style={{borderRadius: "50%"}}
         />
         <div className="applicant-information">
           <div className="row-container">
@@ -144,6 +145,7 @@ const ApplicantDetails = (props) => {
                 fieldTxt="Add notes"
                 backgroundColor="#28A745"
                 btnTxt="Close"
+                readOnly="true"
                 onClick={() => setModalNotesOpen(false)}
                 onClose={() => setModalNotesOpen(false)}
               />
