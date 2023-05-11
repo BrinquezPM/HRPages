@@ -7,11 +7,14 @@ import FileField from "../FileField/FileField";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useAuthUser } from "react-auth-kit";
+import { useNavigate } from "react-router";
 
 const UserEdit = (props) => {
   const [user, setUser] = useState([]);
   const auth = useAuthUser();
   const activeUser = auth().user;
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       await axios
@@ -44,7 +47,7 @@ const UserEdit = (props) => {
       try {
         const applicantData = {};
         const postRequest = await axios
-          .put("http://localhost:55731/api/UserAPI/edit", {
+          .put("http://localhost:55731/api/UserAPI/editV2", {
             user_id: formik.values.id,
             user_firstName: formik.values.firstName,
             user_lastName: formik.values.lastName,
@@ -63,7 +66,7 @@ const UserEdit = (props) => {
       } catch (error) {
         console.log(error);
       }
-      //navigate("/confirmation", { state: { firstName: values.firstName } });
+      navigate("/profile");
     },
 
     validationSchema: Yup.object({
@@ -233,7 +236,7 @@ const UserEdit = (props) => {
             type="password"
             prefixIcon="./images/login-page/lock.png"
             suffixIcon="./images/login-page/eye-off.png"
-            value={formik.values.password}
+            value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             name="confirmPassword"
             onBlur={formik.handleBlur}
@@ -245,9 +248,7 @@ const UserEdit = (props) => {
             errorMessage={formik.errors.confirmPassword}
           />
         </div>
-        {/* <Link to="/Users"> */}
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
-        {/* </Link> */}
       </form>
     </div>
   );

@@ -5,8 +5,7 @@ import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuthUser } from "react-auth-kit";
-import { useSignOut } from "react-auth-kit";
+import { useAuthUser, useSignOut } from "react-auth-kit";
 
 const ProfilePage = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
@@ -19,8 +18,6 @@ const ProfilePage = (props) => {
   const [user, setUser] = useState([]);
   const auth = useAuthUser();
   const activeUser = auth().user;
-  // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
-  //activeUser.replace(/['"]+/g, "");
 
   useEffect(() => {
     console.log(activeUser);

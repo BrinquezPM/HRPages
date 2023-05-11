@@ -45,15 +45,15 @@ const UserEdit = (props) => {
       try {
         const applicantData = {};
         const postRequest = await axios
-          .put("http://localhost:55731/api/UserAPI/edit", {
+          .put("http://localhost:55731/api/UserAPI/editV2", {
             user_id: formik.values.id,
             user_firstName: formik.values.firstName,
             user_lastName: formik.values.lastName,
             user_email: formik.values.emailAddress,
             user_phoneNumber: formik.values.contactNumber,
-            user_username: formik.values.username,
-            user_password: formik.values.password,
-            confirm_pass: formik.values.password,
+            user_username: user.user_username,
+            user_password: user.user_password,
+            confirm_pass: user.user_password,
             user_isActive: true,
             user_role: "Testrole",
           })
@@ -70,7 +70,7 @@ const UserEdit = (props) => {
       } catch (error) {
         console.log(error);
       }
-      //navigate("/confirmation", { state: { firstName: values.firstName } });
+      navigate(`/user-profile/${userId}`);
     },
 
     validationSchema: Yup.object({

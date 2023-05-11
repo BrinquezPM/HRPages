@@ -188,7 +188,7 @@ function Users() {
     setIsDeleteModalActive(!isDeleteModalActive);
     setUserBeingDeleted(data);
   };
-  const [pSize, setPageSize] = useState(5);
+  const [pSize, setPageSize] = useState(10);
   const [pIndex, setPageIndex] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
