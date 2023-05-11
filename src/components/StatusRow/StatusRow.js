@@ -1,7 +1,7 @@
 import "./StatusRow.css";
 import FilledButton from "../FilledButton/FilledButton";
 import { useState } from "react";
-import Modal from "../Modal/Modal";
+import ModalStatus from "../Modal/ModalStatus";
 
 const StatusRow = (props) => {
   const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
@@ -24,7 +24,7 @@ const StatusRow = (props) => {
           />
 
           {modalUpdateOpen && (
-            <Modal
+            <ModalStatus
               iconDisplay="none"
               title="Update Status"
               field="visible"

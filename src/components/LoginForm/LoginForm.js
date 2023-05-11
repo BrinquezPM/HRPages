@@ -6,33 +6,54 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const LoginForm = (props) => {
   const [isCredentialsValid, setIsCredentialsValid] = useState(true);
   const signIn = useSignIn();
   const navigate = useNavigate();
+  // const [isActive, setIsActive] = useState(false);
+
+  const validateUser = async (username) => {
+    const response = await axios.get(
+      `http://localhost:55731/api/UserAPI/getUser?id=${username}`
+    );
+    return response.data.user_isActive;
+  };
+
+  async function notify() {
+    toast.error("User does not exist", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  }
+
   const onSubmit = async (values) => {
     console.log("Values: ", values);
+
     try {
-      const response = await axios
-        .post("http://localhost:55731/api/token", {
-          username: formik.values.username,
-          password: formik.values.password,
-        })
-        .then((response) => {
-          console.log(response.status);
-          console.log(response.data);
-          if (response.status === 200) {
-            signIn({
-              token: response.data.access_token,
-              expiresIn: response.data.expires_in,
-              tokenType: "Bearer",
-              authState: { user: formik.values.username },
-            });
-            navigate("/applicants");
-          }
-        });
+      let isActive = await validateUser(formik.values.username);
+      isActive == true
+        ? await axios
+            .post("http://localhost:55731/api/token", {
+              username: formik.values.username,
+              password: formik.values.password,
+            })
+            .then((response) => {
+              console.log(response.status);
+              console.log(response.data);
+              if (response.status === 200) {
+                signIn({
+                  token: response.data.access_token,
+                  expiresIn: response.data.expires_in,
+                  tokenType: "Bearer",
+                  authState: { user: formik.values.username },
+                });
+                navigate("/applicants");
+              }
+            })
+            .catch((error) => isActive(false))
+        : notify();
     } catch (err) {
       console.log("Error: ", err);
       setIsCredentialsValid(false);
@@ -52,9 +73,6 @@ const LoginForm = (props) => {
       password: Yup.string().required("Oops! You missed this one."),
     }),
 
-    // onSubmit: async (values) => {
-    //   console.log(formik.values);
-    // },
     onSubmit,
   });
 
@@ -68,6 +86,7 @@ const LoginForm = (props) => {
 
   return (
     <div className="login-form">
+      <ToastContainer />
       <img
         id="login-logo"
         src="./images/login-page/alliance-logo.png"

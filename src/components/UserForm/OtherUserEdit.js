@@ -3,24 +3,40 @@ import InputField from "../InputField/InputField";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import FilledButton from "../FilledButton/FilledButton";
+import FileField from "../FileField/FileField";
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const UserForm = (props) => {
+const UserEdit = (props) => {
+  const [user, setUser] = useState([]);
   const navigate = useNavigate();
+  const params = useParams();
+  const userId = params.username;
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`http://localhost:55731/api/UserAPI/getUser?id=${userId}`)
+        .then((response) => {
+          setUser(response.data);
+          console.log(response.data);
+        });
+    };
+    fetchData();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      emailAddress: "",
-      contactNumber: "",
-      password: "",
-      confirmPassword: "",
+      id: user.user_id,
+      firstName: user.user_firstName,
+      lastName: user.user_lastName,
+      username: user.user_username,
+      emailAddress: user.user_email,
+      contactNumber: user.user_phoneNumber,
+      password: user.user_password,
+      confirmPassword: user.confirm_pass,
     },
+    enableReinitialize: true,
 
     onSubmit: async (values) => {
       console.log(values);
@@ -29,32 +45,32 @@ const UserForm = (props) => {
       try {
         const applicantData = {};
         const postRequest = await axios
-          .post("http://localhost:55731/api/UserAPI/register", {
+          .put("http://localhost:55731/api/UserAPI/edit", {
+            user_id: formik.values.id,
             user_firstName: formik.values.firstName,
             user_lastName: formik.values.lastName,
             user_email: formik.values.emailAddress,
             user_phoneNumber: formik.values.contactNumber,
             user_username: formik.values.username,
             user_password: formik.values.password,
-            confirm_pass: formik.values.confirmPassword,
+            confirm_pass: formik.values.password,
             user_isActive: true,
             user_role: "Testrole",
           })
-          .then((response) => {
-            if (response.status === 200) navigate("/users");
-          })
           .catch((error) => {
-            toast.error("Username is already taken", {
-              position: toast.POSITION.BOTTOM_RIGHT,
-            });
-            console.log(
-              error.response.data.ModelStateErrors.Errors[0].ErrorMessage
-            );
-            //console.log(postRequest.data);
+            console.log(error);
+            console.log(postRequest.data);
+          })
+          .then((response) => {
+            console.log(response.status);
+            if (response.status === 200) {
+              navigate(`/user-profile/${userId}`);
+            }
           });
       } catch (error) {
         console.log(error);
       }
+      //navigate("/confirmation", { state: { firstName: values.firstName } });
     },
 
     validationSchema: Yup.object({
@@ -71,18 +87,6 @@ const UserForm = (props) => {
         .matches(/^[0-9]+$/, "Whoops! Only digits are allowed for this field")
         .max(11, "Contact Number must exactly be 11 digits.")
         .min(11, "Contact Number must exactly be 11 digits."),
-      password: Yup.string()
-        .required("Oops! You missed this one.")
-        .min(6, "Oops! Password must be at least 6 characters long.")
-        .matches(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-          "Missing an uppercase, lowercase, number, or symbol"
-        )
-        .oneOf([Yup.ref("confirmPassword"), null], "Passwords must match"),
-      confirmPassword: Yup.string()
-        .required("Oops! You missed this one.")
-        .min(8, "Oops! Password must be at least 8 characters long.")
-        .oneOf([Yup.ref("password"), null], "Passwords must match"),
     }),
   });
 
@@ -112,7 +116,6 @@ const UserForm = (props) => {
 
   return (
     <div className="user-form">
-      <ToastContainer />
       <h1>{props.formFunction} User</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row-container">
@@ -120,7 +123,7 @@ const UserForm = (props) => {
             field="First Name"
             prefixIcon="./images/login-page/account.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="John"
+            placeholder={user.user_firstName}
             value={formik.values.firstName}
             onChange={formik.handleChange}
             name="firstName"
@@ -137,7 +140,7 @@ const UserForm = (props) => {
             field="Last Name"
             prefixIcon="./images/login-page/account.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="Doe"
+            placeholder={user.user_lastName}
             value={formik.values.lastName}
             onChange={formik.handleChange}
             name="lastName"
@@ -156,7 +159,7 @@ const UserForm = (props) => {
             field="Username"
             prefixIcon="./images/login-page/account.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="JohnDoe"
+            placeholder={user.user_username}
             value={formik.values.username}
             onChange={formik.handleChange}
             name="username"
@@ -173,7 +176,7 @@ const UserForm = (props) => {
             field="Email Address"
             prefixIcon="./images/login-page/account.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="doe.john@alliance.ph"
+            placeholder={user.user_email}
             value={formik.values.emailAddress}
             onChange={formik.handleChange}
             name="emailAddress"
@@ -192,7 +195,7 @@ const UserForm = (props) => {
             field="Contact Number"
             prefixIcon="./images/main-layout/phone.png"
             suffixIcon="./images/login-page/close.png"
-            placeholder="09123456789"
+            placeholder={user.user_phoneNumber}
             value={formik.values.contactNumber}
             onChange={formik.handleChange}
             name="contactNumber"
@@ -207,44 +210,12 @@ const UserForm = (props) => {
           />
           {/* <FileField field="Profile Picture" /> */}
         </div>
-        <div className="row-container">
-          <InputField
-            field="Password"
-            type="password"
-            prefixIcon="./images/login-page/lock.png"
-            suffixIcon="./images/login-page/eye-off.png"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            name="password"
-            onBlur={formik.handleBlur}
-            errorVisibility={handleInputVisibility(
-              formik.touched.password,
-              formik.errors.password
-            )}
-            touched={formik.touched.password}
-            errorMessage={formik.errors.password}
-          />
-          <InputField
-            field="Confirm Password"
-            type="password"
-            prefixIcon="./images/login-page/lock.png"
-            suffixIcon="./images/login-page/eye-off.png"
-            value={formik.values.confirmPassword}
-            onChange={formik.handleChange}
-            name="confirmPassword"
-            onBlur={formik.handleBlur}
-            errorVisibility={handleInputVisibility(
-              formik.touched.confirmPassword,
-              formik.errors.confirmPassword
-            )}
-            touched={formik.touched.confirmPassword}
-            errorMessage={formik.errors.confirmPassword}
-          />
-        </div>
+        {/* <Link to="/Users"> */}
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />
+        {/* </Link> */}
       </form>
     </div>
   );
 };
 
-export default UserForm;
+export default UserEdit;
