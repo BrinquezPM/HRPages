@@ -27,7 +27,7 @@ const Modal = (props) => {
             placeholder={props.fieldTxt}
             id="modal-field"
             className="my-input"
-            style={{textAlign: "left"}}
+            style={{verticalAlign: "top"}}
           />
         </div>
         <FilledButton
