@@ -1,9 +1,10 @@
 import "./Modal.css";
 import FilledButton from "../FilledButton/FilledButton";
 
-const Modal = (props) => {
+const ModalStatus = (props) => {
   const fieldDisplay = props.field === "visible" ? "block" : "none";
   const iconDisplay = props.iconDisplay ? props.iconDisplay : "block";
+  const statusNote = document.getElementById("modal-field"); //value of textarea
 
   return (
     <div className="modal-new">
@@ -22,8 +23,7 @@ const Modal = (props) => {
         <h3>{props.title}</h3>
         <p>{props.description}</p>
         <div style={{ display: fieldDisplay }}>
-          <input
-            type="text"
+          <textarea
             placeholder={props.fieldTxt}
             id="modal-field"
             className="my-input"
@@ -42,4 +42,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default ModalStatus;
