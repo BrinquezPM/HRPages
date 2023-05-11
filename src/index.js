@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       {
         path: "/applicants",
         element: (
-          <RequireAuth loginPath="/login">
+          <RequireAuth loginPath="/">
             <Applicants />
           </RequireAuth>
         ),
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
       {
         path: "/Users",
         element: (
-          <RequireAuth loginPath="/login">
+          <RequireAuth loginPath="/">
             <Users />
           </RequireAuth>
         ),
@@ -51,43 +51,67 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: (
-          <RequireAuth loginPath="login">
+          <RequireAuth loginPath="/">
             <ProfilePage />
           </RequireAuth>
         ),
       },
       {
         path: "/applicantDetails/:applicantid",
-        element: <ApplicantDetails />,
+        element: (
+          <RequireAuth loginPath="/">
+            <ApplicantDetails />
+          </RequireAuth>
+        ),
       },
       {
         path: "/userformcreate",
-        element: <UserForm formFunction="Create" />,
+        element: (
+          <RequireAuth loginPath="/">
+            <UserForm formFunction="Create" />
+          </RequireAuth>
+        ),
       },
       {
         path: "/userformdetails",
-        element: <UserEdit formFunction="Edit" />,
+        element: (
+          <RequireAuth loginPath="/">
+            <UserEdit formFunction="Edit" />
+          </RequireAuth>
+        ),
       },
       {
         path: "/otheruserformdetails",
-        element: <OtherUserEdit formFunction="Edit" />,
+        element: (
+          <RequireAuth loginPath="/">
+            <OtherUserEdit formFunction="Edit" />
+          </RequireAuth>
+        ),
       },
       {
         path: "/user-form",
-        element: <UserForm />,
+        element: (
+          <RequireAuth loginPath="/">
+            <UserForm />
+          </RequireAuth>
+        ),
       },
       {
         path: "/user-profile/:username",
-        element: <UserProfile />,
+        element: (
+          <RequireAuth loginPath="/">
+            <UserProfile />
+          </RequireAuth>
+        ),
       },
     ],
   },
   { element: <LoginPage />, path: "/" },
   {
     element: (
-      <RequireAuth loginPath="/login">
+      // <RequireAuth loginPath="/">
         <MainLayout />
-      </RequireAuth>
+      // </RequireAuth>
     ),
     path: "/main",
   },
