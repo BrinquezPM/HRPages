@@ -42,6 +42,7 @@ body.active-modal {
   right: 0;
   bottom: 0;
   position: fixed;
+  z-index: 2;
 }
 
 .modal-contents h3 {
@@ -53,6 +54,7 @@ body.active-modal {
 .modal-contents p {
   font-size: 0.875rem;
   margin-bottom: 20px;
+  z-index: 2;
 }
 
 .overlay {
@@ -73,6 +75,7 @@ body.active-modal {
   border-radius: 10px;
   width: 29.6875rem;
   height: 18.75rem;
+  z-index: 2;
 }
 
 .close-modal {
@@ -80,6 +83,7 @@ body.active-modal {
   top: 10px;
   right: 10px;
   padding: 5px 7px;
+  z-index: 2;
 }
 
 #modal-field{
@@ -88,6 +92,7 @@ body.active-modal {
   text-align: start;
   margin-bottom: 15px;
   border-radius: 5px;
+  z-index: 2;
 }
 
 .my-input::placeholder {
@@ -104,4 +109,7 @@ body.active-modal {
   border: 1px solid;
   border-bottom: 10;
   font-size: 16px;
+}
+.modal{
+  z-index: 2;
 }

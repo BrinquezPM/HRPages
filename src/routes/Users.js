@@ -45,6 +45,8 @@ function Table({
   fetchData,
   loading,
   pageCount: controlledPageCount,
+  pSize,
+  pIndex,
 }) {
   const {
     getTableProps,
@@ -78,14 +80,33 @@ function Table({
     usePagination
   );
 
-
+  // Listen for changes in pagination and use the state to fetch our new data
   React.useEffect(() => {
-    fetchData();
-  }, [fetchData, pageSize]);
+    fetchData({ pageIndex, pageSize });
+  }, [fetchData, pageIndex, pageSize]);
+ 
+  function handlePageClick(newPageIndex){
+    if(newPageIndex >0 && newPageIndex <= pSize){
+      pIndex = newPageIndex;
+      console.log("pIndex"+pIndex) 
+      console.log("pSize"+pSize) 
+    }
 
+  }
   return (
     <>
+        <code>
+          {JSON.stringify(
+            {
+              pSize,
+              pIndex
+            },
+            null,
+            2
+          )}
+        </code>
       <TableStyles>
+        
         <table {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup) => (
@@ -123,10 +144,10 @@ function Table({
           <tfoot>
             <tr>
               {loading ? (
-                <td colSpan="1"></td>
+                <td colSpan="1"><p>loading</p> </td>
               ) : (
                 <td colSpan="1">
-                  Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                  Showing {page.length} of ~{pSize.pages}{" "}
                   results
                 </td>
               )}
@@ -136,7 +157,7 @@ function Table({
               <td colSpan="2">
                 <div className="paginations">
                   <button
-                    onClick={() => gotoPage(pageIndex + 1)}
+                    onClick={() => handlePageClick(pIndex-1) }
                     style={{
                       width: 74,
                       height: 25,
@@ -170,13 +191,14 @@ function Table({
                   {" ... "}
                   <button
                     style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageOptions.length)}
+                    onClick={() => handlePageClick(pSize) }
                   >
-                    {pageOptions.length}
+                    {pSize}
+                
                   </button>
                   {""}{" "}
                   <button
-                    onClick={() => gotoPage(pageIndex + 1)}
+                    onClick={() =>handlePageClick(pIndex+1) }
                     style={{
                       width: 74,
                       height: 25,
@@ -200,12 +222,6 @@ function Table({
 }
 
 function Users() {
-  const Styles = styled.div`
-    .pagination {
-      padding: 0.5rem;
-    }
-  `;
-
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
@@ -214,24 +230,23 @@ function Users() {
     setIsDeleteModalActive(!isDeleteModalActive);
     setUsernameBeingDeleted(username);
   };
-  const [pageSize, setPageSize] = useState(5);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [pSize, setPageSize] = useState(5);
+  const [pIndex, setPageIndex] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
-      const apiUrl = `http://localhost:55731/api/ApplicantAPI/list`;
-      console.log(apiUrl);
+      let apiUrl = `http://localhost:55731/api/UserAPI/list?Page=${pIndex}&PageSize=${pSize}`
       axios
         .get(apiUrl)
         .then((response) => {
           setInfo(response.data);
-          setIsLoading(true);
+          setIsLoading(false);
           console.log(response.data);
-          console.log(response.data.pagination.pages);
           setPageSize(response.data.pagination.pages);
+          console.log(pSize);
         });
     };
     fetchData();
-  }, []);
+  }, [pIndex]);
 
   async function deactivateUser() {
     try {
@@ -272,6 +287,38 @@ function Users() {
           ContactNumber: user.phone,
         }));
 
+  let [tdata,setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [pageCount, setPageCount] = React.useState(0);
+  const fetchIdRef = React.useRef(0);
+
+  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
+    // This will get called when the table needs new data
+    // You could fetch your data from literally anywhere,
+    // even a server. But for this example, we'll just fake it.
+
+    // Give this fetch an ID
+    const fetchId = ++fetchIdRef.current
+
+    // Set the loading state
+    setLoading(true)
+
+    // We'll even set a delay to simulate a server here
+    setTimeout(() => {
+      // Only update the data if this is the latest fetch
+      if (fetchId === fetchIdRef.current) {
+        const startRow = pageSize * pageIndex
+        const endRow = startRow + pageSize
+        // setData(serverData.slice(startRow, endRow))
+
+          // Your server could send back total page count.
+          // For now we'll just fake it, too
+        // setPageCount(Math.ceil(serverData.length / pageSize))
+
+        setLoading(false)
+      }
+    }, 1000)
+  }, [])
   const columns = React.useMemo(
     () => [
       {
@@ -313,34 +360,12 @@ function Users() {
     [data]
   );
 
-  const [setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [pageCount, setPageCount] = React.useState(0);
-  const fetchIdRef = React.useRef(0);
-
-  const fetchData = React.useCallback(({ pageSize, pageIndex }) => {
-
-    const fetchId = ++fetchIdRef.current;
-
-    setLoading(true);
-
-    setTimeout(() => {
-      if (fetchId === fetchIdRef.current) {
-        const startRow = pageSize * pageIndex;
-        const endRow = startRow + pageSize;
-        // setData(data.slice(startRow, endRow));
-
-        setPageCount(Math.ceil(data.length / pageSize));
-
-        setLoading(true);
-      }
-    }, 1000);
-  }, []);
+  
 
   return isLoading ? (
     <p> Loading </p>
   ) : (
-    <Styles>
+    <>
       <div id="users-container">
         <div class="row-container users-header">
           <h2>Users</h2>
@@ -359,6 +384,8 @@ function Users() {
             fetchData={fetchData}
             loading={loading}
             pageCount={pageCount}
+            pIndex = {pIndex}
+            pSize = {pSize}
           />
         </div>
       </div>
@@ -373,7 +400,7 @@ function Users() {
           description="Are you sure you want to remove the applicant?"
         />
       )}
-    </Styles>
+    </>
   );
 }
 
