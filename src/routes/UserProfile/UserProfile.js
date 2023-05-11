@@ -15,6 +15,8 @@ const UserProfile = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const signOut = useSignOut();
   const navigate = useNavigate();
+  const auth = useAuthUser();
+  const activeUser = auth().user;
   const toggleDeactivateModal = () => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };
@@ -49,12 +51,21 @@ const UserProfile = (props) => {
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
+        .then((response) => {
+          console.log(response.status);
+          if (response.status === 200) {
+            if (userId === activeUser) { // if at current user profile
+              signOut();
+              navigate("/");
+            } else { // if at user from users / other users
+              navigate("/users");
+            }
+          }
+        })
     } catch (error) {
       console.log(error);
     }
-    signOut();
-    navigate("/");
     setIsDeactivateModalActive(!isDeactivateModalActive);
   }
 
@@ -81,7 +92,7 @@ const UserProfile = (props) => {
           </div>
           <div className="row-container">
             <Link
-              to="/userformdetails"
+              to={(userId === activeUser) ? "/userformdetails" : "/otheruserformdetails"}
               state={{
                 formFunction: "Edit",
                 user: user,
