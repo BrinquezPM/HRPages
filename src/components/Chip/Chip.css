@@ -2,7 +2,7 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 5rem;
+  width: 6rem;
   height: 1.25rem;
   border-radius: 5px;
   background-color: white;
@@ -22,10 +22,31 @@
   height: 30px;
   border-radius: 5px;
   background-color: white;
+  margin: auto;
 }
 
 .chip2 span {
   margin: 0;
   font-size: 0.625rem;
   font-weight: 500;
+}
+
+.modal-textarea {
+  width: 21.875rem;
+  height: 9.375rem;
+  resize: none;
+  padding: 0.625rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.notes-textarea {
+  width: 21.875rem;
+  height: 9.375rem;
+  resize: none;
+  padding: 0.625rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }

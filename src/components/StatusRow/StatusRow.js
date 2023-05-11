@@ -15,7 +15,9 @@ const StatusRow = (props) => {
           <h6>{props.statusName}</h6>
           <FilledButton
             btnDisplay={
-              props.id === "circular-number-disabled" ? "hidden" : "visible"
+              props.id === "circular-number-disabled" || props.statusNumber == 6
+                ? "hidden"
+                : "visible"
             }
             id="status-update"
             btnTxt="Update"
@@ -28,11 +30,15 @@ const StatusRow = (props) => {
               iconDisplay="none"
               title="Update Status"
               field="visible"
-              fieldTxt="Add notes"
+              fieldTxt="Add a note"
               backgroundColor="#28A745"
               btnTxt="Update"
+              value={props.value}
+              onChange={props.onChange}
+              name="note"
+              onBlur={props.onBlur}
               onClick={() => setModalUpdateOpen(false)}
-              onClose={() => setModalUpdateOpen(false)}
+              onClose={props.onClose}
             />
           )}
         </div>

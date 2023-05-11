@@ -20,23 +20,32 @@ const Modal = (props) => {
           onClick={props.onClose}
         />
         <h3>{props.title}</h3>
-        <p>{props.description}</p>
-        <div style={{ display: fieldDisplay }}>
-          <input
-            type="text"
+        <p
+          style={{
+            marginBottom: props.btnTxt === "Update" ? "0" : "20px",
+          }}
+        >
+          {props.description}
+        </p>
+        <form>
+          <textarea
+            value={props.value}
+            style={{ display: fieldDisplay }}
+            className="modal-textarea"
             placeholder={props.fieldTxt}
-            id="modal-field"
-            className="my-input"
-            style={{textAlign: "left"}}
+            onChange={props.onChange}
+            onBlur={props.onBlur}
+            name={props.name}
+          ></textarea>
+          <FilledButton
+            backgroundColor={props.backgroundColor}
+            display="none"
+            id="modal-btn"
+            btnTxt={props.btnTxt}
+            onClick={props.onClose}
+            type="submit"
           />
-        </div>
-        <FilledButton
-          backgroundColor={props.backgroundColor}
-          display="none"
-          id="modal-btn"
-          btnTxt={props.btnTxt}
-          onClick={props.onClose}
-        />
+        </form>
       </div>
     </div>
   );

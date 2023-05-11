@@ -1,13 +1,21 @@
 import "./ApplicantDetails.css";
-import Chip from "../Chip/Chip";
+import Chip2 from "../Chip/Chip2";
 import FilledButton from "../FilledButton/FilledButton";
 import StatusRow from "../StatusRow/StatusRow";
 import { useState, useEffect } from "react";
 import ModalNotes from "../Modal/ModalNotes";
+import { useFormik } from "formik";
 import axios from "axios";
 import { useParams } from "react-router";
 
 const ApplicantDetails = (props) => {
+  const formik = useFormik({
+    initialValues: {
+      note: "",
+    },
+
+    onSubmit: {},
+  });
   const [modalNotesOpen, setModalNotesOpen] = useState(false);
   const [info, setInfo] = useState([]);
   const routeId = useParams();
@@ -45,7 +53,7 @@ const ApplicantDetails = (props) => {
           apl_documentPhoto: info.apl_documentPhoto,
           apl_position: info.apl_position,
           apl_status: info.apl_status + 1,
-          apl_statusNote: info.apl_statusNote,
+          apl_statusNote: formik.values.note,
         })
         .catch((error) => {
           console.log(error);
@@ -54,7 +62,6 @@ const ApplicantDetails = (props) => {
     } catch (error) {
       console.log(error);
     }
-    setModalNotesOpen(!modalNotesOpen);
   }
 
   const handleDownloadPDF = async () => {
@@ -98,14 +105,14 @@ const ApplicantDetails = (props) => {
           id="applicant-pp"
           src={info.apl_documentPhoto}
           alt="profile-picture"
-          style={{borderRadius: "50%"}}
+          style={{ borderRadius: "50%" }}
         />
         <div className="applicant-information">
           <div className="row-container">
             <h3>
               {info.apl_firstName} {info.apl_lastName}
             </h3>
-            <Chip statusId={info.apl_status} />
+            <Chip2 statusId={info.apl_status} />
           </div>
           <div className="row-container">
             <img
@@ -146,7 +153,6 @@ const ApplicantDetails = (props) => {
                 backgroundColor="#28A745"
                 btnTxt="Close"
                 onClick={() => setModalNotesOpen(false)}
-                onClose={() => setModalNotesOpen(false)}
               />
             )}
           </div>
@@ -157,31 +163,55 @@ const ApplicantDetails = (props) => {
         statusName="Pre-Screened"
         statusNumber="1"
         id={info.apl_status !== 1 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
       <StatusRow
         statusName="HR Interview"
         statusNumber="2"
         id={info.apl_status !== 2 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
       <StatusRow
         statusName="Technical Interview"
         statusNumber="3"
         id={info.apl_status !== 3 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
       <StatusRow
         statusName="Final Interview"
         statusNumber="4"
         id={info.apl_status !== 4 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
       <StatusRow
         statusName="Job Offer"
         statusNumber="5"
         id={info.apl_status !== 5 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
       <StatusRow
         statusName="Accepted Job Offer"
         statusNumber="6"
         id={info.apl_status !== 6 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
       />
     </div>
   );

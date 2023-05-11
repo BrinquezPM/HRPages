@@ -6,7 +6,7 @@ const SearchBar = (props) => {
       <div className="search-bar-container">
         <img
           id="search-icon"
-          src="./images/main-layout/search-icon.png"
+          src="../../images/main-layout/search-icon.png"
           alt="prefix-icon"
         />
         <input

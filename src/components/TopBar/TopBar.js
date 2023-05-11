@@ -34,11 +34,11 @@ const TopBar = (props) => {
 
   return (
     <div className="top-bar">
-      <SearchBar searchVisibility={searchVisibility} />
+      <SearchBar searchVisibility="hidden" />
       <button onClick={toggleLogoutModal} id="logout-btn">
         <img
           id="logout-img"
-          src="./images/main-layout/logout.png"
+          src="../../images/main-layout/logout.png"
           alt="logout-icon"
         />
       </button>
@@ -50,7 +50,7 @@ const TopBar = (props) => {
           title="Sign Out"
           description="Are you sure you want to sign out?"
           btnTxt="Sign Out"
-          icon="./images/main-layout/sign-out.png"
+          icon="../../images/main-layout/sign-out.png"
         />
       )}
     </div>

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        path: "/applicants",
+        path: "/applicants/:pageid",
         element: (
           <RequireAuth loginPath="/login">
             <Applicants />
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         element: <UserEdit formFunction="Edit" />,
       },
       {
-        path: "/otheruserformdetails",
+        path: "/otheruserformdetails/:username",
         element: <OtherUserEdit formFunction="Edit" />,
       },
       {

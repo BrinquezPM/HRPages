@@ -55,14 +55,16 @@ const UserProfile = (props) => {
         .then((response) => {
           console.log(response.status);
           if (response.status === 200) {
-            if (userId === activeUser) { // if at current user profile
+            if (userId === activeUser) {
+              // if at current user profile
               signOut();
               navigate("/");
-            } else { // if at user from users / other users
+            } else {
+              // if at user from users / other users
               navigate("/users");
             }
           }
-        })
+        });
     } catch (error) {
       console.log(error);
     }
@@ -92,7 +94,11 @@ const UserProfile = (props) => {
           </div>
           <div className="row-container">
             <Link
-              to={(userId === activeUser) ? "/userformdetails" : "/otheruserformdetails"}
+              to={
+                userId === activeUser
+                  ? `/userformdetails`
+                  : `/otheruserformdetails/${user.user_username}`
+              }
               state={{
                 formFunction: "Edit",
                 user: user,
@@ -122,10 +128,10 @@ const UserProfile = (props) => {
         <Modal
           onClick={toggleDeactivateModal}
           onClose={deactivateUser}
-          title="Deactivate User"
-          description="Are you sure you want to deactivate?"
-          btnTxt="Deactivate"
-          icon="./images/main-layout/trash-illustration.png"
+          title="Remove User"
+          description="Are you sure you want to remove the user?"
+          btnTxt="Remove"
+          icon="../../images/main-layout/trash-illustration.png"
         />
       )}
       <InformationRow

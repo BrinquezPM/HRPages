@@ -30,7 +30,7 @@ body.active-modal {
 
 #modal-btn {
   width: 9.375rem;
-  margin: 0;
+  margin: auto;
 }
 
 .modal-new,

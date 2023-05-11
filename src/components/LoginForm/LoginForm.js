@@ -23,7 +23,7 @@ const LoginForm = (props) => {
   };
 
   async function notify() {
-    toast.error("User does not exist", {
+    toast.error("User is currently disabled", {
       position: toast.POSITION.BOTTOM_RIGHT,
     });
   }
@@ -49,7 +49,7 @@ const LoginForm = (props) => {
                   tokenType: "Bearer",
                   authState: { user: formik.values.username },
                 });
-                navigate("/applicants");
+                navigate("/applicants/1");
               }
             })
             .catch((error) => isActive(false))

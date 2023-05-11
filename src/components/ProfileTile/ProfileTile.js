@@ -32,14 +32,17 @@ const ProfileTile = (props) => {
   }, []);
 
   return (
-    <Link to={props.path} state={{title: "Profile"}}>
+    <Link to={props.path} state={{ title: "Profile" }}>
       <button
         onClick={toggleTile}
         className={`profile-tile ${
           props.isActive ? "profile-tile-red" : "profile-tile-normal"
         }`}
       >
-        <img src="./images/main-layout/james-reid.png" alt="profile-picture" />
+        <img
+          src="../../images/main-layout/james-reid.png"
+          alt="profile-picture"
+        />
         <div className="profile-tile-txts">
           <p id="profile-tile-name">
             {user.user_firstName} {user.user_lastName}

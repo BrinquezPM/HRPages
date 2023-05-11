@@ -121,8 +121,8 @@ const UserEdit = (props) => {
         <div className="row-container">
           <InputField
             field="First Name"
-            prefixIcon="./images/login-page/account.png"
-            suffixIcon="./images/login-page/close.png"
+            prefixIcon="../../images/login-page/account.png"
+            suffixIcon="../../images/login-page/close.png"
             placeholder={user.user_firstName}
             value={formik.values.firstName}
             onChange={formik.handleChange}
@@ -138,8 +138,8 @@ const UserEdit = (props) => {
           />
           <InputField
             field="Last Name"
-            prefixIcon="./images/login-page/account.png"
-            suffixIcon="./images/login-page/close.png"
+            prefixIcon="../../images/login-page/account.png"
+            suffixIcon="../../images/login-page/close.png"
             placeholder={user.user_lastName}
             value={formik.values.lastName}
             onChange={formik.handleChange}
@@ -156,45 +156,9 @@ const UserEdit = (props) => {
         </div>
         <div className="row-container">
           <InputField
-            field="Username"
-            prefixIcon="./images/login-page/account.png"
-            suffixIcon="./images/login-page/close.png"
-            placeholder={user.user_username}
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            name="username"
-            onBlur={formik.handleBlur}
-            errorVisibility={handleInputVisibility(
-              formik.touched.username,
-              formik.errors.username
-            )}
-            touched={formik.touched.username}
-            suffixFunction={eraseUsername}
-            errorMessage={formik.errors.username}
-          />
-          <InputField
-            field="Email Address"
-            prefixIcon="./images/login-page/account.png"
-            suffixIcon="./images/login-page/close.png"
-            placeholder={user.user_email}
-            value={formik.values.emailAddress}
-            onChange={formik.handleChange}
-            name="emailAddress"
-            onBlur={formik.handleBlur}
-            errorVisibility={handleInputVisibility(
-              formik.touched.emailAddress,
-              formik.errors.emailAddress
-            )}
-            touched={formik.touched.emailAddress}
-            suffixFunction={eraseEmailAddress}
-            errorMessage={formik.errors.emailAddress}
-          />
-        </div>
-        <div className="row-container">
-          <InputField
             field="Contact Number"
-            prefixIcon="./images/main-layout/phone.png"
-            suffixIcon="./images/login-page/close.png"
+            prefixIcon="../../images/main-layout/phone.png"
+            suffixIcon="../../images/login-page/close.png"
             placeholder={user.user_phoneNumber}
             value={formik.values.contactNumber}
             onChange={formik.handleChange}
@@ -208,7 +172,40 @@ const UserEdit = (props) => {
             suffixFunction={eraseContactNumber}
             errorMessage={formik.errors.contactNumber}
           />
-          {/* <FileField field="Profile Picture" /> */}
+          {/* <InputField
+            field="Username"
+            prefixIcon="../../images/login-page/account.png"
+            suffixIcon="../../images/login-page/close.png"
+            placeholder={user.user_username}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            name="username"
+            onBlur={formik.handleBlur}
+            errorVisibility={handleInputVisibility(
+              formik.touched.username,
+              formik.errors.username
+            )}
+            touched={formik.touched.username}
+            suffixFunction={eraseUsername}
+            errorMessage={formik.errors.username}
+          /> */}
+          <InputField
+            field="Email Address"
+            prefixIcon="../../images/login-page/account.png"
+            suffixIcon="../../images/login-page/close.png"
+            placeholder={user.user_email}
+            value={formik.values.emailAddress}
+            onChange={formik.handleChange}
+            name="emailAddress"
+            onBlur={formik.handleBlur}
+            errorVisibility={handleInputVisibility(
+              formik.touched.emailAddress,
+              formik.errors.emailAddress
+            )}
+            touched={formik.touched.emailAddress}
+            suffixFunction={eraseEmailAddress}
+            errorMessage={formik.errors.emailAddress}
+          />
         </div>
         {/* <Link to="/Users"> */}
         <FilledButton type="submit" id="user-btn" btnTxt={props.formFunction} />

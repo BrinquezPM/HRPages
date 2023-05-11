@@ -20,8 +20,8 @@ const Chip = (props) => {
       break;
     case 4:
       chipTxt = "Final Interview";
-      borderColor = "yellow";
-      textColor = "yellow";
+      borderColor = "brown";
+      textColor = "brown";
       break;
     case 5:
       chipTxt = "Job Offer";
@@ -47,7 +47,7 @@ const Chip = (props) => {
   };
 
   return (
-    <div className="chip" style={chipStyle} id={props.statusId}>
+    <div className="chip2" style={chipStyle} id={props.statusId}>
       <span>{chipTxt}</span>
     </div>
   );

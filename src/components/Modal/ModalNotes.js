@@ -22,13 +22,11 @@ const Modal = (props) => {
         <h3>{props.title}</h3>
         <p>{props.description}</p>
         <div style={{ display: fieldDisplay }}>
-          <input
-            type="text"
+          <textarea
             value={props.fieldTxt}
-            id="modal-field"
-            className="my-input"
+            className="notes-textarea"
             readOnly="true"
-            style={{textAlign: "left"}}
+            style={{ textAlign: "left" }}
           />
         </div>
         <FilledButton
@@ -36,7 +34,7 @@ const Modal = (props) => {
           display="none"
           id="modal-btn"
           btnTxt={props.btnTxt}
-          onClick={props.onClose}
+          onClick={props.onClick}
         />
       </div>
     </div>

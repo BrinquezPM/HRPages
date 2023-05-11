@@ -87,29 +87,17 @@ function Table({
   React.useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
- 
-  function handlePageClick(newPageIndex){
-    if(newPageIndex >0 && newPageIndex <= pSize){
-      pIndex = newPageIndex;
-      console.log("pIndex"+pIndex) 
-      console.log("pSize"+pSize) 
-    }
 
+  function handlePageClick(newPageIndex) {
+    if (newPageIndex > 0 && newPageIndex <= pSize) {
+      pIndex = newPageIndex;
+      console.log("pIndex" + pIndex);
+      console.log("pSize" + pSize);
+    }
   }
   return (
     <>
-        <code>
-          {JSON.stringify(
-            {
-              pSize,
-              pIndex
-            },
-            null,
-            2
-          )}
-        </code>
       <TableStyles>
-
         <div className="table-wrapper">
           <table {...getTableProps()}>
             <thead>
@@ -149,81 +137,43 @@ function Table({
             </tbody>
             <tfoot>
               <tr>
-                {loading ? (
-                <td colSpan="1"><p>loading</p> </td>
-              ) : (
-                <td colSpan="1">
-                  Showing {page.length} of ~{pSize.pages}{" "}
-                  results
+                <td colSpan="2">
+                  <div className="paginations">
+                    <button
+                      onClick={() => handlePageClick(pIndex - 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginRight: 17,
+                        border: "none",
+                      }}
+                    >
+                      prev
+                    </button>
+                    {""}{" "}
+                    <button
+                      onClick={() => handlePageClick(pIndex + 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginLeft: 17,
+                        border: "none",
+                      }}
+                    >
+                      next
+                    </button>{" "}
+                  </div>
                 </td>
-                )}
-                <td></td>
-                <td></td>
-
-              <td colSpan="2">
-                <div className="paginations">
-                  <button
-                    onClick={() => handlePageClick(pIndex-1) }
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginRight: 17,
-                      border: "none",
-                    }}
-                  >
-                    prev
-                  </button>
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() =>handlePageClick(pIndex)}
-                  >
-                    {pageIndex + 1}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() =>handlePageClick(pIndex +1 )}
-                  >
-                    {pageIndex + 2}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => handlePageClick(pIndex +2 )}
-                  >
-                    {pageIndex + 3}
-                  </button>
-                  {" ... "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => handlePageClick(pSize) }
-                  >
-                    {pSize}
-                
-                  </button>
-                  {""}{" "}
-                  <button
-                    onClick={() =>handlePageClick(pIndex+1) }
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginLeft: 17,
-                      border: "none",
-                    }}
-                  >
-                    next
-                  </button>{" "}
-                </div>
-              </td>
               </tr>
             </tfoot>
           </table>
         </div>
-
       </TableStyles>
     </>
   );
@@ -242,20 +192,17 @@ function Users() {
   const [pIndex, setPageIndex] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
-      let apiUrl = `http://localhost:55731/api/UserAPI/list?Page=${pIndex}&PageSize=${pSize}`
-      axios
-        .get(apiUrl)
-        .then((response) => {
-          setInfo(response.data);
-          setIsLoading(false);
-          console.log(response.data);
-          setPageSize(response.data.pagination.pages);
-          console.log(pSize);
-        });
+      let apiUrl = `http://localhost:55731/api/UserAPI/list?Page=${pIndex}&PageSize=${pSize}`;
+      axios.get(apiUrl).then((response) => {
+        setInfo(response.data);
+        setIsLoading(false);
+        console.log(response.data);
+        setPageSize(response.data.pagination.pages);
+        console.log(pSize);
+      });
     };
     fetchData();
   }, [pIndex]);
-
 
   async function deactivateUser() {
     try {
@@ -292,7 +239,7 @@ function Users() {
             password: user.password,
           }));
 
-  let [tdata,setData] = React.useState([]);
+  let [tdata, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [pageCount, setPageCount] = React.useState(0);
   const fetchIdRef = React.useRef(0);
@@ -303,27 +250,27 @@ function Users() {
     // even a server. But for this example, we'll just fake it.
 
     // Give this fetch an ID
-    const fetchId = ++fetchIdRef.current
+    const fetchId = ++fetchIdRef.current;
 
     // Set the loading state
-    setLoading(true)
+    setLoading(true);
 
     // We'll even set a delay to simulate a server here
     setTimeout(() => {
       // Only update the data if this is the latest fetch
       if (fetchId === fetchIdRef.current) {
-        const startRow = pageSize * pageIndex
-        const endRow = startRow + pageSize
+        const startRow = pageSize * pageIndex;
+        const endRow = startRow + pageSize;
         // setData(serverData.slice(startRow, endRow))
 
-          // Your server could send back total page count.
-          // For now we'll just fake it, too
+        // Your server could send back total page count.
+        // For now we'll just fake it, too
         // setPageCount(Math.ceil(serverData.length / pageSize))
 
-        setLoading(false)
+        setLoading(false);
       }
-    }, 1000)
-  }, [])
+    }, 1000);
+  }, []);
   const columns = React.useMemo(
     () => [
       {
@@ -377,8 +324,6 @@ function Users() {
     [data]
   );
 
-  
-
   return isLoading ? (
     <p> Loading </p>
   ) : (
@@ -401,8 +346,8 @@ function Users() {
             fetchData={fetchData}
             loading={loading}
             pageCount={pageCount}
-            pIndex = {pIndex}
-            pSize = {pSize}
+            pIndex={pIndex}
+            pSize={pSize}
           />
         </div>
       </div>

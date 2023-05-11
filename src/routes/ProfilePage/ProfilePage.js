@@ -114,10 +114,10 @@ const ProfilePage = (props) => {
         <Modal
           onClick={toggleDeactivateModal}
           onClose={deactivateUser}
-          title="Deactivate User"
-          description="Are you sure you want to deactivate?"
+          title="Deactivate Account"
+          description="Are you sure you want to deactivate your account?"
           btnTxt="Deactivate"
-          icon="./images/main-layout/trash-illustration.png"
+          icon="../../images/main-layout/trash-illustration.png"
         />
       )}
       <InformationRow

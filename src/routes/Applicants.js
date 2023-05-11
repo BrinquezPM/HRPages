@@ -9,7 +9,8 @@ import magnify from "../Images/magnify-expand.png";
 import bin from "../Images/trash-icon.png";
 import trashIllustration from "../Images/trash-illustration.png";
 import axios from "axios";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { useParams } from "react-router";
 
 const TableStyles = styled.div`
   .table-wrapper {
@@ -48,6 +49,7 @@ function Table({
   fetchData,
   loading,
   pageCount: controlledPageCount,
+  totalPageSize,
 }) {
   const {
     getTableProps,
@@ -85,7 +87,9 @@ function Table({
   React.useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
-
+  const navigate = useNavigate();
+  const params = useParams();
+  const pageId = params.pageid;
   return (
     <>
       <TableStyles>
@@ -131,77 +135,46 @@ function Table({
             </tr> */}
             </tbody>
             <tfoot>
-              <tr>
-                {loading ? (
-                  <td colSpan="1"></td>
-                ) : (
-                  <td colSpan="1">
-                    Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
-                    results
-                  </td>
-                )}
-                <td></td>
-                <td></td>
-
-                <td colSpan="2">
-                  <div className="paginations">
-                    <button
-                      onClick={() => gotoPage(pageIndex + 1)}
-                      style={{
-                        width: 74,
-                        height: 25,
-                        borderRadius: 5,
-                        backgroundColor: "#4E9E32",
-                        color: "white",
-                        marginRight: 17,
-                        border: "none",
-                      }}
-                    >
-                      prev
-                    </button>
-                    <button
-                      style={{ width: 25, height: 25 }}
-                      onClick={() => gotoPage(pageIndex)}
-                    >
-                      {pageIndex + 1}
-                    </button>{" "}
-                    <button
-                      style={{ width: 25, height: 25 }}
-                      onClick={() => gotoPage(pageIndex + 1)}
-                    >
-                      {pageIndex + 2}
-                    </button>{" "}
-                    <button
-                      style={{ width: 25, height: 25 }}
-                      onClick={() => gotoPage(pageIndex + 2)}
-                    >
-                      {pageIndex + 3}
-                    </button>
-                    {" ... "}
-                    <button
-                      style={{ width: 25, height: 25 }}
-                      onClick={() => gotoPage(pageOptions.length)}
-                    >
-                      {pageOptions.length}
-                    </button>
-                    {""}{" "}
-                    <button
-                      onClick={() => gotoPage(pageIndex + 1)}
-                      style={{
-                        width: 74,
-                        height: 25,
-                        borderRadius: 5,
-                        backgroundColor: "#4E9E32",
-                        color: "white",
-                        marginLeft: 17,
-                        border: "none",
-                      }}
-                    >
-                      next
-                    </button>{" "}
-                  </div>
-                </td>
-              </tr>
+              <td colSpan="2">
+                <div className="paginations">
+                  <button
+                    onClick={() => {
+                      navigate(`/applicants/${parseInt(pageId) - 1}`);
+                      window.location.reload();
+                    }}
+                    style={{
+                      width: 100,
+                      height: 35,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginRight: 10,
+                      border: "none",
+                      display: pageId == 1 ? "none" : "inline",
+                    }}
+                  >
+                    Previous
+                  </button>
+                  {""}{" "}
+                  <button
+                    onClick={() => {
+                      navigate(`/applicants/${parseInt(pageId) + 1}`);
+                      window.location.reload();
+                    }}
+                    style={{
+                      width: 100,
+                      height: 35,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      border: "none",
+                      display: pageId == totalPageSize ? "none" : "inline",
+                    }}
+                  >
+                    Next
+                  </button>{" "}
+                </div>
+              </td>
             </tfoot>
           </table>
         </div>
@@ -211,6 +184,8 @@ function Table({
 }
 
 function Applicants() {
+  const params = useParams();
+  const pageId = params.pageid;
   const location = useLocation();
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -231,7 +206,9 @@ function Applicants() {
   useEffect(() => {
     const fetchUsers = async () => {
       await axios
-        .get("http://localhost:55731/api/ApplicantAPI/list?Page=0&PageSize=5")
+        .get(
+          `http://localhost:55731/api/ApplicantAPI/list?Page=${pageId}&PageSize=5`
+        )
         .then((response) => {
           setInfo(response.data);
           setIsLoading(false);
@@ -255,7 +232,7 @@ function Applicants() {
       console.log(error);
     }
     setIsDeleteModalActive(false);
-    window.location.reload(); 
+    window.location.reload();
   }
 
   const [show, setShow] = useState(false);
@@ -366,6 +343,7 @@ function Applicants() {
           fetchData={fetchData}
           loading={loading}
           pageCount={pageCount}
+          totalPageSize={info.pagination.pages}
         />
       </div>
       {isDeleteModalActive && (

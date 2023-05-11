@@ -20,8 +20,8 @@ const Chip = (props) => {
       break;
     case 4:
       chipTxt = "Final Interview";
-      borderColor = "yellow";
-      textColor = "yellow";
+      borderColor = "brown";
+      textColor = "brown";
       break;
     case 5:
       chipTxt = "Job Offer";
@@ -31,7 +31,7 @@ const Chip = (props) => {
     case 6:
       chipTxt = "Accepted Job Offer";
       borderColor = "indigo";
-      textColor = "red";
+      textColor = "indigo";
       break;
     default:
       chipTxt = "No Status";
