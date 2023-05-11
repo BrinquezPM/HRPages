@@ -3,7 +3,7 @@ import Chip from "../Chip/Chip";
 import FilledButton from "../FilledButton/FilledButton";
 import StatusRow from "../StatusRow/StatusRow";
 import { useState, useEffect } from "react";
-import Modal from "../Modal/Modal";
+import ModalNotes from "../Modal/ModalNotes";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -98,6 +98,7 @@ const ApplicantDetails = (props) => {
           id="applicant-pp"
           src={info.apl_documentPhoto}
           alt="profile-picture"
+          style={{borderRadius: "50%"}}
         />
         <div className="applicant-information">
           <div className="row-container">
@@ -137,11 +138,11 @@ const ApplicantDetails = (props) => {
             />
 
             {modalNotesOpen && (
-              <Modal
+              <ModalNotes
                 iconDisplay="none"
                 title="Notes"
                 field="visible"
-                fieldTxt="Add notes"
+                fieldTxt={info.apl_statusNote}
                 backgroundColor="#28A745"
                 btnTxt="Close"
                 onClick={() => setModalNotesOpen(false)}
