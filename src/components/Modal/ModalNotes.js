@@ -1,7 +1,7 @@
 import "./Modal.css";
 import FilledButton from "../FilledButton/FilledButton";
 
-const Modal = (props) => {
+const ModalNotes = (props) => {
   const fieldDisplay = props.field === "visible" ? "block" : "none";
   const iconDisplay = props.iconDisplay ? props.iconDisplay : "block";
 
@@ -43,4 +43,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default ModalNotes;
