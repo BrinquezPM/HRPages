@@ -3,7 +3,7 @@ import Chip from "../Chip/Chip";
 import FilledButton from "../FilledButton/FilledButton";
 import StatusRow from "../StatusRow/StatusRow";
 import { useState, useEffect } from "react";
-import Modal from "../Modal/Modal";
+import ModalNotes from "../Modal/ModalNotes";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -138,14 +138,13 @@ const ApplicantDetails = (props) => {
             />
 
             {modalNotesOpen && (
-              <Modal
+              <ModalNotes
                 iconDisplay="none"
                 title="Notes"
                 field="visible"
-                fieldTxt="Add notes"
+                fieldTxt={info.apl_statusNote}
                 backgroundColor="#28A745"
                 btnTxt="Close"
-                readOnly="true"
                 onClick={() => setModalNotesOpen(false)}
                 onClose={() => setModalNotesOpen(false)}
               />
