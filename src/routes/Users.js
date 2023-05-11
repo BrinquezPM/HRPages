@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import Modal from "../components/Modal/Modal";
 import { useTable, useSortBy, usePagination } from "react-table";
 import "../App.css";
 import styled from "styled-components";
@@ -12,9 +11,14 @@ import addIcon from "../Images/add-icon.png";
 import trashIllustration from "../Images/trash-illustration.png";
 
 const TableStyles = styled.div`
-  table {
-    border-radius: 5px !important;
+  .table-wrapper {
+    border-radius: 6px;
     border: 1px solid #d9d9d9;
+    overflow: auto;
+  }
+
+  table {
+    border: none;
     width: 100%;
   }
 
@@ -23,7 +27,6 @@ const TableStyles = styled.div`
     font-weight: 500;
     height: 3.125rem;
     border: 0;
-    // display: flex;
   }
 
   th {
@@ -86,114 +89,118 @@ function Table({
   return (
     <>
       <TableStyles>
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render("Header")}
+        <div className="table-wrapper">
+          <table {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      {column.render("Header")}
 
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((rows, i) => {
-              prepareRow(rows);
-              return (
-                <tr {...rows.getRowProps()}>
-                  {rows.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? " 🔽"
+                            : " 🔼"
+                          : ""}
+                      </span>
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr>
-              {loading ? (
-                <td colSpan="1"></td>
-              ) : (
-                <td colSpan="1">
-                  Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
-                  results
-                </td>
-              )}
-              <td></td>
-              <td></td>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((rows, i) => {
+                prepareRow(rows);
+                return (
+                  <tr {...rows.getRowProps()}>
+                    {rows.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                {loading ? (
+                  <td colSpan="1"></td>
+                ) : (
+                  <td colSpan="1">
+                    Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                    results
+                  </td>
+                )}
+                <td></td>
+                <td></td>
 
-              <td colSpan="2">
-                <div className="paginations">
-                  <button
-                    onClick={() => gotoPage(pageIndex + 1)}
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginRight: 17,
-                      border: "none",
-                    }}
-                  >
-                    prev
-                  </button>
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex)}
-                  >
-                    {pageIndex + 1}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex + 1)}
-                  >
-                    {pageIndex + 2}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex + 2)}
-                  >
-                    {pageIndex + 3}
-                  </button>
-                  {" ... "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageOptions.length)}
-                  >
-                    {pageOptions.length}
-                  </button>
-                  {""}{" "}
-                  <button
-                    onClick={() => gotoPage(pageIndex + 1)}
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginLeft: 17,
-                      border: "none",
-                    }}
-                  >
-                    next
-                  </button>{" "}
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+                <td colSpan="2">
+                  <div className="paginations">
+                    <button
+                      onClick={() => gotoPage(pageIndex + 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginRight: 17,
+                        border: "none",
+                      }}
+                    >
+                      prev
+                    </button>
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex)}
+                    >
+                      {pageIndex + 1}
+                    </button>{" "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex + 1)}
+                    >
+                      {pageIndex + 2}
+                    </button>{" "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex + 2)}
+                    >
+                      {pageIndex + 3}
+                    </button>
+                    {" ... "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageOptions.length)}
+                    >
+                      {pageOptions.length}
+                    </button>
+                    {""}{" "}
+                    <button
+                      onClick={() => gotoPage(pageIndex + 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginLeft: 17,
+                        border: "none",
+                      }}
+                    >
+                      next
+                    </button>{" "}
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </TableStyles>
     </>
   );
@@ -209,37 +216,27 @@ function Users() {
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
-  const [usernameBeingDeleted, setUsernameBeingDeleted] = useState();
-  const toggleDeleteModal = (username) => {
+  const [userBeingDeleted, setUserBeingDeleted] = useState({});
+  const toggleDeleteModal = (data) => {
     setIsDeleteModalActive(!isDeleteModalActive);
-    setUsernameBeingDeleted(username);
+    setUserBeingDeleted(data);
   };
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsers = async () => {
       axios
         .get(`http://localhost:55731/api/UserAPI/list?Page=0&PageSize=10`)
         .then((response) => {
           setInfo(response.data);
           setIsLoading(false);
-          console.log(response.data);
         });
     };
-    fetchData();
+    fetchUsers();
   }, []);
 
   async function deactivateUser() {
     try {
       const postRequest = await axios
-        .put("http://localhost:55731/api/UserAPI/softdelete", {
-          user_id: info.id,
-          user_firstName: info.firstname,
-          user_lastName: info.lastname,
-          user_email: info.email,
-          user_phoneNumber: info.phoneNumber,
-          user_username: info.username,
-          user_password: info.password,
-          confirm_pass: info.upassword,
-        })
+        .put("http://localhost:55731/api/UserAPI/softdelete", userBeingDeleted)
         .catch((error) => {
           console.log(error);
           console.log(postRequest.data);
@@ -248,6 +245,7 @@ function Users() {
       console.log(error);
     }
     handleClose();
+    window.location.reload();
   }
 
   const [show, setShow] = useState(false);
@@ -258,12 +256,17 @@ function Users() {
   let data =
     info.data === undefined
       ? ""
-      : info?.data?.map((user) => ({
-          name: `${user.firstname} ${" "} ${user.lastname}`,
-          EmailAddress: user.email,
-          username: `${user.username}`,
-          ContactNumber: user.phone,
-        }));
+      : info?.data
+          ?.filter((user) => user.isActive == true)
+          .map((user) => ({
+            name: `${user.firstname} ${" "} ${user.lastname}`,
+            emailAddress: user.email,
+            username: `${user.username}`,
+            phoneNumber: user.phone,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            password: user.password,
+          }));
 
   const columns = React.useMemo(
     () => [
@@ -273,7 +276,7 @@ function Users() {
       },
       {
         Header: "Email Address",
-        accessor: "EmailAddress",
+        accessor: "emailAddress",
       },
       {
         Header: "Username",
@@ -281,7 +284,7 @@ function Users() {
       },
       {
         Header: "Contact Number",
-        accessor: "ContactNumber",
+        accessor: "phoneNumber",
       },
       {
         Header: "Actions",
@@ -294,8 +297,20 @@ function Users() {
               </span>
             </Link>
             <span
-              style={{ cursor: "pointer", marginLeft: "50px" }}
-              onClick={handleShow}
+              style={{ cursor: "pointer", marginLeft: "30px" }}
+              onClick={() => {
+                const userDeletedData = {
+                  user_firstName: data[row.row.id].firstname,
+                  user_lastName: data[row.row.id].lastname,
+                  user_email: data[row.row.id].emailAddress,
+                  user_phoneNumber: data[row.row.id].phoneNumber,
+                  user_username: data[row.row.id].username,
+                  user_password: data[row.row.id].password,
+                  confirm_pass: data[row.row.id].password,
+                };
+
+                toggleDeleteModal(userDeletedData);
+              }}
             >
               <img src={bin} style={{ width: "1.5rem" }} />
             </span>
@@ -369,10 +384,10 @@ function Users() {
         <Modal
           onClick={toggleDeleteModal}
           onClose={deactivateUser}
-          title="Remove Applicant"
+          title="Remove User"
           icon={trashIllustration}
           btnTxt="Remove"
-          description="Are you sure you want to remove the applicant?"
+          description="Are you sure you want to remove the user?"
         />
       )}
     </Styles>

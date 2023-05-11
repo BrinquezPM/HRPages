@@ -12,9 +12,14 @@ import axios from "axios";
 import { useLocation } from "react-router";
 
 const TableStyles = styled.div`
-  table {
-    border-radius: 5px !important;
+  .table-wrapper {
+    border-radius: 6px;
     border: 1px solid #d9d9d9;
+    overflow: auto;
+  }
+
+  table {
+    border: none;
     width: 100%;
   }
 
@@ -84,118 +89,122 @@ function Table({
   return (
     <>
       <TableStyles>
-        <table id="applicant-table" {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render("Header")}
+        <div className="table-wrapper">
+          <table id="applicant-table" {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      {column.render("Header")}
 
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? " 🔽"
-                          : " 🔼"
-                        : ""}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((rows, i) => {
-              prepareRow(rows);
-              return (
-                <tr {...rows.getRowProps()}>
-                  {rows.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? " 🔽"
+                            : " 🔼"
+                          : ""}
+                      </span>
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((rows, i) => {
+                prepareRow(rows);
+                return (
+                  <tr {...rows.getRowProps()}>
+                    {rows.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
 
-            {/* <tr>
+              {/* <tr>
               <td colSpan={headerGroups[0].headers.length}></td>
             </tr> */}
-          </tbody>
-          <tfoot>
-            <tr>
-              {loading ? (
-                <td colSpan="1"></td>
-              ) : (
-                <td colSpan="1">
-                  Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
-                  results
-                </td>
-              )}
-              <td></td>
-              <td></td>
+            </tbody>
+            <tfoot>
+              <tr>
+                {loading ? (
+                  <td colSpan="1"></td>
+                ) : (
+                  <td colSpan="1">
+                    Showing {page.length} of ~{controlledPageCount * pageSize}{" "}
+                    results
+                  </td>
+                )}
+                <td></td>
+                <td></td>
 
-              <td colSpan="2">
-                <div className="paginations">
-                  <button
-                    onClick={() => gotoPage(pageIndex + 1)}
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginRight: 17,
-                      border: "none",
-                    }}
-                  >
-                    prev
-                  </button>
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex)}
-                  >
-                    {pageIndex + 1}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex + 1)}
-                  >
-                    {pageIndex + 2}
-                  </button>{" "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageIndex + 2)}
-                  >
-                    {pageIndex + 3}
-                  </button>
-                  {" ... "}
-                  <button
-                    style={{ width: 25, height: 25 }}
-                    onClick={() => gotoPage(pageOptions.length)}
-                  >
-                    {pageOptions.length}
-                  </button>
-                  {""}{" "}
-                  <button
-                    onClick={() => gotoPage(pageIndex + 1)}
-                    style={{
-                      width: 74,
-                      height: 25,
-                      borderRadius: 5,
-                      backgroundColor: "#4E9E32",
-                      color: "white",
-                      marginLeft: 17,
-                      border: "none",
-                    }}
-                  >
-                    next
-                  </button>{" "}
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+                <td colSpan="2">
+                  <div className="paginations">
+                    <button
+                      onClick={() => gotoPage(pageIndex + 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginRight: 17,
+                        border: "none",
+                      }}
+                    >
+                      prev
+                    </button>
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex)}
+                    >
+                      {pageIndex + 1}
+                    </button>{" "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex + 1)}
+                    >
+                      {pageIndex + 2}
+                    </button>{" "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageIndex + 2)}
+                    >
+                      {pageIndex + 3}
+                    </button>
+                    {" ... "}
+                    <button
+                      style={{ width: 25, height: 25 }}
+                      onClick={() => gotoPage(pageOptions.length)}
+                    >
+                      {pageOptions.length}
+                    </button>
+                    {""}{" "}
+                    <button
+                      onClick={() => gotoPage(pageIndex + 1)}
+                      style={{
+                        width: 74,
+                        height: 25,
+                        borderRadius: 5,
+                        backgroundColor: "#4E9E32",
+                        color: "white",
+                        marginLeft: 17,
+                        border: "none",
+                      }}
+                    >
+                      next
+                    </button>{" "}
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </TableStyles>
     </>
   );
@@ -301,7 +310,7 @@ function Applicants() {
               </Link>
             </span>
             <span
-              style={{ cursor: "pointer", marginLeft: "35px" }}
+              style={{ cursor: "pointer", marginLeft: "30px" }}
               onClick={() => toggleDeleteModal(data[row.row.id].applicantid)}
             >
               <img src={bin} style={{ width: "1.5rem" }} />

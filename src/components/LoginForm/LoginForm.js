@@ -6,24 +6,21 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useSignIn } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 const LoginForm = (props) => {
   const [isCredentialsValid, setIsCredentialsValid] = useState(true);
   const signIn = useSignIn();
   const navigate = useNavigate();
-  const [isActive, setIsActive] = useState(false);
+  // const [isActive, setIsActive] = useState(false);
 
-  async function validateUser(username) {
-    await axios
-      .get(`http://localhost:55731/api/UserAPI/getUser?id=${username}`)
-      .then((response) => {
-        //setUser(response.data);
-        console.log(response.data.user_isActive);
-        if (response.data.user_isActive === true) setIsActive(true);
-      });
-  }
+  const validateUser = async (username) => {
+    const response = await axios.get(
+      `http://localhost:55731/api/UserAPI/getUser?id=${username}`
+    );
+    return response.data.user_isActive;
+  };
 
   async function notify() {
     toast.error("User does not exist", {
@@ -35,8 +32,8 @@ const LoginForm = (props) => {
     console.log("Values: ", values);
 
     try {
-      validateUser(formik.values.username);
-      isActive === true
+      let isActive = await validateUser(formik.values.username);
+      isActive == true
         ? await axios
             .post("http://localhost:55731/api/token", {
               username: formik.values.username,
@@ -55,6 +52,7 @@ const LoginForm = (props) => {
                 navigate("/applicants");
               }
             })
+            .catch((error) => isActive(false))
         : notify();
     } catch (err) {
       console.log("Error: ", err);
@@ -75,9 +73,6 @@ const LoginForm = (props) => {
       password: Yup.string().required("Oops! You missed this one."),
     }),
 
-    // onSubmit: async (values) => {
-    //   console.log(formik.values);
-    // },
     onSubmit,
   });
 
