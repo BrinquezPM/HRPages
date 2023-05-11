@@ -58,13 +58,15 @@ th {
   top: 145px;
   left: 315px;
   width: 75%;
+
 }
 
 #users-container {
-  position: absolute;
+  position:absolute;
   top: 145px;
   left: 315px;
   width: 75%;
+
 }
 
 #users-container h2 {

@@ -18,4 +18,5 @@
   padding-right: 50px;
   justify-content: space-between;
   margin-bottom: 60px;
+  z-index: 2;
 }
