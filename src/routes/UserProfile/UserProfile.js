@@ -5,7 +5,7 @@ import Modal from "../../components/Modal/Modal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuthUser } from "react-auth-kit";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { useSignOut } from "react-auth-kit";
 import { useParams } from "react-router-dom";
 
@@ -15,8 +15,18 @@ const UserProfile = (props) => {
   const [isDeactivateModalActive, setIsDeactivateModalActive] = useState(false);
   const signOut = useSignOut();
   const navigate = useNavigate();
-  const auth = useAuthUser();
-  const activeUser = auth().user;
+  const [auth, setAuth] = useState();
+  const [activeUser, setActiveUser] = useState();
+  const isAuthenticated = useIsAuthenticated();
+  if(isAuthenticated()){
+    setAuth(useAuthUser());
+    setActiveUser(auth().user);
+  }
+  else{
+    navigate("/");
+  }
+
+
   const toggleDeactivateModal = () => {
     setIsDeactivateModalActive(!isDeactivateModalActive);
   };

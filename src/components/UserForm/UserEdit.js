@@ -6,14 +6,22 @@ import FilledButton from "../FilledButton/FilledButton";
 import FileField from "../FileField/FileField";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useAuthUser } from "react-auth-kit";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { useNavigate } from "react-router";
 
 const UserEdit = (props) => {
   const [user, setUser] = useState([]);
-  const auth = useAuthUser();
-  const activeUser = auth().user;
+  const [auth, setAuth] = useState();
+  const [activeUser, setActiveUser] = useState();
+  const isAuthenticated = useIsAuthenticated();
   const navigate = useNavigate();
+  if(isAuthenticated()){
+    setAuth(useAuthUser());
+    setActiveUser(auth().user);
+  }
+  else{
+    navigate("/");
+  }
 
   useEffect(() => {
     const fetchData = async () => {

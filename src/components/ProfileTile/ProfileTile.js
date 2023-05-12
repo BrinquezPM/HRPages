@@ -1,9 +1,9 @@
 import "./ProfileTile.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useAuthUser } from "react-auth-kit";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 
 const ProfileTile = (props) => {
   const [tileClass, setTileClass] = useState("profile-tile-normal");
@@ -14,8 +14,17 @@ const ProfileTile = (props) => {
 
   const [user, setUser] = useState([]);
   // const activeUser = Cookies.get("_auth_state").replace(/['"]+/g, "");
-  const auth = useAuthUser();
-  const activeUser = auth().user;
+  const [auth, setAuth] = useState();
+  const [activeUser, setActiveUser] = useState();
+  const isAuthenticated = useIsAuthenticated();
+  const navigate = useNavigate();
+  if(isAuthenticated()){
+    setAuth(useAuthUser());
+    setActiveUser(auth().user);
+  }
+  else{
+    navigate("/");
+  }
 
   useEffect(() => {
     console.log(activeUser);
