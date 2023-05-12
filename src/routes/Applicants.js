@@ -135,7 +135,11 @@ function Table({
             </tr> */}
             </tbody>
             <tfoot>
-              <td colSpan="2">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colSpan="1">
                 <div className="paginations">
                   <button
                     onClick={() => {
@@ -254,7 +258,11 @@ function Applicants() {
             }
           ),
           position: `${applicant.position.name}`,
-          status: <Chip2 statusId={applicant.status} />,
+          status: (
+            <Chip2
+              statusId={applicant.status === 1002 ? 7 : applicant.status}
+            />
+          ),
           applicantid: applicant.id,
         }));
 
@@ -332,7 +340,7 @@ function Applicants() {
   }, []);
 
   return isLoading ? (
-    <p>Loading</p>
+    <div class="loader"></div>
   ) : (
     <Styles>
       <div id="applicants-container">

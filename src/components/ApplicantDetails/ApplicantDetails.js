@@ -52,7 +52,7 @@ const ApplicantDetails = (props) => {
           apl_documentCV: info.apl_documentCV,
           apl_documentPhoto: info.apl_documentPhoto,
           apl_position: info.apl_position,
-          apl_status: info.apl_status + 1,
+          apl_status: info.apl_status === 6 ? 1002 : info.apl_status + 1,
           apl_statusNote: formik.values.note,
         })
         .catch((error) => {
@@ -112,7 +112,7 @@ const ApplicantDetails = (props) => {
             <h3>
               {info.apl_firstName} {info.apl_lastName}
             </h3>
-            <Chip2 statusId={info.apl_status} />
+            <Chip2 statusId={info.apl_status === 1002 ? 7 : info.apl_status} />
           </div>
           <div className="row-container">
             <img
@@ -160,7 +160,7 @@ const ApplicantDetails = (props) => {
       </div>
       <h4>{mapPositionId(info.apl_position)} Application Status</h4>
       <StatusRow
-        statusName="Pre-Screened"
+        statusName="Pending"
         statusNumber="1"
         id={info.apl_status !== 1 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
@@ -169,7 +169,7 @@ const ApplicantDetails = (props) => {
         onClose={updateStatus}
       />
       <StatusRow
-        statusName="HR Interview"
+        statusName="Pre-Screened"
         statusNumber="2"
         id={info.apl_status !== 2 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
@@ -178,7 +178,7 @@ const ApplicantDetails = (props) => {
         onClose={updateStatus}
       />
       <StatusRow
-        statusName="Technical Interview"
+        statusName="HR Interview"
         statusNumber="3"
         id={info.apl_status !== 3 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
@@ -187,7 +187,7 @@ const ApplicantDetails = (props) => {
         onClose={updateStatus}
       />
       <StatusRow
-        statusName="Final Interview"
+        statusName="Technical Interview"
         statusNumber="4"
         id={info.apl_status !== 4 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
@@ -196,7 +196,7 @@ const ApplicantDetails = (props) => {
         onClose={updateStatus}
       />
       <StatusRow
-        statusName="Job Offer"
+        statusName="Final Interview"
         statusNumber="5"
         id={info.apl_status !== 5 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
@@ -205,9 +205,18 @@ const ApplicantDetails = (props) => {
         onClose={updateStatus}
       />
       <StatusRow
-        statusName="Accepted Job Offer"
+        statusName="Job Offer"
         statusNumber="6"
         id={info.apl_status !== 6 ? "circular-number-disabled" : undefined}
+        value={formik.values.note}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        onClose={updateStatus}
+      />
+      <StatusRow
+        statusName="Accepted Job Offer"
+        statusNumber="7"
+        id={info.apl_status !== 1002 ? "circular-number-disabled" : undefined}
         value={formik.values.note}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}

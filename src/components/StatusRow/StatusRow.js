@@ -15,7 +15,7 @@ const StatusRow = (props) => {
           <h6>{props.statusName}</h6>
           <FilledButton
             btnDisplay={
-              props.id === "circular-number-disabled" || props.statusNumber == 6
+              props.id === "circular-number-disabled" || props.statusNumber == 7
                 ? "hidden"
                 : "visible"
             }

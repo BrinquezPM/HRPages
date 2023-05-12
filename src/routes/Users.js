@@ -9,6 +9,8 @@ import magnify from "../Images/magnify-expand.png";
 import bin from "../Images/trash-icon.png";
 import addIcon from "../Images/add-icon.png";
 import trashIllustration from "../Images/trash-illustration.png";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TableStyles = styled.div`
   .table-wrapper {
@@ -50,6 +52,8 @@ function Table({
   pageCount: controlledPageCount,
   pSize,
   pIndex,
+  totalPageSize,
+  pageId,
 }) {
   const {
     getTableProps,
@@ -87,7 +91,7 @@ function Table({
   React.useEffect(() => {
     fetchData({ pageIndex, pageSize });
   }, [fetchData, pageIndex, pageSize]);
-
+  const navigate = useNavigate();
   function handlePageClick(newPageIndex) {
     if (newPageIndex > 0 && newPageIndex <= pSize) {
       pIndex = newPageIndex;
@@ -136,41 +140,50 @@ function Table({
               })}
             </tbody>
             <tfoot>
-              <tr>
-                <td colSpan="2">
-                  <div className="paginations">
-                    <button
-                      onClick={() => handlePageClick(pIndex - 1)}
-                      style={{
-                        width: 74,
-                        height: 25,
-                        borderRadius: 5,
-                        backgroundColor: "#4E9E32",
-                        color: "white",
-                        marginRight: 17,
-                        border: "none",
-                      }}
-                    >
-                      prev
-                    </button>
-                    {""}{" "}
-                    <button
-                      onClick={() => handlePageClick(pIndex + 1)}
-                      style={{
-                        width: 74,
-                        height: 25,
-                        borderRadius: 5,
-                        backgroundColor: "#4E9E32",
-                        color: "white",
-                        marginLeft: 17,
-                        border: "none",
-                      }}
-                    >
-                      next
-                    </button>{" "}
-                  </div>
-                </td>
-              </tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colSpan="1">
+                <div className="paginations">
+                  <button
+                    onClick={() => {
+                      navigate(`/users/${parseInt(pageId) - 1}`);
+                      window.location.reload();
+                    }}
+                    style={{
+                      width: 100,
+                      height: 35,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      marginRight: 10,
+                      border: "none",
+                      display: pageId == 1 ? "none" : "inline",
+                    }}
+                  >
+                    Previous
+                  </button>
+                  {""}{" "}
+                  <button
+                    onClick={() => {
+                      navigate(`/users/${parseInt(pageId) + 1}`);
+                      window.location.reload();
+                    }}
+                    style={{
+                      width: 100,
+                      height: 35,
+                      borderRadius: 5,
+                      backgroundColor: "#4E9E32",
+                      color: "white",
+                      border: "none",
+                      display: pageId == totalPageSize ? "none" : "inline",
+                    }}
+                  >
+                    Next
+                  </button>{" "}
+                </div>
+              </td>
             </tfoot>
           </table>
         </div>
@@ -180,6 +193,8 @@ function Table({
 }
 
 function Users() {
+  const params = useParams();
+  const pageId = params.pageid;
   const [info, setInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalActive, setIsDeleteModalActive] = useState(false);
@@ -192,7 +207,7 @@ function Users() {
   const [pIndex, setPageIndex] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
-      let apiUrl = `http://localhost:55731/api/UserAPI/list?Page=${pIndex}&PageSize=${pSize}`;
+      let apiUrl = `http://localhost:55731/api/UserAPI/list?Page=${pageId}&PageSize=5`;
       axios.get(apiUrl).then((response) => {
         setInfo(response.data);
         setIsLoading(false);
@@ -202,7 +217,7 @@ function Users() {
       });
     };
     fetchData();
-  }, [pIndex]);
+  }, []);
 
   async function deactivateUser() {
     try {
@@ -325,7 +340,7 @@ function Users() {
   );
 
   return isLoading ? (
-    <p> Loading </p>
+    <div class="loader"></div>
   ) : (
     <>
       <div id="users-container">
@@ -348,6 +363,8 @@ function Users() {
             pageCount={pageCount}
             pIndex={pIndex}
             pSize={pSize}
+            totalPageSize={info.pagination.pages}
+            pageId={pageId}
           />
         </div>
       </div>

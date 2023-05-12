@@ -6,7 +6,7 @@ export const SidebarData = [
   {
     title: "Applicants",
     path: "/applicants",
-    icon: <MdIcons.MdOutlinePersonSearch size={30}/>,
+    icon: <MdIcons.MdOutlinePersonSearch size={30} />,
     cName: "nav-text",
   },
   {

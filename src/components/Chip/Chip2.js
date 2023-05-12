@@ -4,31 +4,36 @@ const Chip = (props) => {
   let borderColor, textColor, chipTxt;
   switch (props.statusId) {
     case 1:
-      chipTxt = "Pre-screened";
+      chipTxt = "Pending";
+      borderColor = "black";
+      textColor = "black";
+      break;
+    case 2:
+      chipTxt = "Pre-Screening";
       borderColor = "blue";
       textColor = "blue";
       break;
-    case 2:
+    case 3:
       chipTxt = "HR Interview";
       borderColor = "green";
       textColor = "green";
       break;
-    case 3:
+    case 4:
       chipTxt = "Technical Interview";
       borderColor = "orange";
       textColor = "orange";
       break;
-    case 4:
+    case 5:
       chipTxt = "Final Interview";
       borderColor = "brown";
       textColor = "brown";
       break;
-    case 5:
+    case 6:
       chipTxt = "Job Offer";
       borderColor = "red";
       textColor = "red";
       break;
-    case 6:
+    case 7:
       chipTxt = "Accepted Job Offer";
       borderColor = "indigo";
       textColor = "indigo";

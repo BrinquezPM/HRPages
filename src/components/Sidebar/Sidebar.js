@@ -8,7 +8,7 @@ const Sidebar = (props) => {
     window.location.pathname.startsWith("/applicants") ? true : false
   );
   const [isUsersActive, setIsUsersActive] = useState(
-    window.location.pathname === "/users" ? true : false
+    window.location.pathname.startsWith("/users") ? true : false
   );
   const [isProfileActive, setIsProfileActive] = useState(
     window.location.pathname === "/profile" ? true : false
@@ -58,7 +58,7 @@ const Sidebar = (props) => {
           id="/users"
           txt="Users"
           img="../../images/main-layout/users-icon.png"
-          path="/users"
+          path="/users/1"
           isActive={isUsersActive}
           onActivate={activateUsers}
         />
